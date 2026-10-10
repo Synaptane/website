@@ -10,6 +10,8 @@ import PageHeader from '../../../components/PageHeader.astro';
 import Screenshot from '../../../components/Screenshot.astro';
 import Section from '../../../components/Section.astro';
 import manifest from '../../../../public/demo/app/MANIFEST.json';
+// The manifest holds the Python version (1.0.0rc1); show it as the tag is written (v1.0.0-rc.1).
+const version = `v${manifest.synaptane.version.replace(/(\d)(a|b|rc)(\d+)$/, '$1-$2.$3')}`;
 import demoLight from '../../../assets/demo/demo-light.png';
 import demoDark from '../../../assets/demo/demo-dark.png';
 
@@ -72,7 +74,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
         <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
       ))}. La palette de recherche (<kbd>Ctrl</kbd> <kbd>K</kbd>) ouvre la page de recherche à la place.</li>
       <li><strong>Pas d'IA.</strong> Le rangement de la nuit, les routines et la recherche par le sens demandent un fournisseur d'IA : la démo montre une instance qui n'en a pas. Rien n'appelle un serveur : les pages sont de simples fichiers.</li>
-      <li><strong>Un instantané.</strong> Généré depuis Synaptane {manifest.synaptane.version} le {generated} ; les dates des pages sont relatives à ce jour-là.</li>
+      <li><strong>Un instantané.</strong> Généré depuis Synaptane {version} le {generated} ; les dates des pages sont relatives à ce jour-là.</li>
     </ul>
   </Section>
 

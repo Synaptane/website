@@ -10,6 +10,8 @@ import PageHeader from '../../components/PageHeader.astro';
 import Screenshot from '../../components/Screenshot.astro';
 import Section from '../../components/Section.astro';
 import manifest from '../../../public/demo/app/MANIFEST.json';
+// The manifest holds the Python version (1.0.0rc1); show it as the tag is written (v1.0.0-rc.1).
+const version = `v${manifest.synaptane.version.replace(/(\d)(a|b|rc)(\d+)$/, '$1-$2.$3')}`;
 import demoLight from '../../assets/demo/demo-light.png';
 import demoDark from '../../assets/demo/demo-dark.png';
 
@@ -72,7 +74,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
         <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
       ))}. The search palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) opens the search page instead.</li>
       <li><strong>No AI.</strong> The nightly tidy-up, the routines and search by meaning need an AI provider: the demo shows an instance without one. Nothing calls a server: the pages are plain files.</li>
-      <li><strong>A snapshot.</strong> Generated from Synaptane {manifest.synaptane.version} on {generated}; the dates in the pages are relative to that day.</li>
+      <li><strong>A snapshot.</strong> Generated from Synaptane {version} on {generated}; the dates in the pages are relative to that day.</li>
     </ul>
   </Section>
 
