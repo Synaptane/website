@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+
+<html lang="fr" data-user-key="demo">
+<head>
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vocation · IT team · Synaptane</title>
+<link rel="icon" href="/demo/app/static/icon.svg" type="image/svg+xml">
+<script src="/demo/app/static/demo.js"></script><script src="/demo/app/static/preferences.js"></script>
+<link rel="stylesheet" href="/demo/app/static/app.css">
+<link rel="stylesheet" href="/demo/app/static/demo.css"></head>
+<body class="workspace demo-static"><div class="demo-banner" role="region" aria-label="Démo figée" data-flash="Démo en lecture seule : cette action n'est pas disponible ici."><p class="demo-banner-text"><strong>Démo figée</strong><span class="demo-banner-long"> : rien n'est enregistré.</span> <a href="/fr/docs/admin/installation/">Installez Synaptane pour l'essayer pour de vrai.</a></p><p class="demo-banner-flash" role="status" aria-live="polite"></p><div class="demo-banner-tools"><div class="segmented demo-theme" role="group" aria-label="Apparence"><button type="button" data-theme-option="light" aria-pressed="false" title="Clair" aria-label="Clair" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></button><button type="button" data-theme-option="dark" aria-pressed="false" title="Sombre" aria-label="Sombre" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button><button type="button" data-theme-option="system" aria-pressed="false" title="Système" aria-label="Système" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg></button></div><a class="demo-banner-lang" href="/demo/app/o/acme/it/-/vocation/" hreflang="en" lang="en" title="English version">English</a></div></div>
+<svg hidden="" aria-hidden="true" focusable="false"><symbol id="i-folder" viewbox="0 0 24 24"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></symbol><symbol id="i-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol><symbol id="i-ft-md" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8 18v-6l2 2.5 2-2.5v6"></path><path d="M15.5 12v6M14 16.5l1.5 1.5 1.5-1.5"></path></symbol><symbol id="i-ft-html" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10 12.5 7.75 15 10 17.5M14 12.5l2.25 2.5L14 17.5"></path></symbol><symbol id="i-ft-pdf" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7" y="13" width="10" height="5" rx="1" fill="currentColor" stroke="none"></rect></symbol><symbol id="i-ft-image" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><circle cx="9.5" cy="12.5" r="1.2"></circle><path d="m7.5 18.5 3-3 2 2 2-2 2 2"></path></symbol><symbol id="i-ft-doc" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 12h7M8.5 15h7M8.5 18h4.5"></path></symbol><symbol id="i-ft-sheet" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="8" y="11" width="8" height="7.5" rx=".5"></rect><path d="M8 14.75h8M12 11v7.5"></path></symbol><symbol id="i-ft-slides" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7.5" y="11.5" width="9" height="5.5" rx=".5"></rect><path d="M12 17v2"></path></symbol><symbol id="i-ft-code" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="m8.5 12.5 2.5 2.5-2.5 2.5M13 18h3"></path></symbol><symbol id="i-ft-text" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 13h7M8.5 16.5h5"></path></symbol><symbol id="i-ft-archive" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M11 9.5h2M11 12h2M11 14.5h2"></path><rect x="10.5" y="16" width="3" height="3" rx=".5"></rect></symbol><symbol id="i-ft-media" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10.5 12v6l4.5-3z"></path></symbol><symbol id="i-ft-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol></svg>
+<a class="skip-link" href="#content">Aller au contenu</a>
+<div class="sidebar-scrim" data-sidebar-scrim="" aria-hidden="true"></div>
+<aside class="workspace-sidebar" id="workspace-sidebar" aria-label="Navigation principale">
+<div class="sidebar-brand">
+<a class="brand" href="/fr/demo/app/"><span class="brand-mark" aria-hidden="true"><svg width="26" height="26" viewbox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M23 9.5C21.6 6.6 9 6.2 9 11.6c0 2.2 1.3 3.1 3 3.6"></path><path d="M20 16.8c1.7.5 3 1.4 3 3.6 0 5.4-12.6 5-14 2.1"></path><circle cx="23" cy="9.5" r="2.4" fill="currentColor" stroke="none"></circle><circle cx="9" cy="22.5" r="2.4" fill="currentColor" stroke="none"></circle><circle class="mark-spark" cx="16" cy="16" r="1.8" stroke="none"></circle></svg></span>Synaptane</a>
+<button type="button" class="icon-button" data-sidebar-close="" aria-label="Masquer la navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"></path></svg></button>
+</div>
+<a class="button button-primary sidebar-deposit" data-test="deposit-link" href="/fr/demo/app/unavailable/"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"></path></svg>Déposer une information</a>
+<div class="sidebar-tree">
+<div class="tree-heading">Organisations</div>
+<div class="knowledge-tree">
+<div class="tree-node tree-organization">
+<a class="tree-org-link" href="/fr/demo/app/o/acme/"><span class="tree-label">Acme</span></a>
+<div class="tree-children">
+<div class="sidebar-space">
+<div class="sidebar-space-row">
+<a class="sidebar-space-name" href="/fr/demo/app/o/acme/it/"><span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg></span><span class="tree-label">IT team</span></a>
+<a class="sidebar-space-gear" href="/fr/demo/app/unavailable/" aria-label="Paramètres de IT team" title="Paramètres"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></a>
+</div>
+<a class="sidebar-inbox" href="/fr/demo/app/o/acme/it/inbox/">
+<span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"></path></svg></span><span class="tree-label">Inbox</span>
+<span class="sidebar-count" aria-hidden="true">6</span>
+<span class="sr-only">6 éléments en attente</span>
+</a>
+<nav class="space-tree" aria-label="Arborescence">
+<ul class="space-tree-list">
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/clients.html" aria-label="Déplier clients"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/clients/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>clients</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/decisions.html" aria-label="Déplier decisions"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/decisions/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>decisions</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/infra.html" aria-label="Déplier infra"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/infra/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>infra</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/network.html" aria-label="Déplier network"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/network/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>network</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/procedures.html" aria-label="Déplier procedures"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/procedures/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>procedures</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/projects.html" aria-label="Déplier projects"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/projects/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>projects</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/team.html" aria-label="Déplier team"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/team/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>team</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/tools.html" aria-label="Déplier tools"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/tools/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>tools</span></a>
+</div>
+</li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/faq.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>faq.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/glossary.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>glossary.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/README.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>README.md</span></a></div></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sidebar-footer">
+<div class="sidebar-account">
+<a class="account-label" href="/fr/demo/app/unavailable/"><span class="avatar" aria-hidden="true">D</span><span><strong>Demo</strong><small>@demo</small></span></a>
+<form data-demo-off=""><button class="icon-button" type="submit" aria-label="Se déconnecter" title="Se déconnecter" disabled="" aria-disabled="true"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></button></form>
+</div>
+</div>
+</aside>
+<div class="workspace-sheet">
+<header class="workspace-topbar">
+<button type="button" class="icon-button" id="sidebar-toggle" aria-controls="workspace-sidebar" aria-expanded="true" aria-label="Afficher ou masquer la navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg></button>
+<nav class="topbar-crumbs" aria-label="Fil d’Ariane" data-more="Afficher le chemin complet"><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><a href="/fr/demo/app/o/acme/">Acme</a><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><a href="/fr/demo/app/o/acme/it/">IT team</a><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><span>Paramètres</span><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><span aria-current="page">Vocation</span></nav>
+<a class="topbar-search" href="/fr/demo/app/search/" aria-keyshortcuts="Control+K Meta+K /" title="Rechercher (Ctrl+K ou /)"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="topbar-search-label">Rechercher</span><kbd data-shortcut-label="">Ctrl K</kbd></a>
+</header>
+
+<main id="content" tabindex="-1">
+<header class="page-header">
+<div>
+<p class="eyebrow">Espace · <span class="ident">Acme</span></p>
+<h1>IT team</h1>
+</div>
+</header>
+<nav class="tabs" aria-label="Sections de l’espace">
+<a href="/fr/demo/app/o/acme/it/inbox/">Inbox</a><a href="/fr/demo/app/o/acme/it/tidy/">Rangement</a><a href="/fr/demo/app/o/acme/it/activity/">Activité</a><a href="/fr/demo/app/o/acme/it/health/">Santé</a><a href="/fr/demo/app/unavailable/" aria-current="page">Paramètres</a>
+</nav>
+<div class="settings-layout">
+<nav class="settings-nav" aria-label="Paramètres de l'espace">
+<a href="/fr/demo/app/unavailable/">Général</a><a href="/fr/demo/app/o/acme/it/-/vocation/" aria-current="page">Vocation</a><a href="/fr/demo/app/unavailable/">Dépôt Git</a><a href="/fr/demo/app/unavailable/">Membres</a><a href="/fr/demo/app/unavailable/">Rangement</a><a href="/fr/demo/app/unavailable/">Recherche sémantique</a><a href="/fr/demo/app/o/acme/it/-/routines/">Routines</a>
+<p class="settings-role"><span class="badge">Super-admin</span></p>
+</nav>
+<div class="settings-main">
+<h2 class="settings-title">Vocation</h2>
+<div class="vocation-page">
+<div class="vocation-intro">
+<a class="vocation-explain" href="#vocation">
+<p class="eyebrow">Vocation</p>
+<p class="vocation-explain-title">Ce qu'est l'espace</p>
+<p>À quoi il sert et pour qui, ce qu'on y range ou pas, l'organisation des dossiers, les conventions, le vocabulaire. Servie au rangement de la nuit, aux routines et aux assistants IA.</p>
+<code>.synaptane/vocation.md</code>
+</a>
+<a class="vocation-explain" href="#tidy-rules">
+<p class="eyebrow">Consignes de rangement</p>
+<p class="vocation-explain-title">Comment ranger</p>
+<p>Des règles précises pour l'agent de rangement, prioritaires sur ses consignes par défaut. Lues par lui seul.</p>
+<code>.synaptane/prompts/tidy.md</code>
+</a>
+</div>
+<p class="muted vocation-git">Les deux fichiers sont versionnés dans le dépôt : ils se modifient ici ou par un push. Chaque enregistrement est un commit à votre nom.</p>
+<section class="card vocation-card" id="vocation">
+<div class="section-heading">
+<h2>Vocation</h2>
+</div>
+<p class="muted">Répondez aux questions de chaque rubrique, en quelques lignes concrètes. On ne range pas de la même façon le second cerveau d'une équipe d'infrastructure, d'une équipe marketing ou d'une famille.</p>
+<form class="vocation-template" data-vocation-template="" data-target="vocation-text" data-texts='{"blank": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\n\u003c!-- En deux ou trois phrases : le but de l\u0027espace et les personnes qui s\u0027en servent. --\u003e\n\n## Ce qu\u0027on y range\n\n-\n\n## Ce qu\u0027on n\u0027y range pas\n\n\u003c!-- Ce qui doit rester dans l\u0027inbox, avec la raison (hors sujet, confidentiel, ailleurs\u2026). --\u003e\n\n-\n\n## Organisation des dossiers\n\n\u003c!-- Les dossiers de premier niveau et ce que chacun contient. --\u003e\n\n- `dossier/` :\n\n## Conventions\n\n- Langue et ton :\n- Noms de fichiers :\n- Format des pages (fiches, proc\u00e9dures, comptes rendus\u2026) :\n\n## Ce qui compte le plus\n\n\u003c!-- Exactitude, fra\u00eecheur, confidentialit\u00e9, concision\u2026 et ce qu\u0027on fait en cas de doute.\n     Pages v\u00e9rifi\u00e9es : lesquelles ont un propri\u00e9taire, et tous les combien les revoir. --\u003e\n\n-\n\n## Vocabulaire\n\n\u003c!-- Sigles, noms de projets, d\u0027outils ou de personnes propres \u00e0 l\u0027espace. --\u003e\n\n-\n", "client": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\nTout ce qu\u0027il faut savoir sur un projet men\u00e9 pour un client : le contexte, les engagements, les \u00e9changes et l\u0027avancement. Lu par l\u0027\u00e9quipe du projet et par quiconque doit la remplacer au pied lev\u00e9.\n\n## Ce qu\u0027on y range\n\n- La fiche du client : organisation, interlocuteurs et leur r\u00f4le, fa\u00e7on de travailler.\n- Le p\u00e9rim\u00e8tre, le contrat, le planning et les jalons.\n- Un compte rendu par r\u00e9union : participants, d\u00e9cisions, actions (qui, quoi, pour quand).\n- Les demandes de changement et leur arbitrage.\n- Les livrables et leur \u00e9tat de validation.\n- Les risques et les points ouverts.\n\n## Ce qu\u0027on n\u0027y range pas\n\n- Les montants et conditions financi\u00e8res d\u00e9taill\u00e9s si l\u0027espace est ouvert \u00e0 des personnes qui ne doivent pas les voir : laisser dans l\u0027inbox avec la raison.\n- Les \u00e9changes personnels ou sans lien avec le projet.\n\n## Organisation des dossiers\n\n- `client/` : fiche du client, interlocuteurs.\n- `cadrage/` : p\u00e9rim\u00e8tre, contrat, planning.\n- `reunions/` : `AAAA-MM-JJ-objet.md`.\n- `livrables/` : une page par livrable.\n- `suivi/` : risques, points ouverts, demandes de changement.\n\n## Conventions\n\n- Langue : celle du client ; noms propres et sigles du client tels quels.\n- Ton : factuel, sans jugement sur les personnes.\n- Noms de fichiers : minuscules et tirets, dates au format AAAA-MM-JJ.\n- Compte rendu : participants, d\u00e9cisions, actions avec responsable et \u00e9ch\u00e9ance.\n\n## Ce qui compte le plus\n\n- Les engagements pris et leurs dates : ne jamais en perdre la trace.\n- La confidentialit\u00e9 des informations du client.\n- Une page \u00ab \u00c0 faire \u00bb \u00e0 jour par livrable ou par r\u00e9union.\n- Pages v\u00e9rifi\u00e9es : le cadrage et la liste des contacts ont un propri\u00e9taire et sont v\u00e9rifi\u00e9s tous les 3 mois.\n\n## Vocabulaire\n\n- Recette : validation des livrables par le client.\n- COPIL : comit\u00e9 de pilotage.\n", "family": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\nLa m\u00e9moire pratique de la famille : papiers, sant\u00e9, maison, vacances, \u00e9coles. Pour que chacun retrouve vite une information, m\u00eame celle qu\u0027un autre a not\u00e9e. Lu par les adultes de la famille et leurs assistants IA.\n\n## Ce qu\u0027on y range\n\n- Les papiers : o\u00f9 se trouve chaque document, sa date de validit\u00e9, la d\u00e9marche de renouvellement (carte d\u0027identit\u00e9, passeport, permis, carte grise, assurances).\n- La sant\u00e9 : m\u00e9decins et leurs coordonn\u00e9es, vaccins, traitements en cours, rendez-vous.\n- La maison : contrats (\u00e9nergie, internet, assurance), artisans, entretien, garanties, modes d\u0027emploi.\n- Les vacances : id\u00e9es, r\u00e9servations, listes de bagages, souvenirs.\n- L\u0027\u00e9cole et les activit\u00e9s : horaires, contacts, inscriptions.\n- Les finances du foyer : \u00e9ch\u00e9ances, organismes, contacts (pas les codes).\n\n## Ce qu\u0027on n\u0027y range pas\n\n- Aucun mot de passe, code de carte ou identifiant bancaire.\n- Les num\u00e9ros complets de documents d\u0027identit\u00e9 ou de s\u00e9curit\u00e9 sociale : noter seulement o\u00f9 les trouver.\n- Les messages personnels sans information utile : laisser dans l\u0027inbox avec la raison.\n\n## Organisation des dossiers\n\n- `papiers/` : une page par personne et une par v\u00e9hicule.\n- `sante/` : une page par personne, et `sante/contacts.md`.\n- `maison/` : contrats, artisans, entretien, \u00e9quipements.\n- `vacances/` : une page par s\u00e9jour, `AAAA-destination.md`.\n- `enfants/` : \u00e9cole, activit\u00e9s, une page par enfant.\n- `budget/` : \u00e9ch\u00e9ances, organismes.\n\n## Conventions\n\n- Langue : fran\u00e7ais, simple ; pr\u00e9noms plut\u00f4t que \u00ab Madame \u00bb ou \u00ab Monsieur \u00bb.\n- Noms de fichiers : minuscules et tirets, sans accents.\n- Toujours dater : rendez-vous, \u00e9ch\u00e9ances, validit\u00e9s (format AAAA-MM-JJ).\n- Une section \u00ab \u00c0 faire \u00bb en t\u00eate de page quand une d\u00e9marche est en cours.\n\n## Ce qui compte le plus\n\n- La confidentialit\u00e9 : rien qui permette d\u0027usurper une identit\u00e9 ou d\u0027acc\u00e9der \u00e0 un compte.\n- Les \u00e9ch\u00e9ances : une date de validit\u00e9 ou de r\u00e9siliation ne doit jamais se perdre.\n- L\u0027exactitude des coordonn\u00e9es (t\u00e9l\u00e9phones, adresses).\n- Pages v\u00e9rifi\u00e9es : les fiches de contrats et d\u0027assurances sont v\u00e9rifi\u00e9es chaque ann\u00e9e, avant leur \u00e9ch\u00e9ance.\n\n## Vocabulaire\n\n-\n", "infra": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\nLa m\u00e9moire technique de l\u0027\u00e9quipe infrastructure et exploitation : ce qu\u0027il faut savoir pour faire tourner, d\u00e9panner et faire \u00e9voluer nos serveurs, r\u00e9seaux et services. Lu par l\u0027\u00e9quipe, les personnes d\u0027astreinte et les assistants IA qui aident au diagnostic.\n\n## Ce qu\u0027on y range\n\n- Une fiche par machine, service ou \u00e9quipement r\u00e9seau : r\u00f4le, emplacement, acc\u00e8s, d\u00e9pendances.\n- Les proc\u00e9dures (installation, mise \u00e0 jour, sauvegarde, restauration, bascule).\n- Les incidents et leurs comptes rendus : chronologie, cause, correction, actions de suivi.\n- Les d\u00e9cisions d\u0027architecture, avec leur date et leur raison.\n- Les contrats, fournisseurs et \u00e9ch\u00e9ances (certificats, domaines, licences).\n\n## Ce qu\u0027on n\u0027y range pas\n\n- Aucun mot de passe, jeton ou cl\u00e9 priv\u00e9e : seulement l\u0027endroit o\u00f9 les trouver (coffre).\n- Les tickets du quotidien sans enseignement durable : laisser dans l\u0027inbox avec la raison.\n- La documentation publique d\u0027un logiciel : un lien suffit.\n\n## Organisation des dossiers\n\n- `serveurs/` : une fiche par machine (`nom-de-la-machine.md`).\n- `services/` : une fiche par service (base de donn\u00e9es, messagerie, supervision\u2026).\n- `reseau/` : plan d\u0027adressage, pare-feu, VPN, DNS.\n- `procedures/` : une page par proc\u00e9dure, titre \u00e0 l\u0027infinitif (\u00ab Restaurer une sauvegarde \u00bb).\n- `incidents/` : un compte rendu par incident, `AAAA-MM-JJ-sujet.md`.\n- `decisions/` : une page par d\u00e9cision, `AAAA-MM-JJ-sujet.md`.\n- `fournisseurs/` : contrats, contacts, \u00e9ch\u00e9ances.\n\n## Conventions\n\n- Langue : fran\u00e7ais ; termes techniques usuels en anglais (load balancer, failover).\n- Ton : factuel et pr\u00e9cis, phrases courtes.\n- Noms de fichiers : minuscules et tirets, sans accents.\n- Fiche : r\u00f4le, acc\u00e8s, configuration utile, supervision, sauvegarde, liens. Proc\u00e9dure : pr\u00e9requis, \u00e9tapes num\u00e9rot\u00e9es, commandes dans des blocs de code, v\u00e9rification, retour arri\u00e8re.\n\n## Ce qui compte le plus\n\n- L\u0027exactitude : une commande ou une adresse fausse co\u00fbte cher pendant un incident. En cas de doute ou de contradiction, laisser l\u0027\u00e9l\u00e9ment dans l\u0027inbox avec la question.\n- La fra\u00eecheur : dater les informations susceptibles de changer (versions, adresses IP).\n- Pages v\u00e9rifi\u00e9es : les proc\u00e9dures et les fiches de service ont un propri\u00e9taire et sont v\u00e9rifi\u00e9es tous les 6 mois (\u00ab Marquer comme v\u00e9rifi\u00e9e \u00bb) ; une page \u00e0 revoir se relit avant de s\u0027y fier en incident.\n- La confidentialit\u00e9 : jamais de secret dans une page.\n\n## Vocabulaire\n\n- PRA : plan de reprise d\u0027activit\u00e9.\n- Astreinte : la personne joignable hors des heures ouvr\u00e9es.\n", "job-search": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\nLe suivi de ma recherche d\u0027emploi : les entreprises vis\u00e9es, les candidatures, les entretiens et ce que j\u0027en apprends. Lu par moi et par mes assistants IA, pour pr\u00e9parer chaque \u00e9tape.\n\n## Ce qu\u0027on y range\n\n- Une fiche par entreprise : activit\u00e9, culture, actualit\u00e9, contacts, pourquoi elle m\u0027int\u00e9resse.\n- Une page par candidature : poste, annonce (lien et texte copi\u00e9), date d\u0027envoi, version du CV et de la lettre, \u00e9tat, relances.\n- Les comptes rendus d\u0027entretien : interlocuteurs, questions pos\u00e9es, r\u00e9ponses \u00e0 am\u00e9liorer, suite pr\u00e9vue.\n- Mon argumentaire : r\u00e9alisations chiffr\u00e9es, r\u00e9ponses aux questions classiques.\n- Le r\u00e9seau : personnes rencontr\u00e9es, ce qu\u0027on s\u0027est dit, quand relancer.\n\n## Ce qu\u0027on n\u0027y range pas\n\n- Les documents administratifs (France Travail, contrats) : seulement les \u00e9ch\u00e9ances et o\u00f9 les trouver.\n- Les annonces sans int\u00e9r\u00eat : laisser dans l\u0027inbox avec la raison.\n\n## Organisation des dossiers\n\n- `entreprises/` : une fiche par entreprise.\n- `candidatures/` : `AAAA-MM-JJ-entreprise-poste.md`.\n- `entretiens/` : `AAAA-MM-JJ-entreprise.md`, li\u00e9s \u00e0 la candidature.\n- `argumentaire/` : r\u00e9alisations, questions et r\u00e9ponses, CV.\n- `reseau/` : une page par personne ou par \u00e9v\u00e9nement.\n\n## Conventions\n\n- Langue : fran\u00e7ais ; garder le texte d\u0027une annonce dans sa langue d\u0027origine.\n- Noms de fichiers : minuscules et tirets, dates au format AAAA-MM-JJ.\n- Candidature : un champ \u00ab \u00c9tat \u00bb en t\u00eate (\u00e0 envoyer, envoy\u00e9e, entretien, refus, offre) et la date de la prochaine relance.\n\n## Ce qui compte le plus\n\n- Les dates : envoi, relances, entretiens. Une relance oubli\u00e9e est une occasion perdue.\n- Relier chaque candidature \u00e0 sa fiche d\u0027entreprise et \u00e0 ses entretiens.\n- Garder les le\u00e7ons de chaque entretien pour le suivant.\n\n## Vocabulaire\n\n-\n", "marketing": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\nLa m\u00e9moire de l\u0027\u00e9quipe marketing : notre marque, nos messages, nos campagnes et ce qu\u0027elles nous ont appris. Lu par l\u0027\u00e9quipe, les commerciaux et les assistants IA qui aident \u00e0 \u00e9crire.\n\n## Ce qu\u0027on y range\n\n- La plateforme de marque : positionnement, promesse, ton, charte \u00e9ditoriale.\n- Les personas et les segments de client\u00e8le.\n- Une page par campagne : objectif, cible, canaux, budget, calendrier, r\u00e9sultats, le\u00e7ons.\n- Les messages cl\u00e9s par offre, les arguments et les r\u00e9ponses aux objections.\n- La veille concurrentielle, avec la date et la source de chaque information.\n- Les contacts presse, agences et partenaires (sans donn\u00e9es personnelles inutiles).\n\n## Ce qu\u0027on n\u0027y range pas\n\n- Les fichiers de contacts ou listes d\u0027e-mails : ils restent dans l\u0027outil d\u0027emailing.\n- Les brouillons sans suite : laisser dans l\u0027inbox avec la raison.\n- Les donn\u00e9es chiffr\u00e9es non sourc\u00e9es.\n\n## Organisation des dossiers\n\n- `marque/` : plateforme de marque, ton, charte, \u00e9l\u00e9ments visuels.\n- `cibles/` : personas, segments.\n- `offres/` : une page par offre ou produit, avec ses messages cl\u00e9s.\n- `campagnes/` : une page par campagne, `AAAA-MM-nom-de-la-campagne.md`.\n- `veille/` : une page par concurrent.\n- `contenus/` : calendrier \u00e9ditorial, id\u00e9es, articles publi\u00e9s.\n\n## Conventions\n\n- Langue : fran\u00e7ais ; garder telles quelles les accroches dans une autre langue.\n- Ton : celui de la charte (voir `marque/`), clair et concret.\n- Noms de fichiers : minuscules et tirets.\n- Page de campagne : objectif, cible, messages, canaux, calendrier, budget, r\u00e9sultats, le\u00e7ons.\n\n## Ce qui compte le plus\n\n- Les r\u00e9sultats chiffr\u00e9s et dat\u00e9s, avec leur source : ce sont eux qui guident la suite.\n- La coh\u00e9rence des messages avec la plateforme de marque.\n- La fra\u00eecheur de la veille : dater chaque information.\n- Pages v\u00e9rifi\u00e9es : la plateforme de marque et les messages cl\u00e9s ont un propri\u00e9taire et sont v\u00e9rifi\u00e9s chaque ann\u00e9e.\n\n## Vocabulaire\n\n- CPL : co\u00fbt par lead. CPA : co\u00fbt par acquisition.\n- MQL, SQL : lead qualifi\u00e9 par le marketing, par les ventes.\n", "personal": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\nMon second cerveau personnel : ce que j\u0027apprends, ce que je lis, mes id\u00e9es et mes projets, pour les retrouver et les relier. Lu par moi et par mes assistants IA.\n\n## Ce qu\u0027on y range\n\n- Des notes de lecture : livre, article, podcast, avec la source et ce que j\u0027en retiens.\n- Des fiches sur des sujets qui m\u0027int\u00e9ressent, compl\u00e9t\u00e9es au fil du temps.\n- Mes projets personnels : objectif, prochaines \u00e9tapes, id\u00e9es.\n- Des id\u00e9es en vrac, rattach\u00e9es au sujet le plus proche.\n- Des recettes, astuces et proc\u00e9dures du quotidien.\n\n## Ce qu\u0027on n\u0027y range pas\n\n- Les papiers administratifs et les informations de sant\u00e9 (un espace \u00ab famille \u00bb s\u0027y pr\u00eate mieux).\n- Les mots de passe et codes : jamais.\n\n## Organisation des dossiers\n\n- `sujets/` : une fiche par sujet, enrichie \u00e0 chaque nouvelle note.\n- `lectures/` : une page par livre ou article important.\n- `projets/` : une page par projet en cours ; `projets/archives/` pour ceux termin\u00e9s.\n- `idees/` : id\u00e9es pas encore rattach\u00e9es \u00e0 un sujet.\n- `pratique/` : recettes, astuces, proc\u00e9dures.\n\n## Conventions\n\n- Langue : fran\u00e7ais ; citations dans leur langue d\u0027origine, entre guillemets, avec la source.\n- Ton : personnel, \u00e0 la premi\u00e8re personne.\n- Noms de fichiers : minuscules et tirets.\n- Fiche de sujet : un r\u00e9sum\u00e9 en t\u00eate, puis les notes dat\u00e9es, et les liens vers les sujets voisins.\n\n## Ce qui compte le plus\n\n- Relier les notes entre elles : une id\u00e9e isol\u00e9e se perd.\n- Garder la source de chaque citation.\n- Pr\u00e9f\u00e9rer enrichir une fiche existante plut\u00f4t que d\u0027en cr\u00e9er une nouvelle.\n\n## Vocabulaire\n\n-\n", "product": "# Vocation de l\u0027espace\n\n## \u00c0 quoi sert cet espace, et pour qui\n\nLa m\u00e9moire de l\u0027\u00e9quipe produit : ce que fait le produit, pourquoi il le fait ainsi, et ce que nous apprenons des utilisateurs. Lu par le produit, le design, les d\u00e9veloppeurs, le support et les assistants IA.\n\n## Ce qu\u0027on y range\n\n- Une page par fonctionnalit\u00e9 : probl\u00e8me r\u00e9solu, comportement, r\u00e8gles, limites, \u00e9tat.\n- Les sp\u00e9cifications et leurs versions successives.\n- Les d\u00e9cisions produit, avec la date, les options \u00e9cart\u00e9es et la raison.\n- Les retours utilisateurs et entretiens, synth\u00e9tis\u00e9s par th\u00e8me.\n- La feuille de route et les notes de version.\n\n## Ce qu\u0027on n\u0027y range pas\n\n- Les tickets de d\u00e9veloppement au jour le jour : ils restent dans l\u0027outil de suivi (un lien suffit).\n- Les donn\u00e9es personnelles des utilisateurs interrog\u00e9s : anonymiser, sinon laisser dans l\u0027inbox avec la raison.\n\n## Organisation des dossiers\n\n- `fonctionnalites/` : une page par fonctionnalit\u00e9.\n- `specifications/` : une page par sp\u00e9cification, li\u00e9e \u00e0 sa fonctionnalit\u00e9.\n- `decisions/` : `AAAA-MM-JJ-sujet.md`.\n- `utilisateurs/` : personas, synth\u00e8ses d\u0027entretiens, retours par th\u00e8me.\n- `feuille-de-route/` : trimestre en cours, suivants, notes de version.\n\n## Conventions\n\n- Langue : fran\u00e7ais ; noms des \u00e9crans et boutons tels qu\u0027ils apparaissent dans le produit.\n- Ton : pr\u00e9cis, sans jargon inutile.\n- Noms de fichiers : minuscules et tirets.\n- Fonctionnalit\u00e9 : contexte, comportement attendu, r\u00e8gles de gestion, cas limites, \u00e9tat (id\u00e9e, en cours, livr\u00e9e), liens vers la sp\u00e9cification et les d\u00e9cisions.\n\n## Ce qui compte le plus\n\n- Distinguer ce qui est livr\u00e9 de ce qui est pr\u00e9vu ou envisag\u00e9.\n- Garder la trace des d\u00e9cisions et de leurs raisons, m\u00eame quand elles changent (\u00ab Auparavant : \u2026 \u00bb).\n- Relier chaque retour utilisateur \u00e0 la fonctionnalit\u00e9 concern\u00e9e.\n- Pages v\u00e9rifi\u00e9es : chaque fiche de fonctionnalit\u00e9 a un propri\u00e9taire (son responsable produit), qui la v\u00e9rifie \u00e0 chaque version.\n\n## Vocabulaire\n\n- MVP : premi\u00e8re version minimale.\n- D\u00e9couverte : phase d\u0027exploration avant la sp\u00e9cification.\n"}' data-confirm-replace="Remplacer le texte de l’éditeur par ce modèle ? Rien n’est enregistré avant « Enregistrer »." data-demo-off="">
+<div class="field">
+<label for="vocation-model">Partir d'un modèle</label>
+<div class="vocation-template-row">
+<select id="vocation-model" name="template" disabled="" aria-disabled="true">
+<option value="">Choisir un modèle…</option>
+<option value="infra">Équipe infrastructure / ops — Serveurs, procédures, incidents.</option><option value="marketing">Équipe marketing — Marque, campagnes, veille.</option><option value="product">Équipe produit — Fonctionnalités, décisions, retours.</option><option value="client">Projet client — Cadrage, réunions, livrables.</option><option value="personal">Second cerveau personnel — Lectures, sujets, projets.</option><option value="family">Famille — Papiers, santé, maison, vacances.</option><option value="job-search">Recherche d'emploi — Entreprises, candidatures, entretiens.</option><option value="blank">Vierge — Les rubriques seules, à remplir.</option>
+</select>
+<button class="button" type="submit" disabled="" aria-disabled="true">Pré-remplir</button>
+</div>
+<p class="muted">Le modèle remplace le texte de l'éditeur ; adaptez-le, puis enregistrez.</p>
+</div>
+</form>
+<form class="vocation-form" data-demo-off="">
+
+<input type="hidden" name="base_sha" value="8f0c9efdd31b1e51211da00bb3f7aa29014d9156">
+<div class="field">
+<label for="vocation-text">Texte (Markdown)</label>
+<textarea id="vocation-text" name="text" class="editor vocation-editor" rows="22" spellcheck="true" placeholder="Partez d'un modèle ci-dessus, ou écrivez : à quoi sert l'espace, ce qu'on y range, comment…" aria-describedby="vocation-help" disabled="" aria-disabled="true"># Space purpose
+
+## What this space is for, and who uses it
+
+The technical memory of Acme's IT team: what you need to know to run, troubleshoot and evolve
+our servers, network and tools. Read by the team, by the person on call, and by the AI
+assistants that help with diagnosis and onboarding.
+
+## What goes here
+
+- One page per server, service or network component: role, location, access, dependencies.
+- Procedures (deployment, incident, restore, rotation, onboarding and offboarding).
+- Architecture and policy decisions, with their date and reason.
+- Projects in progress and their status.
+- Hosting contracts and client support rules.
+
+## What does not go here
+
+- No password, token or private key: only where to find it (the password vault).
+- Day-to-day tickets with no lasting lesson: leave them in the inbox with the reason.
+- Public documentation of a piece of software: a link is enough.
+- Questions without a clear subject: leave them in the inbox and ask who wrote them.
+
+## Folder layout
+
+- `infra/`: servers, virtualisation, storage, backups, certificates, monitoring, DNS.
+- `network/`: Wi-Fi, firewall, VLANs, topology.
+- `tools/`: one page per tool the team uses or runs.
+- `team/`: members, meetings, on-call, onboarding, time off.
+- `procedures/`: one page per runbook, with numbered steps.
+- `projects/`: one page per project.
+- `decisions/`: one page per decision, `YYYY-MM-topic.md`, listed in `decisions/README.md`.
+- `clients/`: hosting contracts and client support.
+
+Each folder has a `README.md` that lists its pages: keep it up to date.
+
+## Conventions
+
+- Language: English; tool names as they are (vzdump, WireGuard, GitLab CI).
+- Tone: factual and precise, short sentences.
+- File names: lower case and hyphens.
+- Procedure: prerequisites, numbered steps, commands in code blocks, how to check it worked.
+- When a fact changes, keep the previous value with its date ("Previously: …").
+
+## What matters most
+
+- Accuracy: a wrong command or address is costly during an incident. When two sources
+  disagree, leave the item in the inbox with the question.
+- Freshness: date anything likely to change (versions, capacities, IP addresses).
+- Verified pages: procedures and security pages have an owner and are reviewed every year;
+  read a page marked "to review" carefully before relying on it during an incident.
+- Confidentiality: never a secret in a page.
+
+## Vocabulary
+
+- Bastion: the single SSH entry point, `bastion.acme.internal`.
+- DRP: disaster recovery plan.
+- On-call: the person reachable outside business hours, one week out of four.
+- P1 to P4: ticket and incident priorities (see `tools/tickets.md`).
+</textarea>
+<p class="muted" id="vocation-help">20 000 caractères au plus. Un texte vide retire le fichier du dépôt.</p>
+</div>
+<div class="actions">
+<button class="button button-primary" type="submit" name="action" value="save" disabled="" aria-disabled="true">Enregistrer</button>
+<button class="button" type="submit" name="action" value="preview" formnovalidate="" disabled="" aria-disabled="true">Aperçu</button>
+</div>
+</form>
+<div class="vocation-history">
+<p class="section-label">Dernières modifications</p>
+<ul class="history-list">
+<li><span>Acme IT wiki: demo data</span><span class="muted"><time datetime="2026-09-26T09:00:00+02:00" data-local="full">2026-09-26 09:00 UTC</time> · Acme IT team</span></li>
+</ul>
+</div>
+</section>
+<section class="card vocation-card" id="tidy-rules">
+<div class="section-heading">
+<h2>Consignes de rangement</h2>
+<span class="badge badge-quiet">Aucune</span>
+</div>
+<p class="muted">Règles précises pour l'agent, par exemple : « une page par fournisseur dans fournisseurs/ », « ne jamais renommer les procédures », « écrire les dates au format AAAA-MM-JJ ». Elles ne lèvent pas les garde-fous (contenu déposé traité comme une donnée, plafond de suppressions).</p>
+<form class="vocation-form" data-demo-off="">
+
+<input type="hidden" name="base_sha" value="">
+<div class="field">
+<label for="tidy-rules-text">Texte (Markdown)</label>
+<textarea id="tidy-rules-text" name="text" class="editor vocation-editor" rows="12" spellcheck="true" placeholder="- Une page par fournisseur dans fournisseurs/." aria-describedby="tidy-rules-help" disabled="" aria-disabled="true"></textarea>
+<p class="muted" id="tidy-rules-help">20 000 caractères au plus. Un texte vide retire le fichier du dépôt.</p>
+</div>
+<div class="actions">
+<button class="button button-primary" type="submit" name="action" value="save" disabled="" aria-disabled="true">Enregistrer</button>
+<button class="button" type="submit" name="action" value="preview" formnovalidate="" disabled="" aria-disabled="true">Aperçu</button>
+</div>
+</form>
+</section>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>

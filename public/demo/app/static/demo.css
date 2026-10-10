@@ -1,0 +1,61 @@
+/* Static demo of Synaptane: the banner, and room for it in the application's layout.
+   Colors come from the application's tokens (app.css), so both themes follow. */
+:root { --demo-banner: 36px; }
+body.demo-static { padding-top: var(--demo-banner); }
+.demo-static .workspace-sidebar { top: var(--demo-banner); }
+.demo-static .workspace-topbar { top: var(--demo-banner); }
+.demo-static .workspace-sheet { min-height: calc(100vh - var(--demo-banner) - 2 * var(--sheet-gap)); }
+html:has(body.demo-static) { scroll-padding-top: calc(var(--demo-banner) + var(--topbar-height) + 12px); }
+
+.demo-banner {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: var(--demo-banner);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px 0 16px;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.3;
+}
+.demo-banner p { margin: 0; }
+.demo-banner-text { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.demo-banner-text strong { color: var(--ink); font-weight: 600; }
+.demo-banner a { color: var(--accent); font-weight: 500; }
+.demo-banner a:hover { color: var(--accent-hover); }
+.demo-banner-flash { display: none; flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); font-weight: 600; }
+.demo-banner-flashing { background: var(--warn-bg); }
+.demo-banner-flashing .demo-banner-text { display: none; }
+.demo-banner-flashing .demo-banner-flash { display: block; }
+.demo-banner-tools { flex: none; display: flex; align-items: center; gap: 10px; }
+.demo-banner .segmented { padding: 2px; background: var(--hover); }
+.demo-banner .segmented button { width: 26px; height: 22px; }
+.demo-banner-lang { padding: 2px 4px; white-space: nowrap; }
+
+/* Disabled actions keep their place: they show what the product does. */
+form[data-demo-off] [disabled] { cursor: not-allowed; }
+.demo-search-note .demo-search-queries { display: flex; flex-wrap: wrap; gap: 6px; }
+.demo-search-note .demo-search-queries a { text-decoration: none; }
+.demo-search-miss { border-color: var(--warn-ink); background: var(--warn-bg); color: var(--ink); }
+.demo-unavailable { max-width: 720px; }
+.demo-unavailable p { margin: 0 0 16px; }
+.demo-unavailable .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.demo-unavailable .button { text-decoration: none; }
+
+@media (max-width: 900px) {
+  .demo-static .workspace-sheet { min-height: calc(100vh - var(--demo-banner)); }
+}
+@media (max-width: 640px) {
+  :root { --demo-banner: 50px; }
+  .demo-banner { gap: 8px; padding: 0 8px 0 12px; font-size: 12.5px; }
+  .demo-banner-text, .demo-banner-flash { white-space: normal; }
+  .demo-banner .segmented { display: none; }
+}
+@media print {
+  .demo-banner { position: static; }
+  body.demo-static { padding-top: 0; }
+}

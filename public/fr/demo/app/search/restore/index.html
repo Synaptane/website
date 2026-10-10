@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+
+<html lang="fr" data-user-key="demo">
+<head>
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recherche · Synaptane</title>
+<link rel="icon" href="/demo/app/static/icon.svg" type="image/svg+xml">
+<script src="/demo/app/static/demo.js"></script><script src="/demo/app/static/preferences.js"></script>
+<link rel="stylesheet" href="/demo/app/static/app.css">
+<link rel="stylesheet" href="/demo/app/static/demo.css"></head>
+<body class="workspace demo-static"><div class="demo-banner" role="region" aria-label="Démo figée" data-flash="Démo en lecture seule : cette action n'est pas disponible ici."><p class="demo-banner-text"><strong>Démo figée</strong><span class="demo-banner-long"> : rien n'est enregistré.</span> <a href="/fr/docs/admin/installation/">Installez Synaptane pour l'essayer pour de vrai.</a></p><p class="demo-banner-flash" role="status" aria-live="polite"></p><div class="demo-banner-tools"><div class="segmented demo-theme" role="group" aria-label="Apparence"><button type="button" data-theme-option="light" aria-pressed="false" title="Clair" aria-label="Clair" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></button><button type="button" data-theme-option="dark" aria-pressed="false" title="Sombre" aria-label="Sombre" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button><button type="button" data-theme-option="system" aria-pressed="false" title="Système" aria-label="Système" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg></button></div><a class="demo-banner-lang" href="/demo/app/search/restore/" hreflang="en" lang="en" title="English version">English</a></div></div>
+<svg hidden="" aria-hidden="true" focusable="false"><symbol id="i-folder" viewbox="0 0 24 24"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></symbol><symbol id="i-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol><symbol id="i-ft-md" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8 18v-6l2 2.5 2-2.5v6"></path><path d="M15.5 12v6M14 16.5l1.5 1.5 1.5-1.5"></path></symbol><symbol id="i-ft-html" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10 12.5 7.75 15 10 17.5M14 12.5l2.25 2.5L14 17.5"></path></symbol><symbol id="i-ft-pdf" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7" y="13" width="10" height="5" rx="1" fill="currentColor" stroke="none"></rect></symbol><symbol id="i-ft-image" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><circle cx="9.5" cy="12.5" r="1.2"></circle><path d="m7.5 18.5 3-3 2 2 2-2 2 2"></path></symbol><symbol id="i-ft-doc" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 12h7M8.5 15h7M8.5 18h4.5"></path></symbol><symbol id="i-ft-sheet" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="8" y="11" width="8" height="7.5" rx=".5"></rect><path d="M8 14.75h8M12 11v7.5"></path></symbol><symbol id="i-ft-slides" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7.5" y="11.5" width="9" height="5.5" rx=".5"></rect><path d="M12 17v2"></path></symbol><symbol id="i-ft-code" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="m8.5 12.5 2.5 2.5-2.5 2.5M13 18h3"></path></symbol><symbol id="i-ft-text" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 13h7M8.5 16.5h5"></path></symbol><symbol id="i-ft-archive" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M11 9.5h2M11 12h2M11 14.5h2"></path><rect x="10.5" y="16" width="3" height="3" rx=".5"></rect></symbol><symbol id="i-ft-media" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10.5 12v6l4.5-3z"></path></symbol><symbol id="i-ft-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol></svg>
+<a class="skip-link" href="#content">Aller au contenu</a>
+<div class="sidebar-scrim" data-sidebar-scrim="" aria-hidden="true"></div>
+<aside class="workspace-sidebar" id="workspace-sidebar" aria-label="Navigation principale">
+<div class="sidebar-brand">
+<a class="brand" href="/fr/demo/app/"><span class="brand-mark" aria-hidden="true"><svg width="26" height="26" viewbox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M23 9.5C21.6 6.6 9 6.2 9 11.6c0 2.2 1.3 3.1 3 3.6"></path><path d="M20 16.8c1.7.5 3 1.4 3 3.6 0 5.4-12.6 5-14 2.1"></path><circle cx="23" cy="9.5" r="2.4" fill="currentColor" stroke="none"></circle><circle cx="9" cy="22.5" r="2.4" fill="currentColor" stroke="none"></circle><circle class="mark-spark" cx="16" cy="16" r="1.8" stroke="none"></circle></svg></span>Synaptane</a>
+<button type="button" class="icon-button" data-sidebar-close="" aria-label="Masquer la navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"></path></svg></button>
+</div>
+<a class="button button-primary sidebar-deposit" data-test="deposit-link" href="/fr/demo/app/unavailable/"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"></path></svg>Déposer une information</a>
+<div class="sidebar-tree">
+<div class="tree-heading">Organisations</div>
+<div class="knowledge-tree">
+<div class="tree-node tree-organization">
+<a class="tree-org-link" href="/fr/demo/app/o/acme/"><span class="tree-label">Acme</span></a>
+<div class="tree-children">
+<a class="tree-document" href="/fr/demo/app/o/acme/it/"><span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg></span><span class="tree-label">IT team</span></a>
+</div>
+</div>
+</div>
+</div>
+<div class="sidebar-footer">
+<div class="sidebar-account">
+<a class="account-label" href="/fr/demo/app/unavailable/"><span class="avatar" aria-hidden="true">D</span><span><strong>Demo</strong><small>@demo</small></span></a>
+<form data-demo-off=""><button class="icon-button" type="submit" aria-label="Se déconnecter" title="Se déconnecter" disabled="" aria-disabled="true"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></button></form>
+</div>
+</div>
+</aside>
+<div class="workspace-sheet">
+<header class="workspace-topbar">
+<button type="button" class="icon-button" id="sidebar-toggle" aria-controls="workspace-sidebar" aria-expanded="true" aria-label="Afficher ou masquer la navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg></button>
+<nav class="topbar-crumbs" aria-label="Fil d’Ariane" data-more="Afficher le chemin complet"><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><span aria-current="page">Recherche</span></nav>
+<a class="topbar-search" href="/fr/demo/app/search/" aria-keyshortcuts="Control+K Meta+K /" title="Rechercher (Ctrl+K ou /)"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="topbar-search-label">Rechercher</span><kbd data-shortcut-label="">Ctrl K</kbd></a>
+</header>
+
+<main id="content" tabindex="-1">
+<header class="page-header"><div><h1>Recherche</h1></div></header>
+<form class="search-form card" method="get" action="/fr/demo/app/search/" role="search" data-demo-search="" data-demo-queries='{"backup": "/fr/demo/app/search/backup/", "vpn": "/fr/demo/app/search/vpn/", "onboarding": "/fr/demo/app/search/onboarding/", "nas": "/fr/demo/app/search/nas/", "firewall": "/fr/demo/app/search/firewall/", "restore": "/fr/demo/app/search/restore/", "wifi": "/fr/demo/app/search/wifi/", "password": "/fr/demo/app/search/password/"}'>
+<div class="field search-q"><label for="q">Texte à chercher</label><input id="q" type="search" name="q" value="restore" autofocus=""></div>
+<div class="field"><label for="space">Espace</label><select id="space" name="space"><option value="">Tous mes espaces</option><option value="acme/it">Acme / IT team</option></select></div>
+<label class="checkbox"><input type="checkbox" name="regex" value="true">Expression régulière</label>
+<button class="button button-primary" type="submit"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Chercher</button>
+</form><div class="notice demo-search-note" data-demo-search-note="" data-miss="Cette recherche ne fait pas partie de la démo figée. Essayez l'un de ces mots :"><p data-demo-search-text="">Dans la démo figée, la recherche se limite à ces mots :</p><p class="demo-search-queries"><a class="badge badge-quiet" href="/fr/demo/app/search/backup/">backup</a> <a class="badge badge-quiet" href="/fr/demo/app/search/vpn/">vpn</a> <a class="badge badge-quiet" href="/fr/demo/app/search/onboarding/">onboarding</a> <a class="badge badge-quiet" href="/fr/demo/app/search/nas/">nas</a> <a class="badge badge-quiet" href="/fr/demo/app/search/firewall/">firewall</a> <a class="badge badge-quiet" href="/fr/demo/app/search/restore/">restore</a> <a class="badge badge-quiet" href="/fr/demo/app/search/wifi/">wifi</a> <a class="badge badge-quiet" href="/fr/demo/app/search/password/">password</a></p></div>
+<p class="muted section-gap">4 résultats</p>
+<ol class="search-results">
+<li class="card search-hit">
+<a class="search-title" href="/fr/demo/app/o/acme/it/p/procedures/restore.md/"><mark>Restore</mark></a>
+<p class="muted"><span class="badge badge-quiet">IT team</span> <code>procedures/restore.md</code> · <span class="verify-mark verify-ok" title="Vérifiée le 2026-10-09"><svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.5 14.4 4l2.8-.1 1.2 2.6 2.4 1.5-.6 2.8.9 2.7-2 2-.4 2.8-2.7.9-1.7 2.3-2.8-.5-2.5 1.3-2-2-2.8-.4-.9-2.7L3 13.2l1-2.6-.4-2.8 2.4-1.5L7.3 3.7l2.8.4z"></path><path d="m8.8 12.2 2.2 2.2 4.4-4.6"></path></svg>vérifiée</span></p>
+<div class="search-excerpt"><p><mark>Restore</mark></p><p>Use this procedure after a data loss, a failed update or a ransomware alert. Open a P1</p><span class="search-gap" aria-hidden="true">…</span><p><mark>Restore</mark> a virtual machine</p><span class="search-gap" aria-hidden="true">…</span><p>archive and <mark>restore</mark> it. Typical duration: 20 minutes for 50 GB. From the command line:</p></div>
+</li>
+<li class="card search-hit">
+<a class="search-title" href="/fr/demo/app/o/acme/it/p/infra/backups.md/">Backups</a>
+<p class="muted"><span class="badge badge-quiet">IT team</span> <code>infra/backups.md</code> · <span class="verify-mark verify-ok" title="Vérifiée le 2026-10-01"><svg width="13" height="13" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.5 14.4 4l2.8-.1 1.2 2.6 2.4 1.5-.6 2.8.9 2.7-2 2-.4 2.8-2.7.9-1.7 2.3-2.8-.5-2.5 1.3-2-2-2.8-.4-.9-2.7L3 13.2l1-2.6-.4-2.8 2.4-1.5L7.3 3.7l2.8.4z"></path><path d="m8.8 12.2 2.2 2.2 4.4-4.6"></path></svg>vérifiée</span></p>
+<div class="search-excerpt"><p>File shares: NAS snapshots every hour, kept for 7 days.</p><p>GitLab: built-in backup every night at 3 a.m., copied off-site with the databases.</p><p><mark>Restoring</mark>: see the <mark>restore</mark> procedure.</p><p>A <mark>restore</mark> drill takes place every quarter; the last one is logged in the</p><p><mark>restore</mark> procedure.</p></div>
+</li>
+<li class="card search-hit">
+<a class="search-title" href="/fr/demo/app/o/acme/it/p/procedures/README.md/">Procedures</a>
+<p class="muted"><span class="badge badge-quiet">IT team</span> <code>procedures/README.md</code></p>
+<div class="search-excerpt"><p>Deployment</p><p>Incident</p><p><mark>Restore</mark></p><p>Password rotation</p><p>Offboarding</p></div>
+</li>
+<li class="card search-hit">
+<a class="search-title" href="/fr/demo/app/o/acme/it/p/glossary.md/">Glossary</a>
+<p class="muted"><span class="badge badge-quiet">IT team</span> <code>glossary.md</code></p>
+<div class="search-excerpt"><p>Bastion · The single SSH entry point to the server network, bastion.acme.internal.</p><p>DRP · Disaster recovery plan: how we bring services back after a major failure. See the <mark>restore</mark> procedure.</p><p>On-call · The person reachable outside business hours. See on-call.</p><p>P1 · Highest incident priority: a service is down for everyone. See incident.</p></div>
+</li>
+</ol>
+</main>
+</div>
+</body>
+</html>

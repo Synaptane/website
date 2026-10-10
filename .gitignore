@@ -13,3 +13,6 @@ npm-debug.log*
 
 # Visual checks
 screenshots/
+
+# Python caches (scripts/build-demo)
+__pycache__/

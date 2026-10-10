@@ -1,13 +1,105 @@
 ---
 // Demo (English). French twin: src/pages/fr/demo/index.astro.
+// The static demo itself is generated into public/demo/app/ by scripts/build-demo/.
 import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+import Card from '../../components/Card.astro';
+import CardGrid from '../../components/CardGrid.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Todo from '../../components/Todo.astro';
+import Screenshot from '../../components/Screenshot.astro';
+import Section from '../../components/Section.astro';
+import manifest from '../../../public/demo/app/MANIFEST.json';
+import demoLight from '../../assets/demo/demo-light.png';
+import demoDark from '../../assets/demo/demo-dark.png';
+
+const app = '/demo/app';
+const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
 ---
 
-<Base title="Demo" description="Try Synaptane in your browser: a static demo with the wiki of a fictional IT team, Acme.">
-  <PageHeader title="Demo" intro="Browse a Synaptane instance in your browser, with the wiki of a fictional IT team." />
+<Base title="Demo" description="Browse Synaptane in your browser: a frozen copy of a real instance, with the wiki of a fictional IT team, Acme. Read-only, nothing to install.">
+  <PageHeader title="Demo" intro="Browse a real Synaptane instance in your browser, frozen in time: the wiki of Acme's IT team, a fictional company. Nothing to install, no account.">
+    <div class="actions">
+      <Button href={`${app}/`} variant="primary" size="lg" icon="arrow-right">Open the demo</Button>
+      <Button href="/docs/admin/installation/" size="lg">Install Synaptane</Button>
+    </div>
+  </PageHeader>
+
   <div class="container">
-    <Todo><p>Introduce the demo (what it shows, what is read-only) and link to the static demo, served from <code>/demo/app/</code> (files in <code>public/demo/app/</code>, see README).</p></Todo>
+    <Screenshot
+      light={demoLight}
+      dark={demoDark}
+      eager
+      alt="The static demo: a wiki page of Acme's IT team, with the space tree, a verified badge and a table of recovery targets"
+    />
   </div>
+
+  <Section id="what" title="What you can see" intro="The pages of the real interface, generated from a Synaptane instance loaded with the demo data. You move around as in the product: the tree, the links between pages, the tabs.">
+    <CardGrid columns={3}>
+      <Card title="The wiki" href={`${app}/o/acme/it/p/procedures/restore.md/`}>
+        <p>Fifty Markdown pages in folders: tables, code, links between pages, an outline, owners and verified pages.</p>
+      </Card>
+      <Card title="History and changes" href={`${app}/o/acme/it/history/procedures/restore.md/`}>
+        <p>Every change is a Git commit: who changed what, when, and the diff.</p>
+      </Card>
+      <Card title="The inbox" href={`${app}/o/acme/it/inbox/`}>
+        <p>Six notes waiting for the nightly tidy-up: a fact to add, a duplicate, a contradiction, an attachment…</p>
+      </Card>
+      <Card title="Wiki health" href={`${app}/o/acme/it/health/`}>
+        <p>A broken link, a page to review, pages nobody links to: what to fix, found without AI.</p>
+      </Card>
+      <Card title="Search" href={`${app}/search/backup/`}>
+        <p>Full-text search across the wiki and the inbox, with the passages that match.</p>
+      </Card>
+      <Card title="AI assistants" href={`${app}/account/assistants/`}>
+        <p>The MCP address, and how to connect Claude, ChatGPT or another assistant.</p>
+      </Card>
+    </CardGrid>
+    <p class="more">
+      Also: the <a href={`${app}/o/acme/it/activity/`}>activity</a> of the space, its <a href={`${app}/o/acme/it/-/vocation/`}>purpose</a> and its <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. The interface is in English and in
+      French (the language link at the top of each page); the wiki itself is written in English.
+    </p>
+  </Section>
+
+  <Section id="limits" tone="alt" title="What the demo does not do" narrow>
+    <ul class="limits">
+      <li><strong>Read-only.</strong> Buttons and forms that would change something are disabled, and nothing you do is saved. Editing a page, dropping a note or opening the settings leads to a “Not available in the static demo” page.</li>
+      <li><strong>Search is limited</strong> to a few prepared words: {manifest.queries.map((q, i) => (
+        <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
+      ))}. The search palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) opens the search page instead.</li>
+      <li><strong>No AI.</strong> The nightly tidy-up, the routines and search by meaning need an AI provider: the demo shows an instance without one. Nothing calls a server: the pages are plain files.</li>
+      <li><strong>A snapshot.</strong> Generated from Synaptane {manifest.synaptane.version} on {generated}; the dates in the pages are relative to that day.</li>
+    </ul>
+  </Section>
+
+  <Section id="for-real" title="Try it for real" intro="The same data on your own instance, with every feature: install Synaptane, then load the demo wiki with one command.">
+    <CodeBlock title="Terminal" lang="sh" code={`SYNAPTANE_ALLOW_LOCAL_REPOS=true synaptane demo`} />
+    <p class="more">
+      See <a href="/docs/admin/installation/#demo-data">Demo data</a> in the installation guide
+      (with Docker Compose too). Use a throwaway instance: the demo allows local Git repositories.
+    </p>
+    <div class="actions">
+      <Button href="/docs/admin/installation/" variant="primary" icon="arrow-right">Install Synaptane</Button>
+      <Button href={`${app}/`}>Open the demo</Button>
+    </div>
+  </Section>
 </Base>
+
+<style>
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+  .more { margin: var(--space-5) 0 0; color: var(--ink-2); max-width: 70ch; }
+  .limits { margin: 0; padding-left: 1.2em; display: grid; gap: var(--space-3); color: var(--ink-2); }
+  .limits strong { color: var(--ink); }
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 1px 5px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-2);
+  }
+</style>
