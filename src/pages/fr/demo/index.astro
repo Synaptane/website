@@ -1,13 +1,106 @@
 ---
 // Démo (français). Jumelle anglaise : src/pages/demo/index.astro.
+// La démo figée elle-même est générée dans public/fr/demo/app/ par scripts/build-demo/.
 import Base from '../../../layouts/Base.astro';
+import Button from '../../../components/Button.astro';
+import Card from '../../../components/Card.astro';
+import CardGrid from '../../../components/CardGrid.astro';
+import CodeBlock from '../../../components/CodeBlock.astro';
 import PageHeader from '../../../components/PageHeader.astro';
-import Todo from '../../../components/Todo.astro';
+import Screenshot from '../../../components/Screenshot.astro';
+import Section from '../../../components/Section.astro';
+import manifest from '../../../../public/demo/app/MANIFEST.json';
+import demoLight from '../../../assets/demo/demo-light.png';
+import demoDark from '../../../assets/demo/demo-dark.png';
+
+const app = '/fr/demo/app';
+const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
 ---
 
-<Base title="Démo" description="Essayez Synaptane dans votre navigateur : une démo statique avec le wiki d'une équipe informatique fictive, Acme.">
-  <PageHeader title="Démo" intro="Parcourez une instance Synaptane dans votre navigateur, avec le wiki d'une équipe informatique fictive." />
+<Base title="Démo" description="Parcourez Synaptane dans votre navigateur : la copie figée d'une vraie instance, avec le wiki d'une équipe informatique fictive, Acme. En lecture seule, rien à installer.">
+  <PageHeader title="Démo" intro="Parcourez une vraie instance Synaptane dans votre navigateur, figée à une date : le wiki de l'équipe informatique d'Acme, une entreprise fictive. Rien à installer, pas de compte.">
+    <div class="actions">
+      <Button href={`${app}/`} variant="primary" size="lg" icon="arrow-right">Ouvrir la démo</Button>
+      <Button href="/fr/docs/admin/installation/" size="lg">Installer Synaptane</Button>
+    </div>
+  </PageHeader>
+
   <div class="container">
-    <Todo><p>Présenter la démo (ce qu'elle montre, ce qui est en lecture seule) et renvoyer vers la démo statique, servie depuis <code>/demo/app/</code> (fichiers dans <code>public/demo/app/</code>, voir le README).</p></Todo>
+    <Screenshot
+      light={demoLight}
+      dark={demoDark}
+      eager
+      alt="La démo figée : une page du wiki de l'équipe informatique d'Acme, avec l'arborescence de l'espace, un badge de vérification et un tableau d'objectifs de restauration"
+    />
   </div>
+
+  <Section id="what" title="Ce que vous y voyez" intro="Les pages de la vraie interface, générées depuis une instance Synaptane chargée avec les données de démonstration. Vous y naviguez comme dans le produit : l'arborescence, les liens entre pages, les onglets.">
+    <CardGrid columns={3}>
+      <Card title="Le wiki" href={`${app}/o/acme/it/p/procedures/restore.md/`}>
+        <p>Cinquante pages Markdown rangées en dossiers : tableaux, code, liens entre pages, sommaire, responsables et pages vérifiées.</p>
+      </Card>
+      <Card title="Historique et modifications" href={`${app}/o/acme/it/history/procedures/restore.md/`}>
+        <p>Chaque modification est un commit Git : qui a changé quoi, quand, et la différence.</p>
+      </Card>
+      <Card title="L'inbox" href={`${app}/o/acme/it/inbox/`}>
+        <p>Six notes en attente du rangement de la nuit : un fait à ajouter, un doublon, une contradiction, une pièce jointe…</p>
+      </Card>
+      <Card title="Santé du wiki" href={`${app}/o/acme/it/health/`}>
+        <p>Un lien cassé, une page à revoir, des pages vers lesquelles rien ne pointe : ce qu'il faut corriger, trouvé sans IA.</p>
+      </Card>
+      <Card title="Recherche" href={`${app}/search/backup/`}>
+        <p>Recherche plein texte dans le wiki et l'inbox, avec les passages qui correspondent.</p>
+      </Card>
+      <Card title="Assistants IA" href={`${app}/account/assistants/`}>
+        <p>L'adresse MCP, et comment y connecter Claude, ChatGPT ou un autre assistant.</p>
+      </Card>
+    </CardGrid>
+    <p class="more">
+      Et aussi : l'<a href={`${app}/o/acme/it/activity/`}>activité</a> de l'espace, sa <a href={`${app}/o/acme/it/-/vocation/`}>vocation</a> et ses <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. L'interface existe en français et en
+      anglais (le lien de langue en haut de chaque page) ; le wiki lui-même est rédigé en anglais.
+    </p>
+  </Section>
+
+  <Section id="limits" tone="alt" title="Ce que la démo ne fait pas" narrow>
+    <ul class="limits">
+      <li><strong>Lecture seule.</strong> Les boutons et formulaires qui modifieraient quelque chose sont désactivés, et rien de ce que vous faites n'est enregistré. Modifier une page, déposer une note ou ouvrir les paramètres mène à une page « Indisponible dans la démo figée ».</li>
+      <li><strong>Recherche limitée</strong> à quelques mots préparés : {manifest.queries.map((q, i) => (
+        <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
+      ))}. La palette de recherche (<kbd>Ctrl</kbd> <kbd>K</kbd>) ouvre la page de recherche à la place.</li>
+      <li><strong>Pas d'IA.</strong> Le rangement de la nuit, les routines et la recherche par le sens demandent un fournisseur d'IA : la démo montre une instance qui n'en a pas. Rien n'appelle un serveur : les pages sont de simples fichiers.</li>
+      <li><strong>Un instantané.</strong> Généré depuis Synaptane {manifest.synaptane.version} le {generated} ; les dates des pages sont relatives à ce jour-là.</li>
+    </ul>
+  </Section>
+
+  <Section id="for-real" title="L'essayer pour de vrai" intro="Les mêmes données sur votre propre instance, avec toutes les fonctions : installez Synaptane, puis chargez le wiki de démonstration en une commande.">
+    <CodeBlock title="Terminal" lang="sh" code={`SYNAPTANE_ALLOW_LOCAL_REPOS=true synaptane demo`} />
+    <p class="more">
+      Voir <a href="/fr/docs/admin/installation/#données-de-démonstration">Données de démonstration</a>
+      dans le guide d'installation (avec Docker Compose aussi). Utilisez une instance jetable : la
+      démo autorise les dépôts Git locaux.
+    </p>
+    <div class="actions">
+      <Button href="/fr/docs/admin/installation/" variant="primary" icon="arrow-right">Installer Synaptane</Button>
+      <Button href={`${app}/`}>Ouvrir la démo</Button>
+    </div>
+  </Section>
 </Base>
+
+<style>
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+  .more { margin: var(--space-5) 0 0; color: var(--ink-2); max-width: 70ch; }
+  .limits { margin: 0; padding-left: 1.2em; display: grid; gap: var(--space-3); color: var(--ink-2); }
+  .limits strong { color: var(--ink); }
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 1px 5px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-2);
+  }
+</style>

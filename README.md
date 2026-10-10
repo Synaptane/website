@@ -18,7 +18,9 @@ npm run build         # static site in dist/ (+ Pagefind search index, sitemap)
 npm run preview       # serve dist/
 npm run check         # astro check: TypeScript and Astro diagnostics
 npm run check-links   # internal links and #anchors of dist/ (after a build, no network)
+npm run check-demo    # the static demo: read-only, no secret, links (python3, no dependency)
 npm run sync-docs     # copy the docs from ../synaptane-public (see below)
+npm run build-demo    # regenerate the static demo from ../synaptane-public (see below)
 ```
 
 ## Structure
@@ -43,8 +45,9 @@ src/
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
 public/                 served as is: CNAME, favicon, og.png, robots.txt, fonts/ (OFL),
-                        docs/assets/ (GENERATED)
-scripts/                sync-docs.mjs, check-links.mjs (Node, no dependency)
+                        docs/assets/ (GENERATED), demo/app/ and fr/demo/app/ (GENERATED)
+scripts/                sync-docs.mjs, check-links.mjs (Node, no dependency);
+                        build-demo/ (static demo generator, Python, see its README)
 docs/DNS.md             DNS records and GitHub Pages settings for synaptane.com
 ```
 
@@ -71,7 +74,7 @@ slash (`trailingSlash: 'always'`); build links with `localizePath('/docs/', lang
 | --- | --- | --- |
 | Home | `src/pages/index.astro`, `src/pages/fr/index.astro` | Replace the `<Todo>` blocks. |
 | Demo | `src/pages/demo/index.astro`, `src/pages/fr/demo/index.astro` | Presents the demo and links to it. |
-| Static demo | `public/demo/app/` → `/demo/app/` | Generated files, committed. Keep its internal links valid (`check-links` covers them), or run `check-links -- --ignore /demo/app/`. Not indexed by Pagefind. |
+| Static demo | `public/demo/app/` → `/demo/app/`, `public/fr/demo/app/` → `/fr/demo/app/` | **Generated** by `scripts/build-demo/`, committed; do not edit. `check-links` and `check-demo` cover them. Not indexed (Pagefind, `noindex`). |
 | Blog | `src/content/blog/en/<slug>.md`, `src/content/blog/fr/<slug>.md` | Front matter: `title`, `description`, `date`, `author`, `lang` (+ `updated`, `draft`). Same file name in both languages. Delete the `hello-world` drafts. |
 | Releases | `src/pages/releases/index.astro` (+ `fr/`) | Per-version pages can go in `src/pages/releases/[version].astro`. |
 | Roadmap, About, Legal | `src/pages/{roadmap,about,legal}.astro` (+ `fr/`) | |
@@ -128,10 +131,30 @@ The sidebar groups (Overview, Guide, Administration, Reference, Development) are
 `astro.config.mjs`; a new folder under `docs/` needs a new group there. Search is Starlight's
 Pagefind index, built for both languages, docs only.
 
+## Static demo
+
+`/demo/app/` (English) and `/fr/demo/app/` (French) are a frozen copy of the real Synaptane
+interface, generated from the Acme demo wiki on a throwaway instance: about 150 pages per
+language (wiki, history and diffs, inbox, health, activity, routines, prepared searches, AI
+assistants), read-only, without any request to a server. `public/demo/app/MANIFEST.json` gives
+the Synaptane version and commit, the date and the list of pages.
+
+```sh
+(cd ../synaptane-public && docker compose -f compose.dev.yaml up -d)   # PostgreSQL + pgvector
+npm run build-demo                                                    # ~30 s
+npm run build && npm run check-links && npm run check-demo
+uv run --no-project --with playwright python scripts/build-demo/browse.py   # headless check
+```
+
+How it works, what is frozen and what is disabled: [scripts/build-demo/README.md](scripts/build-demo/README.md).
+The presentation pages are `src/pages/demo/index.astro` and `src/pages/fr/demo/index.astro`
+(they read the version, date and queries from the manifest; their screenshot comes from
+`browse.py --preview`).
+
 ## Deployment
 
 `.github/workflows/deploy.yml`: on every push to `main`, `npm ci`, `npm run check`,
-`npm run build`, `npm run check-links`, then deployment to GitHub Pages (pull requests run the
+`npm run build`, `npm run check-links`, `npm run check-demo`, then deployment to GitHub Pages (pull requests run the
 same checks without deploying). Actions are pinned by commit hash; Dependabot updates them and
 the npm dependencies every week.
 
