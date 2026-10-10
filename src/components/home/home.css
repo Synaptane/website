@@ -1,0 +1,118 @@
+/* Layout bits of the home page (src/pages/index.astro and src/pages/fr/index.astro). The
+   larger blocks have their own component in this folder; these classes are shared by the two
+   language versions of the page. Everything is prefixed with `home-`. */
+
+/* The journey band continues the bottom of the hero: no line between them. */
+.home-journey { border-top: 0 !important; padding-top: var(--space-7) !important; }
+
+/* Two columns: text, then code or picture (stacked on phones). */
+.home-split {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+@media (min-width: 960px) {
+  .home-split { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: var(--space-7); }
+}
+
+/* Numbered steps of the installation. */
+.home-steps { list-style: none; margin: 0 0 var(--space-5); padding: 0; counter-reset: step; display: grid; gap: var(--space-4); }
+.home-steps li { counter-increment: step; position: relative; padding-left: 40px; color: var(--ink-2); font-size: 15.5px; }
+.home-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.home-steps strong { display: block; color: var(--ink); font-size: 16px; margin-bottom: 2px; }
+.home-note {
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.home-note strong { color: var(--ink); }
+.home-code :is(figure) { margin-bottom: var(--space-3); }
+.home-code .home-after { margin: 0; font-size: 14px; color: var(--ink-3); }
+.home-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+
+/* Comparison: the note under the table. */
+.home-small { margin: var(--space-4) 0 0; font-size: 14px; color: var(--ink-3); max-width: 80ch; }
+
+/* Architecture: the diagram and its explanation. */
+.home-arch-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+.home-arch-list li { padding-left: var(--space-4); border-left: 2px solid var(--border); color: var(--ink-2); font-size: 15.5px; }
+.home-arch-list strong { color: var(--ink); }
+.home-arch .screenshot .frame { padding: var(--space-3); background: var(--surface); }
+
+/* Open source: text, links, the hosted mention. */
+.home-oss { display: grid; gap: var(--space-6); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 960px) {
+  .home-oss { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: var(--space-8); }
+}
+.home-oss p { color: var(--ink-2); font-size: 16.5px; max-width: 62ch; }
+.home-link-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+.home-link-list a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+.home-link-list a:hover { border-color: var(--field-border); background: var(--hover); }
+.home-link-list a > svg:first-child { color: var(--accent); }
+.home-link-list .home-link-sub { display: block; font-weight: 400; font-size: 13.5px; color: var(--ink-3); }
+.home-link-list .home-arrow { margin-left: auto; color: var(--ink-3); }
+.home-hosted {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px dashed var(--field-border);
+  border-radius: var(--radius-lg);
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.home-hosted strong { color: var(--ink); }
+
+/* Final call to action. */
+.home-cta {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(32px, 6vw, 64px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  text-align: center;
+}
+.home-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, #000 10%, transparent 70%);
+  mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, #000 10%, transparent 70%);
+  pointer-events: none;
+}
+.home-cta > * { position: relative; }
+.home-cta h2 { max-width: 22ch; margin-inline: auto; font-size: clamp(26px, 4vw, 40px); }
+.home-cta p { max-width: 56ch; margin: 0 auto; color: var(--ink-2); font-size: 17px; }
+.home-cta .home-links { justify-content: center; }
+.home-cta-band { padding-top: var(--space-8); }

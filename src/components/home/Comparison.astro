@@ -1,0 +1,143 @@
+---
+/**
+ * Comparison table: one row per criterion, one column per product, the first one being
+ * Synaptane. Each cell has a level (yes, partial, no) shown by an icon AND a word for screen
+ * readers, plus a short factual note. On narrow screens the table scrolls sideways inside its
+ * frame, with the criteria column kept in view.
+ */
+export type Level = 'yes' | 'partial' | 'no';
+export interface Cell {
+  level: Level;
+  text: string;
+}
+export interface Row {
+  label: string;
+  hint?: string;
+  cells: Cell[];
+}
+
+interface Props {
+  caption: string;
+  /** Header of the first column. */
+  criterion: string;
+  columns: string[];
+  rows: Row[];
+  /** Words read by screen readers for each level. */
+  levels: Record<Level, string>;
+  /** Label of the scrollable region (keyboard users can scroll it). */
+  regionLabel: string;
+}
+
+const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
+---
+
+<div class="compare" role="region" aria-label={regionLabel} tabindex="0">
+  <table>
+    <caption class="sr-only">{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="criterion">{criterion}</th>
+        {columns.map((c, i) => <th scope="col" class:list={{ ours: i === 0 }}>{c}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            <th scope="row" class="criterion">
+              {row.label}
+              {row.hint && <span class="hint">{row.hint}</span>}
+            </th>
+            {row.cells.map((cell, i) => (
+              <td class:list={[`level-${cell.level}`, { ours: i === 0 }]}>
+                <span class="level" aria-hidden="true">
+                  {cell.level === 'yes' && (
+                    <svg viewBox="0 0 16 16" width="14" height="14"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  )}
+                  {cell.level === 'partial' && (
+                    <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M8 2.5a5.5 5.5 0 0 1 0 11z" fill="currentColor" /></svg>
+                  )}
+                  {cell.level === 'no' && (
+                    <svg viewBox="0 0 16 16" width="14" height="14"><path d="M4 8h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                  )}
+                </span>
+                <span class="sr-only">{levels[cell.level]}: </span>
+                <span class="text">{cell.text}</span>
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .compare {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .compare:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  table {
+    width: 100%;
+    min-width: 980px;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  th, td {
+    padding: 14px 14px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr:last-child > * { border-bottom: 0; }
+  thead th {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--surface);
+    white-space: nowrap;
+  }
+  .criterion {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 180px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .hint { display: block; margin-top: 2px; font-weight: 400; font-size: 12.5px; color: var(--ink-3); }
+  td { color: var(--ink-2); }
+  .ours { background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+  thead .ours { color: var(--accent); }
+  td.ours { color: var(--ink); }
+  td { position: relative; padding-left: 36px; }
+  .level {
+    position: absolute;
+    left: 12px;
+    top: 15px;
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+  }
+  .level-yes .level { color: var(--ok); background: var(--ok-bg); }
+  .level-partial .level { color: var(--warn-ink); background: var(--warn-bg); }
+  .level-no .level { color: var(--ink-3); background: var(--bg-2); }
+  @media (max-width: 719px) {
+    table { min-width: 860px; font-size: 13.5px; }
+    .criterion { width: 116px; padding-inline: 12px; }
+    th, td { padding-block: 12px; }
+    .hint { font-size: 12px; }
+  }
+</style>
