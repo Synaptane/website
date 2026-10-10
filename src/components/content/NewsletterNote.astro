@@ -1,0 +1,29 @@
+---
+/** Discreet note about René Cotton's weekly newsletter on AI (in French), on the About page. */
+interface Props {
+  title: string;
+  linkLabel: string;
+}
+const { title, linkLabel } = Astro.props;
+---
+
+<aside class="newsletter" aria-label={title}>
+  <p class="title">{title}</p>
+  <p><slot /></p>
+  <a href="https://rene-cotton.fr">{linkLabel} →</a>
+</aside>
+
+<style>
+  .newsletter {
+    margin-top: var(--space-7);
+    padding: var(--space-4) var(--space-5);
+    border-left: 2px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 15px;
+    max-width: 68ch;
+  }
+  .title { font-weight: 600; color: var(--ink); margin-bottom: var(--space-1); }
+  p { color: var(--ink-2); margin-bottom: var(--space-2); }
+  a { font-weight: 500; }
+</style>

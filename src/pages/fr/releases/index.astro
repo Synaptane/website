@@ -1,13 +1,34 @@
 ---
-// Versions (français). Jumelle anglaise : src/pages/releases/index.astro.
+// Versions (français). Jumelle anglaise : src/pages/releases/index.astro.
+// Les notes viennent du CHANGELOG du dépôt principal (npm run sync-docs), en anglais.
 import Base from '../../../layouts/Base.astro';
 import PageHeader from '../../../components/PageHeader.astro';
-import Todo from '../../../components/Todo.astro';
+import ReleaseNotes from '../../../components/content/ReleaseNotes.astro';
+import { SITE } from '../../../site';
 ---
 
-<Base title="Versions" description="Notes de version de Synaptane : ce qui change à chaque version, et comment mettre à jour.">
-  <PageHeader title="Versions" intro="Ce qui change à chaque version de Synaptane, et comment mettre à jour." />
+<Base title="Versions" description="Les notes de version de Synaptane : ce qui change à chaque version, et comment mettre à jour.">
+  <PageHeader title="Versions" intro="Ce qui change à chaque version de Synaptane, de la plus récente à la plus ancienne.">
+    <div class="intro">
+      <p>
+        Synaptane est en version alpha : l'API REST, les outils MCP et la configuration peuvent encore changer, et
+        chaque changement est noté ici. Avant chaque mise à jour, faites une sauvegarde et lisez les notes de la
+        version visée (<a href="/fr/docs/admin/installation/#mettre-à-jour">mettre à jour Synaptane</a>).
+      </p>
+      <p class="note"><strong>Les notes de version sont publiées en anglais.</strong></p>
+      <p class="muted">
+        Téléchargements et étiquettes : <a href={SITE.releases}>les versions sur GitHub</a>. Pour suivre les
+        nouvelles versions, abonnez-vous au <a href={`${SITE.releases}.atom`}>flux des versions</a> de GitHub.
+      </p>
+    </div>
+  </PageHeader>
   <div class="container">
-    <Todo><p>Notes de version, de la plus récente à la plus ancienne : une entrée par version (date, nouveautés, notes de mise à jour), tirée du CHANGELOG du dépôt principal. Renvoyer vers les releases GitHub et vers la mise à jour (/fr/docs/admin/installation/#mettre-à-jour).</p></Todo>
+    <ReleaseNotes lang="fr" />
   </div>
 </Base>
+
+<style>
+  .intro { max-width: 68ch; margin-top: var(--space-5); color: var(--ink-2); }
+  .intro p:last-child { margin-bottom: 0; font-size: 15px; }
+  .note strong { font-weight: 600; color: var(--ink); }
+</style>

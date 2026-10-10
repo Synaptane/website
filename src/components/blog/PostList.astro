@@ -23,7 +23,7 @@ const posts = await getPosts(lang);
             <h2><a href={postPath(post)}>{post.data.title}</a></h2>
             <p class="meta">
               <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time>
-              {post.data.draft && <span class="draft">draft</span>}
+              {post.data.draft && <span class="draft">{lang === 'fr' ? 'brouillon' : 'draft'}</span>}
             </p>
             <p>{post.data.description}</p>
           </article>

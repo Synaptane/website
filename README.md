@@ -32,7 +32,8 @@ src/
   layouts/Base.astro    layout of every site page: SEO head, hreflang, header, footer
   components/           Button, Section, Card, CardGrid, CodeBlock (copy button), Screenshot
                         (light/dark), PageHeader, Todo, Icon, ThemeControl, LanguageSwitcher,
-                        SiteHeader, SiteFooter; blog/ (PostList, PostPage)
+                        SiteHeader, SiteFooter; blog/ (PostList, PostPage); content/ (ReleaseNotes,
+                        Roadmap, AuthorCard, NewsletterNote, FeedLink)
   components/starlight/ Starlight overrides: Header (+ site links), ThemeSelect, LanguageSelect,
                         MobileMenuFooter, EditLink (edits the source in synaptane/synaptane)
   styles/tokens.css     the application's tokens and @font-face (shared by site and docs)
@@ -40,9 +41,11 @@ src/
   styles/starlight.css  Starlight variables mapped onto the tokens
   pages/                site pages in English; pages/fr/ the same pages in French
   content/blog/{en,fr}/ blog posts (schema in src/content.config.ts)
+  content/releases/     GENERATED copy of the main repository's CHANGELOG.md (release notes)
+  lib/                  blog.ts (posts), feed.ts (RSS feeds), changelog.ts (CHANGELOG parser)
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
-public/                 served as is: CNAME, favicon, og.png, robots.txt, fonts/ (OFL),
+public/                 served as is: CNAME, favicon, og.png, robots.txt, fonts/ (OFL), images/,
                         docs/assets/ (GENERATED)
 scripts/                sync-docs.mjs, check-links.mjs (Node, no dependency)
 docs/DNS.md             DNS records and GitHub Pages settings for synaptane.com
@@ -72,8 +75,8 @@ slash (`trailingSlash: 'always'`); build links with `localizePath('/docs/', lang
 | Home | `src/pages/index.astro`, `src/pages/fr/index.astro` | Replace the `<Todo>` blocks. |
 | Demo | `src/pages/demo/index.astro`, `src/pages/fr/demo/index.astro` | Presents the demo and links to it. |
 | Static demo | `public/demo/app/` → `/demo/app/` | Generated files, committed. Keep its internal links valid (`check-links` covers them), or run `check-links -- --ignore /demo/app/`. Not indexed by Pagefind. |
-| Blog | `src/content/blog/en/<slug>.md`, `src/content/blog/fr/<slug>.md` | Front matter: `title`, `description`, `date`, `author`, `lang` (+ `updated`, `draft`). Same file name in both languages. Delete the `hello-world` drafts. |
-| Releases | `src/pages/releases/index.astro` (+ `fr/`) | Per-version pages can go in `src/pages/releases/[version].astro`. |
+| Blog | `src/content/blog/en/<slug>.md`, `src/content/blog/fr/<slug>.md` | Front matter: `title`, `description`, `date`, `author`, `lang` (+ `updated`, `draft`). Same file name in both languages. See [Blog](#blog) below. |
+| Releases | `src/pages/releases/index.astro` (+ `fr/`) | Generated from the main repository's `CHANGELOG.md` (`npm run sync-docs`): one section per version. Do not write release notes here. |
 | Roadmap, About, Legal | `src/pages/{roadmap,about,legal}.astro` (+ `fr/`) | |
 | 404 | `src/pages/404.astro` | One bilingual page (GitHub Pages serves a single `404.html`). |
 | Docs | **not here**: `docs/` of synaptane/synaptane | See below. |
@@ -93,6 +96,21 @@ Light (Paper) and dark (Slate) follow `prefers-color-scheme`. The switch stores 
 share it. The tokens are a copy of the application's (`src/synaptane/web/static/app.css`):
 update `src/styles/tokens.css` when they change there.
 
+### Blog
+
+A post is a Markdown file per language, with the same file name (the URL slug) in
+`src/content/blog/en/` and `src/content/blog/fr/`. Each language has an RSS feed with the full
+text of its posts: `/blog/rss.xml` and `/fr/blog/rss.xml`.
+
+**Drafts.** A post with `draft: true` is shown by `npm run dev` only (with a "draft" label):
+the production build leaves it out of the blog list, the feeds, the sitemap and the pages
+(`getPosts` in `src/lib/blog.ts`). To publish a post:
+
+1. in both language files, set `date:` to the publication day (`YYYY-MM-DD`) and change
+   `draft: true` to `draft: false` (or remove the line);
+2. `npm run build && npm run check-links`, and check `dist/blog/<slug>/` and `dist/fr/blog/<slug>/`;
+3. commit and push to `main`: the deployment workflow publishes it.
+
 ## Documentation
 
 The docs are written in the main repository (`docs/X.md` in English, `docs/X.fr.md` in French)
@@ -104,7 +122,12 @@ and copied here by `npm run sync-docs`:
   `# Title` becomes the front matter `title`, the first paragraph the `description`, and the
   order of the links in `docs/index.md` the sidebar order;
 - links between pages become site routes (anchors kept); links to other files of the repository
-  (README, CHANGELOG, code…) point to GitHub at the synced ref.
+  (README, CHANGELOG, code…) point to GitHub at the synced ref;
+- `CHANGELOG.md` → `src/content/releases/CHANGELOG.md`, with the same link rewriting. The
+  `releases` collection (`src/content.config.ts`, parser in `src/lib/changelog.ts`) splits it into
+  versions (Keep a Changelog: `## [1.0.0] - 2026-11-02`, `## [Unreleased]`, `[1.0.0]: <url>`), and
+  `/releases/` renders one section per version. A version without a date shows "Unreleased" and
+  links to the changelog on GitHub instead of its release page.
 
 The generated files are committed (the site builds without the main repository), start with a
 "generated" comment, and are listed in `docs-sync.json` with the source commit. Do not edit

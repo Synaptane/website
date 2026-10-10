@@ -1,13 +1,97 @@
 ---
-// Mentions légales (français). Jumelle anglaise : src/pages/legal.astro.
+// Mentions légales (français). Jumelle anglaise : src/pages/legal.astro.
+// Éditeur personne physique non professionnelle (loi n° 2004-575 du 21 juin 2004, LCEN).
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Todo from '../../components/Todo.astro';
+import { SITE } from '../../site';
+
+const fonts = ['Geist', 'InstrumentSans', 'JetBrainsMono', 'Newsreader'];
+const fontNames: Record<string, string> = {
+  Geist: 'Geist et Geist Mono',
+  InstrumentSans: 'Instrument Sans',
+  JetBrainsMono: 'JetBrains Mono',
+  Newsreader: 'Newsreader',
+};
 ---
 
-<Base title="Mentions légales" description="Mentions légales de synaptane.com : éditeur, hébergeur et confidentialité (ni cookie, ni statistiques).">
-  <PageHeader title="Mentions légales" intro="Qui publie ce site, qui l'héberge, et ce qu'il collecte (rien)." />
+<Base title="Mentions légales" description="Mentions légales de synaptane.com : éditeur, hébergeur, propriété intellectuelle et données personnelles (ni cookie, ni statistiques).">
+  <PageHeader title="Mentions légales" intro="Qui publie ce site, qui l'héberge, et ce qu'il collecte : rien." />
   <div class="container">
-    <Todo><p>Éditeur (René Cotton ; ni adresse postale ni e-mail sur le site, contact par GitHub Discussions : vérifier ce qu'exige la loi pour l'éditeur), hébergeur (GitHub Pages, GitHub Inc.), confidentialité : ni cookie, ni statistiques, ni script tiers ; le choix du thème reste dans le navigateur (localStorage). Licences : code du site Apache-2.0, polices SIL OFL (/fonts/).</p></Todo>
+    <div class="prose legal">
+      <h2 id="editeur">Éditeur</h2>
+      <p>
+        Le site <strong>synaptane.com</strong> est édité par <strong>René Cotton</strong>, personne physique agissant à
+        titre non professionnel.
+      </p>
+      <p>Directeur de la publication : René Cotton.</p>
+      <p>
+        Contact : par les <a href={SITE.discussions}>Discussions GitHub</a> du projet Synaptane.
+      </p>
+      <p>
+        Comme le permet la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN) à un
+        éditeur non professionnel, ses coordonnées personnelles ne sont pas publiées : ses éléments d'identification
+        ont été communiqués à l'hébergeur, dont le nom et l'adresse figurent ci-dessous.
+      </p>
+
+      <h2 id="hebergeur">Hébergeur</h2>
+      <p>
+        <strong>GitHub, Inc.</strong> (service GitHub Pages)<br />
+        88 Colin P. Kelly Jr. Street<br />
+        San Francisco, CA 94107<br />
+        États-Unis<br />
+        <a href="https://support.github.com/">support.github.com</a>
+      </p>
+
+      <h2 id="propriete-intellectuelle">Propriété intellectuelle</h2>
+      <ul>
+        <li>
+          Synaptane est un logiciel libre, publié sous <a href={`${SITE.github}/blob/main/LICENSE`}>licence Apache 2.0</a>.
+          Sa documentation, reprise sur ce site, est sous la même licence.
+        </li>
+        <li>
+          Le code de ce site, y compris le texte de ses pages et de ses articles, est lui aussi publié sous licence
+          Apache 2.0.
+        </li>
+        <li>
+          Le nom Synaptane et son logo appartiennent à René Cotton. Comme le précise l'article 6 de la licence
+          Apache 2.0, celle-ci ne donne pas le droit de les utiliser, sauf pour indiquer de façon raisonnable
+          l'origine du logiciel.
+        </li>
+        <li>La photo de René Cotton n'est couverte par aucune de ces licences.</li>
+        <li>
+          Les polices de caractères ({fonts.map((f, i) => (
+            <>{i > 0 && ', '}<a href={`/fonts/OFL-${f}.txt`}>{fontNames[f]}</a></>
+          ))}) sont distribuées sous SIL Open Font License 1.1 et servies par ce site.
+        </li>
+      </ul>
+
+      <h2 id="donnees-personnelles">Données personnelles et cookies</h2>
+      <p>
+        Ce site ne collecte aucune donnée personnelle. Il ne dépose aucun cookie, ne mesure pas l'audience et ne
+        charge aucun script ni aucune ressource depuis un autre domaine. Il n'a ni formulaire ni compte.
+      </p>
+      <p>
+        Votre choix de thème (clair, sombre ou celui du système) est enregistré dans votre navigateur
+        (<code>localStorage</code>) et n'est transmis à personne. Vous pouvez l'effacer en supprimant les données du
+        site dans votre navigateur.
+      </p>
+      <p>
+        Comme tout site servi par GitHub Pages, ce site est soumis à la journalisation de l'hébergeur : GitHub
+        enregistre et conserve l'adresse IP des visiteurs à des fins de sécurité, qu'ils aient un compte GitHub ou non.
+        Ce traitement relève de GitHub ; il est décrit dans la{' '}
+        <a href="https://docs.github.com/fr/site-policy/privacy-policies/github-general-privacy-statement">déclaration de confidentialité de GitHub</a>{' '}
+        et dans la <a href="https://docs.github.com/fr/pages/getting-started-with-github-pages/what-is-github-pages#data-collection">documentation de GitHub Pages</a>.
+      </p>
+      <p>
+        Les liens vers d'autres sites (GitHub, LinkedIn…) mènent à des services qui ont leurs propres règles de
+        confidentialité.
+      </p>
+    </div>
   </div>
 </Base>
+
+<style>
+  .legal :global(h2:first-child) { margin-top: 0; }
+  .legal ul { padding-left: 20px; }
+  .legal li { margin-bottom: var(--space-2); }
+</style>

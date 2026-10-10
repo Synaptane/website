@@ -1,13 +1,68 @@
 ---
-// À propos (français). Jumelle anglaise : src/pages/about.astro.
+// À propos (français). Jumelle anglaise : src/pages/about.astro.
+// BROUILLON à relire par René Cotton : le texte parle en son nom.
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Todo from '../../components/Todo.astro';
+import AuthorCard from '../../components/content/AuthorCard.astro';
+import NewsletterNote from '../../components/content/NewsletterNote.astro';
+import { SITE } from '../../site';
 ---
 
-<Base title="À propos" description="Qui fait Synaptane, et pourquoi : un second cerveau d'équipe auto-hébergé, adossé à Git.">
+<Base title="À propos" description="René Cotton développe Synaptane. Pourquoi il a créé un second cerveau d'équipe qui reste dans votre propre dépôt Git.">
   <PageHeader title="À propos" intro="Qui fait Synaptane, et pourquoi." />
-  <div class="container">
-    <Todo><p>L'histoire et les principes (vos données vous appartiennent, du Markdown simple dans Git, du logiciel libre), l'auteur (René Cotton) et comment le joindre : GitHub Discussions, pas d'e-mail.</p></Todo>
+  <div class="container about">
+    <AuthorCard lang="fr" />
+    <div>
+      <div class="prose">
+        <p>
+          Je m'appelle René Cotton, et je développe Synaptane. Je l'ai créé pour trois raisons.
+        </p>
+        <h2>Le savoir se perd</h2>
+        <p>
+          Chaque jour, j'explique des choses à des assistants IA : le contexte d'une décision, le fonctionnement d'un
+          système, ce que nous avons essayé et pourquoi cela n'a pas marché. Les réponses sont utiles, et elles
+          disparaissent à la fin de la conversation. Le wiki censé les garder n'est jamais à jour, faute de temps pour
+          l'entretenir.
+        </p>
+        <h2>Une équipe qui grandit doit partager ce qu'elle sait</h2>
+        <p>
+          Je dirige une entreprise dont l'équipe s'agrandit. Chaque nouvelle personne a besoin de ce que les autres
+          savent déjà, et ceux qui le savent sont souvent les plus occupés. Je voulais que ce savoir circule sans
+          demander à quiconque de devenir rédacteur de documentation : on le dit à son assistant, et il finit dans la
+          bonne page.
+        </p>
+        <h2>Vos données restent chez vous</h2>
+        <p>
+          La mémoire d'une équipe est trop précieuse pour dormir dans un SaaS fermé, dans un format qu'on ne peut pas
+          récupérer. Avec Synaptane, c'est du Markdown dans votre propre dépôt Git : vous pouvez le lire sans
+          Synaptane, le sauvegarder comme n'importe quel dépôt, et partir quand vous le voulez. C'est aussi pour cela
+          que Synaptane s'héberge chez vous et qu'il est libre, sous licence Apache 2.0.
+        </p>
+        <p>
+          Je développe Synaptane avec l'aide d'assistants de programmation IA, et je relis chaque modification.
+        </p>
+        <h2>Me contacter</h2>
+        <p>
+          Il n'y a pas d'adresse e-mail : vos questions, idées et retours sont les bienvenus dans les{' '}
+          <a href={SITE.discussions}>Discussions GitHub</a>, où les réponses profitent à tous. Les bogues vont dans les{' '}
+          <a href={`${SITE.github}/issues`}>issues</a>.
+        </p>
+      </div>
+      <NewsletterNote title="Une newsletter hebdomadaire sur l'IA" linkLabel="La lire sur rene-cotton.fr">
+        Chaque semaine, j'écris sur l'intelligence artificielle : ce qui change, et ce que cela veut dire en pratique.
+      </NewsletterNote>
+    </div>
   </div>
 </Base>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  @media (min-width: 720px) {
+    .about { grid-template-columns: 200px minmax(0, 1fr); gap: var(--space-8); }
+  }
+  .prose h2:first-of-type { margin-top: var(--space-6); }
+</style>

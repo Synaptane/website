@@ -1,0 +1,126 @@
+---
+/**
+ * The release notes, one section per version, from the `releases` collection (the changelog of
+ * the main repository, see src/content.config.ts). The notes themselves are in English; the
+ * labels around them follow the page language.
+ */
+import { getCollection, render } from 'astro:content';
+import { formatDate, type Lang } from '../../i18n';
+import { SITE } from '../../site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const labels = {
+  en: {
+    unreleased: 'Unreleased',
+    unreleasedTitle: 'Coming changes',
+    yanked: 'Withdrawn',
+    released: 'Released on',
+    release: 'Release on GitHub',
+    changelog: 'Changelog on GitHub',
+    versions: 'Versions',
+    empty: 'No release notes yet.',
+  },
+  fr: {
+    unreleased: 'Pas encore publiée',
+    unreleasedTitle: 'Changements à venir',
+    yanked: 'Retirée',
+    released: 'Publiée le',
+    release: 'La version sur GitHub',
+    changelog: 'Le CHANGELOG sur GitHub',
+    versions: 'Versions',
+    empty: "Aucune note de version pour l'instant.",
+  },
+}[lang];
+
+const entries = (await getCollection('releases')).sort((a, b) => a.data.position - b.data.position);
+const versions = await Promise.all(
+  entries.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+const changelogUrl = `${SITE.github}/blob/main/CHANGELOG.md`;
+const title = (version: string) => (version === 'Unreleased' ? labels.unreleasedTitle : `v${version}`);
+---
+
+{versions.length === 0 && <p class="muted">{labels.empty}</p>}
+
+{
+  versions.length > 1 && (
+    <nav class="toc" aria-label={labels.versions}>
+      <ul>
+        {versions.map(({ entry }) => (
+          <li><a href={`#${entry.id}`}>{title(entry.data.version)}</a></li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<div class="releases">
+  {
+    versions.map(({ entry, Content }) => {
+      const { version, date, unreleased, yanked, url } = entry.data;
+      // A version without a date has no GitHub release yet: link to the changelog instead.
+      const link = !unreleased && url ? { href: url, label: labels.release } : { href: changelogUrl, label: labels.changelog };
+      return (
+        <section class="release" id={entry.id} aria-labelledby={`${entry.id}-title`}>
+          <header>
+            <h2 id={`${entry.id}-title`}>
+              <a class="anchor" href={`#${entry.id}`}>{title(version)}</a>
+            </h2>
+            <p class="meta">
+              {date ? (
+                <span>
+                  {labels.released} <time datetime={date}>{formatDate(new Date(`${date}T00:00:00Z`), lang)}</time>
+                </span>
+              ) : (
+                <span class="badge">{labels.unreleased}</span>
+              )}
+              {yanked && <span class="badge badge-danger">{labels.yanked}</span>}
+              <a href={link.href}>{link.label}</a>
+            </p>
+          </header>
+          <div class="prose notes" lang="en">
+            <Content />
+          </div>
+        </section>
+      );
+    })
+  }
+</div>
+
+<style>
+  .toc ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-6); padding: 0; }
+  .toc a {
+    display: inline-flex; align-items: center; height: 32px; padding: 0 12px;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+    color: var(--ink-2); font-size: 14px; text-decoration: none;
+  }
+  .toc a:hover { color: var(--ink); background: var(--hover); }
+  .releases { display: grid; gap: var(--space-8); }
+  .release { max-width: 760px; scroll-margin-top: calc(var(--header-height) + 16px); }
+  .release + .release { padding-top: var(--space-7); border-top: 1px solid var(--border); }
+  header { margin-bottom: var(--space-5); padding-bottom: var(--space-4); border-bottom: 1px solid var(--border); }
+  h2 { font-size: clamp(26px, 4vw, 34px); margin-bottom: var(--space-2); }
+  .anchor { color: inherit; text-decoration: none; }
+  .anchor:hover { color: var(--accent); }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); margin: 0; font-size: 15px; color: var(--ink-3); }
+  .badge {
+    display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px;
+    background: var(--warn-bg); color: var(--warn-ink); font-size: 13px; font-weight: 500;
+  }
+  .badge-danger { background: var(--danger-bg); color: var(--danger); }
+  /* Release notes are lists: the interface font, a little smaller than an article. */
+  .notes { font-family: var(--font-body); font-size: 16px; line-height: 1.65; max-width: none; }
+  .notes :global(h3) {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--accent); margin: var(--space-6) 0 var(--space-3);
+  }
+  .notes :global(h3:first-child) { margin-top: 0; }
+  .notes :global(h4) { font-size: 17px; margin: var(--space-5) 0 var(--space-2); }
+  .notes :global(ul) { padding-left: 20px; }
+  .notes :global(li) { margin-bottom: var(--space-2); }
+  .notes :global(li::marker) { color: var(--ink-3); }
+</style>

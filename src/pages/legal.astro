@@ -1,13 +1,93 @@
 ---
 // Legal notice (English). French twin: src/pages/fr/legal.astro.
+// Non-professional individual publisher under French law (Act No. 2004-575 of 21 June 2004, LCEN).
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import Todo from '../components/Todo.astro';
+import { SITE } from '../site';
+
+const fonts = ['Geist', 'InstrumentSans', 'JetBrainsMono', 'Newsreader'];
+const fontNames: Record<string, string> = {
+  Geist: 'Geist and Geist Mono',
+  InstrumentSans: 'Instrument Sans',
+  JetBrainsMono: 'JetBrains Mono',
+  Newsreader: 'Newsreader',
+};
 ---
 
-<Base title="Legal notice" description="Legal notice of synaptane.com: publisher, host, and privacy (no cookies, no analytics).">
-  <PageHeader title="Legal notice" intro="Who publishes this site, who hosts it, and what it collects (nothing)." />
+<Base title="Legal notice" description="Legal notice of synaptane.com: publisher, host, intellectual property and personal data (no cookies, no analytics).">
+  <PageHeader title="Legal notice" intro="Who publishes this site, who hosts it, and what it collects: nothing." />
   <div class="container">
-    <Todo><p>Publisher (René Cotton; no postal address or e-mail on the site, contact through GitHub Discussions: check what the law of the publisher requires), host (GitHub Pages, GitHub Inc.), privacy: no cookies, no analytics, no third-party scripts; the theme choice stays in the browser (localStorage). Licenses: site code Apache-2.0, fonts SIL OFL (/fonts/).</p></Todo>
+    <div class="prose legal">
+      <h2 id="publisher">Publisher</h2>
+      <p>
+        The website <strong>synaptane.com</strong> is published by <strong>René Cotton</strong>, a private individual
+        acting in a non-professional capacity.
+      </p>
+      <p>Publication director: René Cotton.</p>
+      <p>
+        Contact: through the <a href={SITE.discussions}>GitHub Discussions</a> of the Synaptane project.
+      </p>
+      <p>
+        As French law (Act No. 2004-575 of 21 June 2004 on confidence in the digital economy, LCEN) allows a
+        non-professional publisher, his personal contact details are not published: his identification details have
+        been provided to the host, whose name and address are given below.
+      </p>
+
+      <h2 id="host">Host</h2>
+      <p>
+        <strong>GitHub, Inc.</strong> (GitHub Pages)<br />
+        88 Colin P. Kelly Jr. Street<br />
+        San Francisco, CA 94107<br />
+        United States<br />
+        <a href="https://support.github.com/">support.github.com</a>
+      </p>
+
+      <h2 id="intellectual-property">Intellectual property</h2>
+      <ul>
+        <li>
+          Synaptane is open source software, released under the{' '}
+          <a href={`${SITE.github}/blob/main/LICENSE`}>Apache License 2.0</a>. Its documentation, published on this
+          site, is under the same license.
+        </li>
+        <li>The code of this site, including the text of its pages and posts, is also released under the Apache License 2.0.</li>
+        <li>
+          The Synaptane name and logo belong to René Cotton. As section 6 of the Apache License 2.0 states, the license
+          does not grant permission to use them, except for reasonable and customary use in describing the origin of
+          the software.
+        </li>
+        <li>The photo of René Cotton is not covered by these licenses.</li>
+        <li>
+          The fonts ({fonts.map((f, i) => (
+            <>{i > 0 && ', '}<a href={`/fonts/OFL-${f}.txt`}>{fontNames[f]}</a></>
+          ))}) are distributed under the SIL Open Font License 1.1 and served by this site.
+        </li>
+      </ul>
+
+      <h2 id="personal-data">Personal data and cookies</h2>
+      <p>
+        This site collects no personal data. It sets no cookies, has no analytics, and loads no script or resource from
+        another domain. It has no forms and no accounts.
+      </p>
+      <p>
+        Your theme choice (light, dark or the system's) is stored in your browser (<code>localStorage</code>) and is
+        never sent anywhere. You can clear it by deleting this site's data in your browser.
+      </p>
+      <p>
+        Like every site served by GitHub Pages, this site is subject to the host's logging: GitHub logs and stores the
+        IP address of visitors for security purposes, whether or not they are signed in to GitHub. This processing is
+        GitHub's; it is described in the{' '}
+        <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>{' '}
+        and in the <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection">GitHub Pages documentation</a>.
+      </p>
+      <p>
+        Links to other sites (GitHub, LinkedIn…) lead to services that have their own privacy rules.
+      </p>
+    </div>
   </div>
 </Base>
+
+<style>
+  .legal :global(h2:first-child) { margin-top: 0; }
+  .legal ul { padding-left: 20px; }
+  .legal li { margin-bottom: var(--space-2); }
+</style>
