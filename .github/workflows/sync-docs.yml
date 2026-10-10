@@ -72,7 +72,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -C "$branch"
-          git add -A src/content/docs public/docs docs-sync.json
+          git add -A src/content/docs src/content/releases public/docs docs-sync.json
           git commit -m "Docs: sync from synaptane/synaptane@$REF ($commit)"
           git push --force origin "$branch"
           if gh pr view "$branch" --json state --jq .state 2>/dev/null | grep -q OPEN; then
@@ -80,5 +80,5 @@ jobs:
           else
             gh pr create --base main --head "$branch" \
               --title "Docs: sync from synaptane/synaptane@$REF" \
-              --body "Documentation copied by \`npm run sync-docs -- --ref $REF\` (commit $commit of synaptane/synaptane). Built, type-checked and link-checked by the workflow."
+              --body "Documentation and changelog copied by \`npm run sync-docs -- --ref $REF\` (commit $commit of synaptane/synaptane). Built, type-checked and link-checked by the workflow."
           fi

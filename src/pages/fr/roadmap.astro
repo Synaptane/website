@@ -1,13 +1,198 @@
 ---
-// Feuille de route (français). Jumelle anglaise : src/pages/roadmap.astro.
+// Feuille de route (français). Jumelle anglaise : src/pages/roadmap.astro. Sans dates, à dessein.
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Todo from '../../components/Todo.astro';
+import Button from '../../components/Button.astro';
+import Roadmap, { type RoadmapGroup } from '../../components/content/Roadmap.astro';
+import { SITE } from '../../site';
+
+const groups: RoadmapGroup[] = [
+  {
+    id: 'securite-des-comptes',
+    title: 'Sécurité des comptes',
+    intro: 'Une connexion plus sûre, et la main sur vos sessions ouvertes.',
+    items: [
+      {
+        status: 'next',
+        title: 'Double authentification',
+        text: "Des codes à usage unique tirés d'une application d'authentification (TOTP). Ouverte à tous, obligatoire pour les super-admins.",
+      },
+      {
+        status: 'next',
+        title: 'Des sessions visibles et révocables',
+        text: "Les sessions web expirent après une période d'inactivité. <strong>Mon compte</strong> liste vos sessions ouvertes, et vous pouvez fermer celle de votre choix.",
+      },
+      {
+        status: 'later',
+        title: "Journal d'audit dans l'interface",
+        text: 'Qui a changé un rôle, un jeton ou un réglage, et quand, consultable par les administrateurs.',
+      },
+    ],
+  },
+  {
+    id: 'exploitation',
+    title: 'Exploitation',
+    intro: 'Moins de travail pour qui fait tourner le serveur.',
+    items: [
+      {
+        status: 'next',
+        title: 'Supervision',
+        text: "Un point d'accès <code>/metrics</code> pour Prometheus et les outils du même genre, à côté des <code>/healthz</code> et <code>/readyz</code> existants, et une page de santé de l'instance avec des alertes système.",
+      },
+      {
+        status: 'next',
+        title: 'Image arm64',
+        text: "L'image publiée pour les serveurs ARM, et plus seulement x86-64.",
+      },
+      {
+        status: 'later',
+        title: 'Des sauvegardes encore plus simples',
+        text: "Les sauvegardes sont déjà vérifiées, et peuvent être chiffrées et copiées hors du serveur. Leur mise en place doit demander moins d'étapes.",
+      },
+    ],
+  },
+  {
+    id: 'ia-et-mcp',
+    title: 'IA et MCP',
+    intro: 'Plus de choix de modèles, et plus de façons de revenir en arrière.',
+    items: [
+      {
+        status: 'next',
+        title: 'Plus de fournisseurs, tarifs compris',
+        text: "Le coût n'est estimé automatiquement que pour les modèles Claude ; pour les autres, vous saisissez le prix par million de jetons. D'autres fournisseurs arriveront avec leurs tarifs.",
+      },
+      {
+        status: 'next',
+        title: "Restaurer une version d'une page",
+        text: "Voir, comparer et restaurer une version antérieure d'une page depuis l'interface. L'historique Git est déjà là ; il s'agit de le rendre accessible en un clic.",
+      },
+      {
+        status: 'later',
+        title: "Annuler une seule page d'un rangement",
+        text: "Aujourd'hui, un passage s'annule d'un bloc. Annuler une seule page garderait le reste du passage.",
+      },
+      {
+        status: 'later',
+        title: "Un banc d'évaluation public du rangement",
+        text: 'Publier les scénarios et les résultats du banc qui mesure le rangement, pour comparer modèles et consignes au grand jour.',
+      },
+      {
+        status: 'later',
+        title: 'Les CLI des abonnements sous un compte à part',
+        text: 'Faire tourner Claude Code et Codex sous leur propre compte système, séparé du worker.',
+      },
+    ],
+  },
+  {
+    id: 'equipes',
+    title: 'Équipes',
+    intro: 'Une première heure plus fluide pour une nouvelle équipe.',
+    items: [
+      {
+        status: 'later',
+        title: 'Créer le dépôt depuis Synaptane',
+        text: "Créer le dépôt Git d'un nouvel espace sur GitHub ou GitLab sans quitter Synaptane.",
+      },
+      {
+        status: 'later',
+        title: 'Rôle par défaut, puis groupes',
+        text: "Un rôle par défaut pour les membres d'une organisation, puis des groupes pour ouvrir plusieurs espaces d'un coup.",
+      },
+      {
+        status: 'later',
+        title: 'Premiers pas guidés',
+        text: "Une liste d'étapes qui accompagne un nouvel espace jusqu'à son premier rangement.",
+      },
+    ],
+  },
+  {
+    id: 'offre-hebergee',
+    title: 'Offre hébergée',
+    intro: 'Pour les équipes qui préfèrent ne pas gérer de serveur.',
+    items: [
+      {
+        status: 'exploring',
+        title: 'Synaptane, hébergé',
+        text: "À l'étude : ni date, ni engagement.",
+      },
+    ],
+  },
+  {
+    id: 'idees',
+    title: 'Idées',
+    intro: 'Selon la demande.',
+    items: [
+      {
+        status: 'exploring',
+        title: 'Imports',
+        text: "Depuis Obsidian, Notion, Confluence ou une archive zip de fichiers Markdown.",
+      },
+      {
+        status: 'exploring',
+        title: 'Slack et Microsoft Teams',
+        text: "Chercher et garder des notes depuis la messagerie de l'équipe, sans passer par un assistant.",
+      },
+      {
+        status: 'exploring',
+        title: 'Éditeur avec aperçu, et diagrammes',
+        text: 'Un aperçu pendant la saisie, et des diagrammes Mermaid dans les pages.',
+      },
+      {
+        status: 'exploring',
+        title: "Poser des questions dans l'interface web",
+        text: "Des réponses sourcées, pour les personnes qui n'utilisent pas d'assistant IA.",
+      },
+      {
+        status: 'exploring',
+        title: 'Capture par e-mail',
+        text: "Transférer un e-mail à un espace pour qu'il arrive dans l'inbox.",
+      },
+    ],
+  },
+];
 ---
 
-<Base title="Feuille de route" description="La feuille de route de Synaptane : les travaux en cours, les suivants, et ce qui est hors du périmètre.">
-  <PageHeader title="Feuille de route" intro="Ce sur quoi nous travaillons, ce qui vient ensuite, et ce qui est hors du périmètre." />
+<Base title="Feuille de route" description="La feuille de route de Synaptane : ce qui vient prochainement, ce qui viendra plus tard, et ce qui est à l'étude.">
+  <PageHeader
+    title="Feuille de route"
+    intro="Ce qui attend Synaptane, et les pistes à l'étude. Pas de dates : Synaptane est maintenu par une seule personne, et les priorités suivent les besoins des utilisateurs."
+  >
+    <div class="actions">
+      <Button href={SITE.discussions} variant="primary" icon="arrow-right">Proposer une idée</Button>
+      <Button href="/fr/releases/" variant="quiet">Ce qui existe déjà : les notes de version</Button>
+    </div>
+  </PageHeader>
   <div class="container">
-    <Todo><p>Maintenant / ensuite / plus tard, et ce que Synaptane ne fera pas. Renvoyer vers GitHub Discussions pour les propositions.</p></Todo>
+    <Roadmap
+      lang="fr"
+      groups={groups}
+      legend={{
+        next: 'Prévu pour les prochaines versions.',
+        later: 'Prévu, après ce qui est marqué « Prochainement ».',
+        exploring: 'Envisagé. Peut changer, ou ne pas se faire.',
+      }}
+    />
+    <aside class="cta">
+      <h2>Il vous manque quelque chose ?</h2>
+      <p>
+        Dites-moi ce dont votre équipe a besoin, ou soutenez une idée déjà proposée, dans les{' '}
+        <a href={SITE.discussions}>Discussions GitHub</a>. Les bogues vont dans les{' '}
+        <a href={`${SITE.github}/issues`}>issues</a>.
+      </p>
+    </aside>
   </div>
 </Base>
+
+<style>
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-top: var(--space-5); }
+  .cta {
+    margin-top: var(--space-8);
+    padding: var(--space-5) var(--space-5) var(--space-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    max-width: 760px;
+  }
+  .cta h2 { font-size: 20px; }
+  .cta p { color: var(--ink-2); }
+</style>

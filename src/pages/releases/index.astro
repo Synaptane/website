@@ -1,13 +1,32 @@
 ---
 // Releases (English). French twin: src/pages/fr/releases/index.astro.
+// The notes come from the changelog of the main repository (npm run sync-docs).
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import Todo from '../../components/Todo.astro';
+import ReleaseNotes from '../../components/content/ReleaseNotes.astro';
+import { SITE } from '../../site';
 ---
 
 <Base title="Releases" description="Release notes of Synaptane: what changed in each version, and how to upgrade.">
-  <PageHeader title="Releases" intro="What changed in each version of Synaptane, and how to upgrade." />
+  <PageHeader title="Releases" intro="What changed in each version of Synaptane, newest first.">
+    <div class="intro">
+      <p>
+        Synaptane is alpha software: the REST API, the MCP tools and the configuration may still change, and every
+        change is listed here. Before each upgrade, back up your instance and read the notes of the target version
+        (<a href="/docs/admin/installation/#upgrade">how to upgrade</a>).
+      </p>
+      <p class="muted">
+        Downloads and tags: <a href={SITE.releases}>releases on GitHub</a>. To follow new versions, subscribe to
+        GitHub's <a href={`${SITE.releases}.atom`}>release feed</a>.
+      </p>
+    </div>
+  </PageHeader>
   <div class="container">
-    <Todo><p>Release notes, newest first: one entry per version (date, highlights, upgrade notes), from the CHANGELOG of the main repository. Link to the GitHub releases and to the upgrade guide (/docs/admin/installation/#upgrade).</p></Todo>
+    <ReleaseNotes lang="en" />
   </div>
 </Base>
+
+<style>
+  .intro { max-width: 68ch; margin-top: var(--space-5); color: var(--ink-2); }
+  .intro p:last-child { margin-bottom: 0; font-size: 15px; }
+</style>

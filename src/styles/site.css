@@ -103,7 +103,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 .prose h2 { font-size: 24px; margin: var(--space-7) 0 var(--space-3); }
 .prose h3 { font-size: 19px; margin: var(--space-6) 0 var(--space-2); }
 .prose :is(h2, h3, h4, table, figcaption) { font-family: var(--font-body); }
-.prose :is(p, ul, ol, blockquote, table, pre) { margin: 0 0 var(--space-4); }
+.prose :is(p, ul, ol, blockquote, table) { margin: 0 0 var(--space-4); }
 .prose a { text-decoration: underline; }
 .prose blockquote {
   margin-inline: 0; padding: 2px 18px; border-left: 2px solid var(--border);
@@ -114,8 +114,9 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 .prose th { font-weight: 500; font-size: 13px; color: var(--ink-3); }
 .prose img { border-radius: var(--radius); }
 .prose :not(pre) > code { font-size: 0.78em; }
-.prose pre {
-  font-size: 13px; line-height: 1.6; padding: 14px 16px; overflow-x: auto;
+/* Plain <pre> only: code blocks of Markdown content are framed by Expressive Code, as in the docs. */
+.prose pre:not(.expressive-code pre) {
+  margin: 0 0 var(--space-4); font-size: 13px; line-height: 1.6; padding: 14px 16px; overflow-x: auto;
   border-radius: var(--radius); background: var(--bg-2); border: 1px solid var(--border);
 }
 

@@ -1,13 +1,66 @@
 ---
 // About (English). French twin: src/pages/fr/about.astro.
+// DRAFT for René Cotton to review: the text below speaks in his name.
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import Todo from '../components/Todo.astro';
+import AuthorCard from '../components/content/AuthorCard.astro';
+import NewsletterNote from '../components/content/NewsletterNote.astro';
+import { SITE } from '../site';
 ---
 
-<Base title="About" description="Who makes Synaptane, and why: a self-hosted, Git-backed second brain for teams.">
+<Base title="About" description="René Cotton makes Synaptane. Why he built a team second brain that stays in your own Git repository.">
   <PageHeader title="About" intro="Who makes Synaptane, and why." />
-  <div class="container">
-    <Todo><p>The story and the principles (own your data, plain Markdown in Git, open source), the author (René Cotton) and how to get in touch: GitHub Discussions, no e-mail.</p></Todo>
+  <div class="container about">
+    <AuthorCard lang="en" />
+    <div>
+      <div class="prose">
+        <p>
+          I'm René Cotton, and I make Synaptane. I built it for three reasons.
+        </p>
+        <h2>Knowledge gets lost</h2>
+        <p>
+          Every day, I explain things to AI assistants: the context of a decision, how a system works, what we tried
+          and why it did not work. The answers are useful, and they disappear when the conversation ends. The wiki that
+          should keep them is never up to date, because nobody has the time to maintain it.
+        </p>
+        <h2>A growing team needs to share what it knows</h2>
+        <p>
+          I run a company, and its team keeps growing. Each new person needs what the others already know, and the
+          people who know it are often the busiest. I wanted that knowledge to circulate without asking anyone to
+          become a documentation writer: you tell your assistant, and it ends up in the right page.
+        </p>
+        <h2>Your data stays with you</h2>
+        <p>
+          The memory of a team is too important to sit in a closed SaaS, in a format you cannot take back. With
+          Synaptane, it is plain Markdown in your own Git repository: you can read it without Synaptane, back it up
+          like any repository, and leave whenever you want. That is also why Synaptane is self-hosted and open source,
+          under the Apache 2.0 license.
+        </p>
+        <p>
+          I develop Synaptane with the help of AI coding assistants, and I review every change.
+        </p>
+        <h2>Get in touch</h2>
+        <p>
+          There is no email address: questions, ideas and feedback go to{' '}
+          <a href={SITE.discussions}>GitHub Discussions</a>, where the answers help everyone. Bugs go to{' '}
+          <a href={`${SITE.github}/issues`}>issues</a>.
+        </p>
+      </div>
+      <NewsletterNote title="A weekly newsletter on AI, in French" linkLabel="Read it on rene-cotton.fr">
+        Every week, I write about artificial intelligence: what changes, and what it means in practice.
+      </NewsletterNote>
+    </div>
   </div>
 </Base>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  @media (min-width: 720px) {
+    .about { grid-template-columns: 200px minmax(0, 1fr); gap: var(--space-8); }
+  }
+  .prose h2:first-of-type { margin-top: var(--space-6); }
+</style>

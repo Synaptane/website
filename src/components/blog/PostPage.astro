@@ -27,10 +27,17 @@ const { Content } = await render(post);
 >
   <article class="container container-narrow post">
     <p class="back"><a href={localizePath('/blog/', lang)}>← {t.blog.backToList}</a></p>
+    {draft && (
+      <p class="draft-note" role="note">
+        {lang === 'fr'
+          ? 'Brouillon : visible avec npm run dev seulement, absent du site publié.'
+          : 'Draft: shown by npm run dev only, left out of the published site.'}
+      </p>
+    )}
     <header>
       <h1>{title}</h1>
       <p class="meta">
-        {t.blog.by} <a href={localizePath('/about/', lang)}>{author}</a> ·
+        {t.blog.by} <a href={localizePath('/about/', lang)}>{author}</a>{' · '}
         <time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
         {updated && <> · {t.blog.updated} <time datetime={updated.toISOString()}>{formatDate(updated, lang)}</time></>}
       </p>
@@ -48,4 +55,9 @@ const { Content } = await render(post);
   h1 { font-size: clamp(30px, 5vw, 44px); }
   .meta { color: var(--ink-3); font-size: 15px; margin-bottom: var(--space-6); }
   .meta a { color: inherit; }
+  .post :global(.prose .expressive-code) { margin-bottom: var(--space-5); }
+  .draft-note {
+    margin-bottom: var(--space-5); padding: 10px 14px; border-radius: var(--radius);
+    background: var(--warn-bg); color: var(--warn-ink); font-size: 14px;
+  }
 </style>

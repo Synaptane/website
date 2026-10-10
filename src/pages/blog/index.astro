@@ -3,10 +3,14 @@
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import PostList from '../../components/blog/PostList.astro';
+import FeedLink from '../../components/content/FeedLink.astro';
 ---
 
 <Base title="Blog" description="News, release notes and field notes about Synaptane, the team second brain stored in Git.">
-  <PageHeader title="Blog" intro="News about Synaptane, and what we learn building it." />
+  <link slot="head" rel="alternate" type="application/rss+xml" title="Synaptane blog" href="/blog/rss.xml" />
+  <PageHeader title="Blog" intro="News about Synaptane, and what I learn building it.">
+    <FeedLink href="/blog/rss.xml">RSS feed</FeedLink>
+  </PageHeader>
   <div class="container">
     <PostList lang="en" />
   </div>

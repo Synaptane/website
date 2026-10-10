@@ -1,13 +1,197 @@
 ---
-// Roadmap (English). French twin: src/pages/fr/roadmap.astro.
+// Roadmap (English). French twin: src/pages/fr/roadmap.astro. No dates, on purpose.
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
-import Todo from '../components/Todo.astro';
+import Button from '../components/Button.astro';
+import Roadmap, { type RoadmapGroup } from '../components/content/Roadmap.astro';
+import { SITE } from '../site';
+
+const groups: RoadmapGroup[] = [
+  {
+    id: 'account-security',
+    title: 'Account security',
+    intro: 'Stronger sign-in, and more control over where you are signed in.',
+    items: [
+      {
+        status: 'next',
+        title: 'Two-factor authentication',
+        text: 'One-time codes from an authenticator app (TOTP). Available to everyone, required for super admins.',
+      },
+      {
+        status: 'next',
+        title: 'Sessions you can see and close',
+        text: 'Web sessions expire after a period of inactivity. <strong>My account</strong> lists your open sessions, and you can sign out of any of them.',
+      },
+      {
+        status: 'later',
+        title: 'Audit log in the interface',
+        text: 'Who changed a role, a token or a setting, and when, readable by administrators.',
+      },
+    ],
+  },
+  {
+    id: 'operations',
+    title: 'Operations',
+    intro: 'Less work for the person who runs the server.',
+    items: [
+      {
+        status: 'next',
+        title: 'Monitoring',
+        text: 'A <code>/metrics</code> endpoint for Prometheus and similar tools, next to the existing <code>/healthz</code> and <code>/readyz</code>, and an instance health page with system alerts.',
+      },
+      {
+        status: 'next',
+        title: 'arm64 image',
+        text: 'The published image for ARM servers, not only x86-64.',
+      },
+      {
+        status: 'later',
+        title: 'Even simpler backups',
+        text: 'Backups are already verified, can be encrypted and copied off-site. Setting them up should take fewer steps.',
+      },
+    ],
+  },
+  {
+    id: 'ai-and-mcp',
+    title: 'AI and MCP',
+    intro: 'More choice of models, and more ways to go back.',
+    items: [
+      {
+        status: 'next',
+        title: 'More providers with automatic pricing',
+        text: 'Costs are estimated automatically for Claude models only; for other models, you enter the price per million tokens. More providers will come with their prices.',
+      },
+      {
+        status: 'next',
+        title: 'Restore a page version',
+        text: 'View, compare and restore an earlier version of a page from the interface. The Git history is already there; this makes it one click.',
+      },
+      {
+        status: 'later',
+        title: 'Undo one page of a tidy-up pass',
+        text: 'A pass is undone as a whole today. Undoing a single page would keep the rest of the pass.',
+      },
+      {
+        status: 'later',
+        title: 'A public evaluation bench for the tidy-up',
+        text: 'Publish the scenarios and results of the bench that measures the tidy-up, to compare models and prompts in the open.',
+      },
+      {
+        status: 'later',
+        title: 'Subscription CLIs under a separate account',
+        text: 'Run Claude Code and Codex under their own system account, apart from the worker.',
+      },
+    ],
+  },
+  {
+    id: 'teams',
+    title: 'Teams',
+    intro: 'A smoother first hour for a new team.',
+    items: [
+      {
+        status: 'later',
+        title: 'Create the repository from Synaptane',
+        text: 'Create the Git repository of a new space on GitHub or GitLab without leaving Synaptane.',
+      },
+      {
+        status: 'later',
+        title: 'Default role, then groups',
+        text: 'A default role for the members of an organization, then groups to give access to several spaces at once.',
+      },
+      {
+        status: 'later',
+        title: 'Guided first steps',
+        text: 'A checklist that follows a new space until its first tidy-up.',
+      },
+    ],
+  },
+  {
+    id: 'hosted',
+    title: 'Hosted offer',
+    intro: 'For teams that would rather not run a server.',
+    items: [
+      {
+        status: 'exploring',
+        title: 'Synaptane, hosted',
+        text: 'Under study: no date, no commitment.',
+      },
+    ],
+  },
+  {
+    id: 'ideas',
+    title: 'Ideas',
+    intro: 'Depending on what people ask for.',
+    items: [
+      {
+        status: 'exploring',
+        title: 'Imports',
+        text: 'From Obsidian, Notion, Confluence or a zip of Markdown files.',
+      },
+      {
+        status: 'exploring',
+        title: 'Slack and Microsoft Teams',
+        text: 'Search and save notes from team chat, without going through an assistant.',
+      },
+      {
+        status: 'exploring',
+        title: 'Editor with preview, and diagrams',
+        text: 'A preview while editing, and Mermaid diagrams in pages.',
+      },
+      {
+        status: 'exploring',
+        title: 'Ask questions in the web interface',
+        text: 'Answers with sources, for people who do not use an AI assistant.',
+      },
+      {
+        status: 'exploring',
+        title: 'Capture by email',
+        text: 'Forward an email to a space, and it lands in the inbox.',
+      },
+    ],
+  },
+];
 ---
 
-<Base title="Roadmap" description="The Synaptane roadmap: what is being worked on, what comes next, and what is out of scope.">
-  <PageHeader title="Roadmap" intro="What we are working on, what comes next, and what is out of scope." />
+<Base title="Roadmap" description="The Synaptane roadmap: what comes next, what comes later, and what is being explored.">
+  <PageHeader
+    title="Roadmap"
+    intro="What comes next for Synaptane, and what is being explored. There are no dates: Synaptane is maintained by one person, and priorities follow what users need."
+  >
+    <div class="actions">
+      <Button href={SITE.discussions} variant="primary" icon="arrow-right">Propose an idea</Button>
+      <Button href="/releases/" variant="quiet">What is already there: release notes</Button>
+    </div>
+  </PageHeader>
   <div class="container">
-    <Todo><p>Now / next / later, and what Synaptane will not do. Link to GitHub Discussions for proposals.</p></Todo>
+    <Roadmap
+      lang="en"
+      groups={groups}
+      legend={{
+        next: 'Planned for the coming versions.',
+        later: 'Planned, after the items marked Next.',
+        exploring: 'Being considered. It may change, or not happen.',
+      }}
+    />
+    <aside class="cta">
+      <h2>Something missing?</h2>
+      <p>
+        Tell me what your team needs, or support an existing idea, in{' '}
+        <a href={SITE.discussions}>GitHub Discussions</a>. Bugs go to <a href={`${SITE.github}/issues`}>issues</a>.
+      </p>
+    </aside>
   </div>
 </Base>
+
+<style>
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-top: var(--space-5); }
+  .cta {
+    margin-top: var(--space-8);
+    padding: var(--space-5) var(--space-5) var(--space-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    max-width: 760px;
+  }
+  .cta h2 { font-size: 20px; }
+  .cta p { color: var(--ink-2); }
+</style>
