@@ -1,0 +1,39 @@
+---
+// Bilingual 404 page: GitHub Pages serves this single /404.html for every missing URL, in
+// either language. The English text comes first; the French one has lang="fr".
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import { en } from '../i18n/en';
+import { fr } from '../i18n/fr';
+---
+
+<Base title={`${en.notFound.title} · ${fr.notFound.title}`} description={en.notFound.text} alternate={null} noindex>
+  <div class="container not-found">
+    <p class="code" aria-hidden="true">404</p>
+    <section lang="en">
+      <h1>{en.notFound.title}</h1>
+      <p class="lead">{en.notFound.text}</p>
+      <div class="actions">
+        <Button href="/" variant="primary">{en.notFound.home}</Button>
+        <Button href="/docs/">{en.notFound.docs}</Button>
+      </div>
+    </section>
+    <section lang="fr">
+      <h2>{fr.notFound.title}</h2>
+      <p class="lead">{fr.notFound.text}</p>
+      <div class="actions">
+        <Button href="/fr/">{fr.notFound.home}</Button>
+        <Button href="/fr/docs/">{fr.notFound.docs}</Button>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .not-found { padding-block: var(--space-8); display: grid; gap: var(--space-7); }
+  .code { margin: 0; font: 600 14px/1 var(--font-mono); color: var(--ink-3); letter-spacing: 0.1em; }
+  h1, h2 { font-size: clamp(28px, 5vw, 40px); }
+  section + section { padding-top: var(--space-6); border-top: 1px solid var(--border); }
+  .lead { margin-top: var(--space-3); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+</style>

@@ -1,0 +1,74 @@
+import type { Dictionary } from './en';
+
+/** Chaînes d'interface des pages du site, en français (mêmes clés que en.ts). */
+export const fr: Dictionary = {
+  meta: {
+    siteName: 'Synaptane',
+    defaultDescription:
+      "Synaptane est un second cerveau d'équipe auto-hébergé, stocké dans Git : un wiki Markdown, une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
+    ogImageAlt: "Synaptane, le second cerveau d'équipe stocké dans Git",
+    ogLocale: 'fr_FR',
+  },
+  a11y: {
+    skipToContent: 'Aller au contenu',
+    mainNav: 'Navigation principale',
+    footerNav: 'Pied de page',
+    home: "Accueil de Synaptane",
+    menu: 'Menu',
+    externalLink: '(ouvre GitHub)',
+  },
+  nav: {
+    docs: 'Documentation',
+    demo: 'Démo',
+    blog: 'Blog',
+    roadmap: 'Feuille de route',
+    about: 'À propos',
+    releases: 'Versions',
+    github: 'GitHub',
+    discussions: 'Discussions',
+    legal: 'Mentions légales',
+  },
+  language: {
+    label: 'Langue',
+    switchTo: 'Read in English',
+  },
+  theme: {
+    label: 'Apparence',
+    light: 'Clair (Papier)',
+    dark: 'Sombre (Ardoise)',
+    auto: 'Système',
+  },
+  footer: {
+    tagline: "Un second cerveau d'équipe stocké dans Git.",
+    license: 'Synaptane est un logiciel libre sous licence Apache 2.0.',
+    madeBy: 'Conçu par',
+    author: 'René Cotton',
+    contact: 'Questions et idées : GitHub Discussions',
+    status: 'Alpha. Première version : v1.0.0-rc.1.',
+  },
+  code: {
+    copy: 'Copier',
+    copied: 'Copié',
+    copyLabel: 'Copier le code dans le presse-papiers',
+  },
+  screenshot: {
+    light: 'thème clair',
+    dark: 'thème sombre',
+  },
+  blog: {
+    readMore: "Lire l'article",
+    by: 'Par',
+    published: 'Publié le',
+    updated: 'Mis à jour le',
+    empty: "Aucun article pour l'instant.",
+    backToList: 'Tous les articles',
+    translationMissing: "Cet article n'existe pas en anglais.",
+  },
+  todo: 'À faire',
+  notFound: {
+    title: 'Page introuvable',
+    text: "Cette page n'existe pas, ou elle a été déplacée.",
+    home: "Retour à l'accueil",
+    docs: 'Lire la documentation',
+  },
+};

@@ -1,0 +1,75 @@
+---
+/** Footer of the site pages: links, license, legal notice, author, GitHub and Discussions. */
+import Icon from './Icon.astro';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+import { SITE } from '../site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const p = (path: string) => localizePath(path, lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container grid">
+    <div class="about">
+      <p class="tagline">{t.footer.tagline}</p>
+      <p class="muted">{t.footer.status}</p>
+      <p class="muted">
+        {t.footer.madeBy} <a href={p('/about/')}>{t.footer.author}</a>.
+      </p>
+      <p class="muted"><a href={SITE.discussions}>{t.footer.contact}</a></p>
+    </div>
+    <nav aria-label={t.a11y.footerNav}>
+      <ul>
+        <li><a href={p('/docs/')}>{t.nav.docs}</a></li>
+        <li><a href={p('/demo/')}>{t.nav.demo}</a></li>
+        <li><a href={p('/blog/')}>{t.nav.blog}</a></li>
+        <li><a href={p('/releases/')}>{t.nav.releases}</a></li>
+        <li><a href={p('/roadmap/')}>{t.nav.roadmap}</a></li>
+        <li><a href={p('/about/')}>{t.nav.about}</a></li>
+      </ul>
+      <ul>
+        <li><a href={SITE.github}><Icon name="github" size={14} /> {t.nav.github}</a></li>
+        <li><a href={SITE.discussions}>{t.nav.discussions}</a></li>
+        <li><a href={p('/legal/')}>{t.nav.legal}</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container legal">
+    <p class="muted">
+      © {year} {SITE.author}. <a href={`${SITE.github}/blob/main/LICENSE`}>{t.footer.license}</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-9);
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    font-size: 14.5px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    padding-block: var(--space-7) var(--space-5);
+  }
+  @media (min-width: 720px) {
+    .grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+  }
+  .tagline { font-weight: 600; color: var(--ink); margin-bottom: var(--space-2); }
+  .about p { margin-bottom: var(--space-2); }
+  nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); align-content: start; }
+  a { color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  a:hover { color: var(--ink); text-decoration: underline; }
+  .about a, .legal a { color: var(--accent); text-decoration: underline; display: inline; }
+  .legal { padding-bottom: var(--space-6); }
+  .legal p { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--border); font-size: 13px; }
+</style>

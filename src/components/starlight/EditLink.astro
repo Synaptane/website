@@ -1,0 +1,32 @@
+---
+/**
+ * Starlight override: the docs are copies of synaptane/synaptane's docs/ folder, so "Edit
+ * page" leads to the source file there (docs/X.md, or docs/X.fr.md for French).
+ */
+import { Icon } from '@astrojs/starlight/components';
+import { SITE } from '../../site';
+
+const { entry, lang } = Astro.locals.starlightRoute;
+const match = /^(?:fr\/)?docs(?:\/(.*))?$/.exec(entry.id);
+const slug = match ? (match[1] ?? 'index') : undefined;
+const editUrl = slug ? `${SITE.github}/edit/main/docs/${slug}${lang === 'fr' ? '.fr' : ''}.md` : undefined;
+---
+
+{
+  editUrl && (
+    <a href={editUrl} class="edit-link sl-flex print:hidden">
+      <Icon name="pencil" size="1.2em" />
+      {Astro.locals.t('page.editLink')}
+    </a>
+  )
+}
+
+<style>
+  .edit-link {
+    gap: 0.5rem;
+    align-items: center;
+    text-decoration: none;
+    color: var(--sl-color-gray-3);
+  }
+  .edit-link:hover { color: var(--sl-color-white); }
+</style>

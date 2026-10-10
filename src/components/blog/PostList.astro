@@ -1,0 +1,45 @@
+---
+/** List of the posts of a language (blog index). */
+import { formatDate, useTranslations, type Lang } from '../../i18n';
+import { getPosts, postPath } from '../../lib/blog';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const posts = await getPosts(lang);
+---
+
+{
+  posts.length === 0 ? (
+    <p class="muted">{t.blog.empty}</p>
+  ) : (
+    <ol class="posts">
+      {posts.map((post) => (
+        <li>
+          <article>
+            <h2><a href={postPath(post)}>{post.data.title}</a></h2>
+            <p class="meta">
+              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time>
+              {post.data.draft && <span class="draft">draft</span>}
+            </p>
+            <p>{post.data.description}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+<style>
+  .posts { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); max-width: 760px; }
+  li { padding-bottom: var(--space-5); border-bottom: 1px solid var(--border); }
+  h2 { font-size: 22px; margin-bottom: var(--space-1); }
+  h2 a { color: var(--ink); text-decoration: none; }
+  h2 a:hover { color: var(--accent); text-decoration: underline; }
+  .meta { font-size: 14px; color: var(--ink-3); margin-bottom: var(--space-2); }
+  .draft { margin-left: 8px; padding: 1px 6px; border-radius: 999px; background: var(--warn-bg); color: var(--warn-ink); font-size: 12px; }
+  p:last-child { margin: 0; color: var(--ink-2); }
+</style>

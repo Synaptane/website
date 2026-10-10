@@ -1,0 +1,116 @@
+---
+/**
+ * Code block with a copy button. Highlighted at build time (Shiki, light and dark themes
+ * following the site theme); the copy button is a small inline script, hidden without
+ * JavaScript.
+ *
+ *   <CodeBlock lang="sh" title="Terminal" code={`docker compose up -d`} />
+ */
+import { Code } from 'astro:components';
+import Icon from './Icon.astro';
+import { getLang, useTranslations } from '../i18n';
+
+interface Props {
+  code: string;
+  /** Shiki language: sh, yaml, json, ini, markdown, python, text… */
+  lang?: 'sh' | 'bash' | 'shell' | 'yaml' | 'json' | 'ini' | 'toml' | 'markdown' | 'md' | 'python' | 'text' | 'html' | 'ts' | 'js';
+  /** Label above the code (file name, "Terminal"…). */
+  title?: string;
+}
+
+const { code, lang = 'sh', title } = Astro.props;
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<figure class="code-block">
+  <figcaption class:list={['bar', { untitled: !title }]}>
+    {title && <span class="title">{title}</span>}
+    <button type="button" class="copy" data-copy-code aria-label={t.code.copyLabel} hidden>
+      <Icon name="copy" size={14} class="icon-copy" />
+      <Icon name="check" size={14} class="icon-done" />
+      <span class="copy-label" data-copied={t.code.copied}>{t.code.copy}</span>
+    </button>
+  </figcaption>
+  <Code code={code.trim()} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} defaultColor={false} />
+</figure>
+
+<script is:inline>
+  (() => {
+    document.querySelectorAll('[data-copy-code]:not([data-bound])').forEach((button) => {
+      button.dataset.bound = '';
+      button.hidden = !navigator.clipboard;
+      button.addEventListener('click', async () => {
+        const pre = button.closest('figure')?.querySelector('pre');
+        if (!pre) return;
+        try {
+          await navigator.clipboard.writeText(pre.innerText.replace(/\n$/, ''));
+          const label = button.querySelector('.copy-label');
+          const text = label.textContent;
+          button.classList.add('done');
+          label.textContent = label.dataset.copied;
+          setTimeout(() => { button.classList.remove('done'); label.textContent = text; }, 1600);
+        } catch {}
+      });
+    });
+  })();
+</script>
+
+<style>
+  .code-block {
+    margin: 0 0 var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-2);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-height: 36px;
+    padding: 4px 6px 4px 14px;
+    border-bottom: 1px solid var(--border);
+    font: 500 12.5px/1.2 var(--font-body);
+    color: var(--ink-3);
+  }
+  /* Without a title the button floats over the code, top right. */
+  .bar.untitled {
+    position: relative;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+  }
+  .bar.untitled .copy { position: absolute; top: 6px; right: 6px; z-index: 1; }
+  .copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 26px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--ink-2);
+    font: 500 12.5px/1 var(--font-body);
+  }
+  .copy[hidden] { display: none; }
+  .copy:hover { color: var(--ink); }
+  .copy :global(.icon-done), .copy.done :global(.icon-copy) { display: none; }
+  .copy.done :global(.icon-done) { display: block; color: var(--ok); }
+  .code-block :global(pre.astro-code) {
+    margin: 0;
+    padding: 14px 16px;
+    background: transparent !important;
+    font-size: 13.5px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .bar.untitled + :global(pre.astro-code) { padding-right: 90px; }
+  .code-block :global(.astro-code span) { color: var(--shiki-light); }
+  :global(:root[data-theme='dark']) .code-block :global(.astro-code span) { color: var(--shiki-dark); }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .code-block :global(.astro-code span) { color: var(--shiki-dark); }
+  }
+</style>

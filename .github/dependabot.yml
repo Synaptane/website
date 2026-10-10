@@ -1,0 +1,17 @@
+# Updates proposed every week: npm dependencies (grouped) and GitHub Actions (pinned by SHA,
+# Dependabot updates the hash and the version comment together).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      astro:
+        patterns: ["astro", "@astrojs/*"]
+      npm:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

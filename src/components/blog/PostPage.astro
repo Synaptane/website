@@ -1,0 +1,51 @@
+---
+/** Page of one blog post (used by src/pages/blog/[slug].astro and its French twin). */
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { formatDate, localizePath, useTranslations } from '../../i18n';
+import type { Post } from '../../lib/blog';
+
+interface Props {
+  post: Post;
+  /** URL of the translation, or null. */
+  translationPath: string | null;
+}
+
+const { post, translationPath } = Astro.props;
+const { title, description, date, updated, author, lang, draft } = post.data;
+const t = useTranslations(lang);
+const { Content } = await render(post);
+---
+
+<Base
+  title={title}
+  description={description}
+  type="article"
+  publishedTime={date}
+  alternate={translationPath}
+  noindex={draft}
+>
+  <article class="container container-narrow post">
+    <p class="back"><a href={localizePath('/blog/', lang)}>← {t.blog.backToList}</a></p>
+    <header>
+      <h1>{title}</h1>
+      <p class="meta">
+        {t.blog.by} <a href={localizePath('/about/', lang)}>{author}</a> ·
+        <time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
+        {updated && <> · {t.blog.updated} <time datetime={updated.toISOString()}>{formatDate(updated, lang)}</time></>}
+      </p>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post { padding-top: var(--space-7); }
+  .back { font-size: 14px; margin-bottom: var(--space-5); }
+  .back a { text-decoration: none; }
+  h1 { font-size: clamp(30px, 5vw, 44px); }
+  .meta { color: var(--ink-3); font-size: 15px; margin-bottom: var(--space-6); }
+  .meta a { color: inherit; }
+</style>

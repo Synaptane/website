@@ -1,0 +1,36 @@
+---
+/** Links from the docs back to the site pages (Starlight header and mobile menu). */
+import { getLang, localizePath, useTranslations } from '../../i18n';
+import { mainNav } from '../../site';
+
+interface Props {
+  class?: string;
+}
+
+const lang = getLang(Astro.locals.starlightRoute.lang);
+const t = useTranslations(lang);
+const items = mainNav.filter((i) => i.key !== 'docs');
+---
+
+<nav class:list={['site-links', Astro.props.class]} aria-label={t.a11y.mainNav}>
+  <ul>
+    {items.map((i) => <li><a href={localizePath(i.path, lang)}>{t.nav[i.key]}</a></li>)}
+  </ul>
+</nav>
+
+<style>
+  ul { display: flex; flex-wrap: wrap; gap: 2px; list-style: none; margin: 0; padding: 0; }
+  a {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--radius);
+    color: var(--ink-2);
+    font-size: 14.5px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  a:hover { background: var(--hover); color: var(--ink); }
+</style>

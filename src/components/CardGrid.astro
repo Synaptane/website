@@ -1,0 +1,24 @@
+---
+/** Responsive grid of cards: 1 column on phones, 2 on tablets, up to `columns` on wide screens. */
+interface Props {
+  columns?: 2 | 3 | 4;
+}
+const { columns = 3 } = Astro.props;
+---
+
+<div class:list={['card-grid', `cols-${columns}`]}><slot /></div>
+
+<style>
+  .card-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 640px) {
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 960px) {
+    .cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+</style>

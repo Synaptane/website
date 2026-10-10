@@ -1,0 +1,42 @@
+---
+/**
+ * Link to the same page in the other language (two languages: English and French). A plain
+ * link, no JavaScript. Used in the site header and, through
+ * src/components/starlight/LanguageSelect.astro, in the docs.
+ */
+import Icon from './Icon.astro';
+import { languages, otherLang, useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  /** URL of this page in the other language. */
+  href: string;
+  class?: string;
+}
+
+const { lang, href, class: className } = Astro.props;
+const other = otherLang(lang);
+const t = useTranslations(lang);
+---
+
+<a class:list={['lang-switch', className]} href={href} hreflang={other} lang={other} title={t.language.switchTo}>
+  <Icon name="globe" size={15} />
+  <span>{languages[other]}</span>
+</a>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--radius);
+    color: var(--ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .lang-switch:hover { background: var(--hover); color: var(--ink); }
+</style>

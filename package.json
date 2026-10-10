@@ -1,0 +1,28 @@
+{
+  "name": "synaptane-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Source of synaptane.com: the Synaptane website and documentation.",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro",
+    "sync-docs": "node scripts/sync-docs.mjs",
+    "check-links": "node scripts/check-links.mjs"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.6",
+    "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

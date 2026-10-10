@@ -1,0 +1,13 @@
+---
+// Releases (English). French twin: src/pages/fr/releases/index.astro.
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Todo from '../../components/Todo.astro';
+---
+
+<Base title="Releases" description="Release notes of Synaptane: what changed in each version, and how to upgrade.">
+  <PageHeader title="Releases" intro="What changed in each version of Synaptane, and how to upgrade." />
+  <div class="container">
+    <Todo><p>Release notes, newest first: one entry per version (date, highlights, upgrade notes), from the CHANGELOG of the main repository. Link to the GitHub releases and to the upgrade guide (/docs/admin/installation/#upgrade).</p></Todo>
+  </div>
+</Base>

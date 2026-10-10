@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+*.woff2 binary
+
+# Copied from synaptane/synaptane by `npm run sync-docs` (collapsed in pull request diffs).
+src/content/docs/** linguist-generated=true
+public/docs/** linguist-generated=true
+docs-sync.json linguist-generated=true

@@ -1,0 +1,97 @@
+---
+/**
+ * Light / dark / system switch, the application's segmented control. Used in the site header
+ * and, through src/components/starlight/ThemeSelect.astro, in the docs.
+ *
+ * The choice is stored in localStorage under `starlight-theme` ('light', 'dark', or '' for the
+ * system setting), the key Starlight reads before painting: the docs and the site pages share
+ * it. Hidden without JavaScript (the system setting then applies through CSS).
+ */
+import Icon from './Icon.astro';
+import type { Dictionary } from '../i18n/en';
+
+interface Props {
+  t: Dictionary;
+  class?: string;
+}
+
+const { t, class: className } = Astro.props;
+const options = [
+  { value: 'light', icon: 'sun', label: t.theme.light },
+  { value: 'dark', icon: 'moon', label: t.theme.dark },
+  { value: 'auto', icon: 'monitor', label: t.theme.auto },
+] as const;
+---
+
+<div class:list={['theme-control', className]} role="group" aria-label={t.theme.label} hidden>
+  {
+    options.map((o) => (
+      <button type="button" data-theme-option={o.value} aria-pressed="false" title={o.label}>
+        <Icon name={o.icon} size={15} />
+        <span class="sr-only">{o.label}</span>
+      </button>
+    ))
+  }
+</div>
+
+{/* Inline and idempotent: it can appear more than once on a page (header and mobile menu). */}
+<script is:inline>
+  (() => {
+    const KEY = 'starlight-theme';
+    const root = document.documentElement;
+    const light = matchMedia('(prefers-color-scheme: light)');
+    const read = () => {
+      try { return localStorage.getItem(KEY) || ''; } catch { return ''; }
+    };
+    const apply = (choice) => {
+      const value = choice === 'light' || choice === 'dark' ? choice : '';
+      root.dataset.theme = value || (light.matches ? 'light' : 'dark');
+      document.querySelectorAll('[data-theme-option]').forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.themeOption === (value || 'auto'))),
+      );
+    };
+    document.querySelectorAll('.theme-control[hidden]').forEach((c) => c.removeAttribute('hidden'));
+    document.querySelectorAll('[data-theme-option]:not([data-bound])').forEach((b) => {
+      b.dataset.bound = '';
+      b.addEventListener('click', () => {
+        const value = b.dataset.themeOption === 'auto' ? '' : b.dataset.themeOption;
+        try { localStorage.setItem(KEY, value); } catch {}
+        apply(value);
+      });
+    });
+    if (!window.__synaptaneTheme) {
+      window.__synaptaneTheme = true;
+      light.addEventListener('change', () => { if (!read()) apply(''); });
+      addEventListener('storage', (e) => { if (e.key === KEY) apply(e.newValue || ''); });
+    }
+    apply(read());
+  })();
+</script>
+
+<style>
+  .theme-control {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--radius);
+    background: var(--hover);
+  }
+  .theme-control[hidden] { display: none; }
+  button {
+    width: 28px;
+    height: 26px;
+    border: 0;
+    border-radius: calc(var(--radius) - 2px);
+    background: none;
+    color: var(--ink-3);
+    display: grid;
+    place-items: center;
+    padding: 0;
+  }
+  button:hover { color: var(--ink); }
+  button[aria-pressed='true'] {
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--border);
+    color: var(--ink);
+  }
+</style>

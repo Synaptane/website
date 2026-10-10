@@ -1,0 +1,13 @@
+---
+// À propos (français). Jumelle anglaise : src/pages/about.astro.
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Todo from '../../components/Todo.astro';
+---
+
+<Base title="À propos" description="Qui fait Synaptane, et pourquoi : un second cerveau d'équipe auto-hébergé, adossé à Git.">
+  <PageHeader title="À propos" intro="Qui fait Synaptane, et pourquoi." />
+  <div class="container">
+    <Todo><p>L'histoire et les principes (vos données vous appartiennent, du Markdown simple dans Git, du logiciel libre), l'auteur (René Cotton) et comment le joindre : GitHub Discussions, pas d'e-mail.</p></Todo>
+  </div>
+</Base>

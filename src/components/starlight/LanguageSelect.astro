@@ -1,0 +1,14 @@
+---
+/**
+ * Starlight override: the site's language link instead of a <select>. Every docs page exists
+ * in both languages (Starlight serves the English text under /fr/ when a translation is
+ * missing), so the other language is always at the same path with or without /fr/.
+ */
+import LanguageSwitcher from '../LanguageSwitcher.astro';
+import { getLang, otherLang, translatePath } from '../../i18n';
+
+const lang = getLang(Astro.locals.starlightRoute.lang);
+const href = translatePath(Astro.url.pathname, otherLang(lang));
+---
+
+<LanguageSwitcher lang={lang} href={href} />

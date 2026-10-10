@@ -1,0 +1,30 @@
+---
+/**
+ * Placeholder for content still to write. Clearly visible on the page, and easy to find
+ * before the launch: `grep -rn "<Todo" src/`.
+ *
+ *   <Todo>Feature grid: six cards, one per capability.</Todo>
+ */
+import { getLang, useTranslations } from '../i18n';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<div class="todo" data-todo role="note">
+  <strong>TODO · {t.todo}</strong>
+  <div><slot /></div>
+</div>
+
+<style>
+  .todo {
+    margin-block: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 2px dashed var(--warn-ink);
+    border-radius: var(--radius-lg);
+    background: var(--warn-bg);
+    color: var(--ink);
+    font-size: 15px;
+  }
+  strong { display: block; margin-bottom: var(--space-1); color: var(--warn-ink); letter-spacing: 0.02em; }
+  .todo :global(p:last-child) { margin-bottom: 0; }
+</style>

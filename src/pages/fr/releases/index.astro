@@ -1,0 +1,13 @@
+---
+// Versions (français). Jumelle anglaise : src/pages/releases/index.astro.
+import Base from '../../../layouts/Base.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import Todo from '../../../components/Todo.astro';
+---
+
+<Base title="Versions" description="Notes de version de Synaptane : ce qui change à chaque version, et comment mettre à jour.">
+  <PageHeader title="Versions" intro="Ce qui change à chaque version de Synaptane, et comment mettre à jour." />
+  <div class="container">
+    <Todo><p>Notes de version, de la plus récente à la plus ancienne : une entrée par version (date, nouveautés, notes de mise à jour), tirée du CHANGELOG du dépôt principal. Renvoyer vers les releases GitHub et vers la mise à jour (/fr/docs/admin/installation/#mettre-à-jour).</p></Todo>
+  </div>
+</Base>

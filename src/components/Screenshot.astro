@@ -1,0 +1,78 @@
+---
+/**
+ * A product screenshot with its light (Paper) and dark (Slate) versions: the one matching the
+ * site theme is shown, the other is not loaded (lazy + display: none).
+ *
+ * `light` and `dark` are either images imported from src/assets/ (optimized by Astro), or
+ * paths under public/ (e.g. the docs screenshots synced into /docs/assets/).
+ *
+ *   ---
+ *   import wikiLight from '../assets/screenshots/wiki-light.png';
+ *   ---
+ *   <Screenshot light={wikiLight} dark={wikiDark} alt="A wiki page…" caption="…" />
+ *   <Screenshot light="/docs/assets/screenshot-wiki-light.png"
+ *               dark="/docs/assets/screenshot-wiki-dark.png" width={2000} height={1250} alt="…" />
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  light: ImageMetadata | string;
+  /** Dark version; without it the light one is shown in both themes. */
+  dark?: ImageMetadata | string;
+  alt: string;
+  caption?: string;
+  /** Intrinsic size, required for paths under public/ (avoids layout shifts). */
+  width?: number;
+  height?: number;
+  /** Load immediately (the first screenshot of a page, above the fold). */
+  eager?: boolean;
+  /** Displayed width hint for responsive images (CSS `sizes`). */
+  sizes?: string;
+  class?: string;
+}
+
+const { light, dark, alt, caption, width, height, eager = false, sizes = '(min-width: 1180px) 1120px, 100vw', class: className } = Astro.props;
+const loading = eager ? 'eager' : 'lazy';
+const versions = [
+  { src: light, theme: 'light' },
+  ...(dark ? [{ src: dark, theme: 'dark' }] : []),
+];
+/** Widths generated for an imported image (never wider than the original). */
+const widthsFor = (image: ImageMetadata) => [...new Set([640, 1120, 1680, image.width].filter((w) => w <= image.width))];
+---
+
+<figure class:list={['screenshot', { 'has-dark': !!dark }, className]}>
+  <div class="frame">
+    {
+      versions.map((v) =>
+        typeof v.src === 'string' ? (
+          <img class={`shot shot-${v.theme}`} src={v.src} alt={alt} width={width} height={height} loading={loading} decoding="async" />
+        ) : (
+          <Image class={`shot shot-${v.theme}`} src={v.src} alt={alt} loading={loading} sizes={sizes} widths={widthsFor(v.src)} />
+        ),
+      )
+    }
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .screenshot { margin: 0; min-width: 0; }
+  .frame {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .shot { display: block; width: 100%; height: auto; }
+  .has-dark .shot-dark { display: none; }
+  :global(:root[data-theme='dark']) .has-dark .shot-light { display: none; }
+  :global(:root[data-theme='dark']) .has-dark .shot-dark { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .has-dark .shot-light { display: none; }
+    :global(:root:not([data-theme='light'])) .has-dark .shot-dark { display: block; }
+  }
+  figcaption { margin-top: var(--space-3); font-size: 14px; color: var(--ink-3); text-align: center; }
+</style>

@@ -1,0 +1,56 @@
+/* Synaptane design tokens, copied from the application (synaptane/synaptane,
+   src/synaptane/web/static/app.css, `:root` variables) so that the site looks like the product:
+   « Paper » by day (Instrument Sans, Newsreader for reading, teal accent), « Slate » by night
+   (Geist, lime accent). Shared by the site pages (src/layouts/Base.astro) and the docs
+   (Starlight `customCss`). Keep in sync with the application when its tokens change.
+
+   The theme follows `prefers-color-scheme`; a manual choice sets `data-theme` on <html> and is
+   stored in localStorage under `starlight-theme` (the key Starlight uses), so the choice is
+   shared between the site pages and the docs. Fonts are served by the site (public/fonts/,
+   SIL Open Font License, see the OFL-*.txt files there). */
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/InstrumentSans-latin.woff2) format("woff2")}
+@font-face{font-family:"Newsreader";font-style:normal;font-weight:400 600;font-display:swap;src:url(/fonts/Newsreader-latin.woff2) format("woff2")}
+@font-face{font-family:"Newsreader";font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/Newsreader-italic-latin.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/JetBrainsMono-latin.woff2) format("woff2")}
+@font-face{font-family:"Geist";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/Geist-latin.woff2) format("woff2")}
+@font-face{font-family:"Geist Mono";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/GeistMono-latin.woff2) format("woff2")}
+
+:root{
+  --font-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);
+  --font-read:"Newsreader",Georgia,"Times New Roman",serif;
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:18px;--read-lh:1.7;
+  --radius:8px;--radius-lg:12px;--display-ls:-0.025em;--display-weight:600;
+  --sidebar-width:264px;--topbar-height:52px;--sheet-gap:8px;
+  --bg:#F6F6F4;--bg-2:#EFEFEB;--surface:#fff;--border:#E6E6E1;
+  --ink:#18191B;--ink-2:#3F4247;--ink-3:#676B73;--hover:#F1F1ED;
+  --accent:#1F6F6A;--accent-hover:#185955;--on-accent:#fff;--accent-soft:rgb(31 111 106 / .12);
+  --primary:#18191B;--primary-hover:#2E3034;--on-primary:#fff;
+  --warn-bg:rgb(148 96 10 / .08);--warn-ink:#7A4F08;--ok:#2B7349;--ok-bg:rgb(43 115 73 / .1);
+  --danger:#B42318;--danger-bg:rgb(180 35 24 / .08);--shadow:0 16px 48px rgb(24 25 27 / .14),0 2px 6px rgb(24 25 27 / .05);
+  --field-border:#868990;
+  color-scheme:light;
+}
+:root[data-theme=dark]{
+  --font-body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);--font-read:var(--font-body);
+  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:16.5px;--read-lh:1.7;
+  --bg:#0E1116;--bg-2:#0B0E12;--surface:#161B22;--border:#262C36;
+  --ink:#E6EAF0;--ink-2:#C9D1DC;--ink-3:#8B95A5;--hover:#1C222B;
+  --accent:#B6F36A;--accent-hover:#C9F78F;--on-accent:#0E1116;--accent-soft:rgb(182 243 106 / .14);
+  --primary:#B6F36A;--primary-hover:#C9F78F;--on-primary:#0E1116;
+  --warn-bg:rgb(245 184 92 / .1);--warn-ink:#F5B85C;--ok:#B6F36A;--ok-bg:rgb(182 243 106 / .12);
+  --danger:#FF7B72;--danger-bg:rgb(255 123 114 / .12);--shadow:0 16px 48px rgb(0 0 0 / .5),0 2px 6px rgb(0 0 0 / .3);
+  --field-border:#5C6573;
+  color-scheme:dark;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --font-body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);--font-read:var(--font-body);
+  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:16.5px;--read-lh:1.7;
+  --bg:#0E1116;--bg-2:#0B0E12;--surface:#161B22;--border:#262C36;
+  --ink:#E6EAF0;--ink-2:#C9D1DC;--ink-3:#8B95A5;--hover:#1C222B;
+  --accent:#B6F36A;--accent-hover:#C9F78F;--on-accent:#0E1116;--accent-soft:rgb(182 243 106 / .14);
+  --primary:#B6F36A;--primary-hover:#C9F78F;--on-primary:#0E1116;
+  --warn-bg:rgb(245 184 92 / .1);--warn-ink:#F5B85C;--ok:#B6F36A;--ok-bg:rgb(182 243 106 / .12);
+  --danger:#FF7B72;--danger-bg:rgb(255 123 114 / .12);--shadow:0 16px 48px rgb(0 0 0 / .5),0 2px 6px rgb(0 0 0 / .3);
+  --field-border:#5C6573;
+  color-scheme:dark;
+}}

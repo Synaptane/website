@@ -1,0 +1,9 @@
+---
+/** Starlight override: the site's light / dark / system control (same storage key). */
+import ThemeControl from '../ThemeControl.astro';
+import { getLang, useTranslations } from '../../i18n';
+
+const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
+---
+
+<ThemeControl t={t} />

@@ -1,0 +1,13 @@
+---
+// Mentions légales (français). Jumelle anglaise : src/pages/legal.astro.
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Todo from '../../components/Todo.astro';
+---
+
+<Base title="Mentions légales" description="Mentions légales de synaptane.com : éditeur, hébergeur et confidentialité (ni cookie, ni statistiques).">
+  <PageHeader title="Mentions légales" intro="Qui publie ce site, qui l'héberge, et ce qu'il collecte (rien)." />
+  <div class="container">
+    <Todo><p>Éditeur (René Cotton ; ni adresse postale ni e-mail sur le site, contact par GitHub Discussions : vérifier ce qu'exige la loi pour l'éditeur), hébergeur (GitHub Pages, GitHub Inc.), confidentialité : ni cookie, ni statistiques, ni script tiers ; le choix du thème reste dans le navigateur (localStorage). Licences : code du site Apache-2.0, polices SIL OFL (/fonts/).</p></Todo>
+  </div>
+</Base>

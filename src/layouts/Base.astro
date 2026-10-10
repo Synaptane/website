@@ -1,0 +1,125 @@
+---
+/**
+ * Layout of every site page (everything but the docs, which use Starlight).
+ *
+ *   ---
+ *   import Base from '../layouts/Base.astro';   // '../../layouts/Base.astro' under src/pages/fr/
+ *   ---
+ *   <Base title="Roadmap" description="One sentence for search engines and link previews.">
+ *     …
+ *   </Base>
+ *
+ * The language comes from the URL (Astro.currentLocale: /fr/… is French). The other-language
+ * version is assumed to exist at the same path (/about/ <-> /fr/about/); otherwise pass
+ * `alternate` with its URL, or `null` when there is none (the switcher then leads to the
+ * other language's home page and no hreflang link is emitted).
+ */
+import '../styles/tokens.css';
+import '../styles/site.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { getLang, localizePath, otherLang, translatePath, useTranslations } from '../i18n';
+import { SITE } from '../site';
+
+interface Props {
+  /** Page title, without the site name (the home page passes none). */
+  title?: string;
+  /** One or two sentences: meta description and link previews. */
+  description?: string;
+  /** URL of this page in the other language; null if it has no translation. */
+  alternate?: string | null;
+  /** Open Graph image: an absolute URL or a path under public/ (default: /og.png). */
+  image?: string;
+  imageAlt?: string;
+  /** 'article' for blog posts. */
+  type?: 'website' | 'article';
+  /** Publication date of an article (Open Graph). */
+  publishedTime?: Date;
+  /** Keep the page out of search engines (drafts, 404). */
+  noindex?: boolean;
+}
+
+const lang = getLang(Astro.currentLocale);
+const other = otherLang(lang);
+const t = useTranslations(lang);
+const {
+  title,
+  description = t.meta.defaultDescription,
+  image = '/og.png',
+  imageAlt = t.meta.ogImageAlt,
+  type = 'website',
+  publishedTime,
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(SITE.url);
+const pathname = Astro.url.pathname;
+const alternatePath =
+  Astro.props.alternate === undefined ? translatePath(pathname, other) : Astro.props.alternate;
+const fullTitle = title ? `${title} · Synaptane` : `Synaptane · ${t.footer.tagline}`;
+const canonical = new URL(pathname, site).href;
+const imageUrl = new URL(image, site).href;
+const hreflang = alternatePath && !noindex
+  ? [
+      { lang, href: canonical },
+      { lang: other, href: new URL(alternatePath, site).href },
+    ]
+  : [];
+const xDefault = hreflang.find((h) => h.lang === 'en')?.href;
+---
+
+<!doctype html>
+<html lang={lang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Theme before the first paint (same key and rule as Starlight's ThemeProvider). */}
+    <script is:inline>
+      (() => {
+        let t = '';
+        try { t = localStorage.getItem('starlight-theme') || ''; } catch {}
+        document.documentElement.dataset.theme =
+          t === 'light' || t === 'dark' ? t : matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      })();
+    </script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {hreflang.map((h) => <link rel="alternate" hreflang={h.lang} href={h.href} />)}
+    {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#F6F6F4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E1116" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:site_name" content="Synaptane" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? 'Synaptane'} />
+    <meta property="og:description" content={description} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content={t.meta.ogLocale} />
+    {alternatePath && <meta property="og:locale:alternate" content={useTranslations(other).meta.ogLocale} />}
+    <meta property="og:image" content={imageUrl} />
+    {image === '/og.png' && <meta property="og:image:width" content="1280" />}
+    {image === '/og.png' && <meta property="og:image:height" content="640" />}
+    <meta property="og:image:alt" content={imageAlt} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title ?? 'Synaptane'} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.a11y.skipToContent}</a>
+    <SiteHeader lang={lang} alternateHref={alternatePath ?? localizePath('/', other)} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+  </body>
+</html>

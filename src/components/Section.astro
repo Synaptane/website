@@ -1,0 +1,61 @@
+---
+/**
+ * A band of a site page: optional eyebrow, title and intro, then the slot. `tone="alt"` puts it
+ * on the surface color with borders, to separate two neighbouring sections.
+ *
+ *   <Section id="features" eyebrow="Why" title="What it does" intro="One sentence.">…</Section>
+ */
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  tone?: 'default' | 'alt';
+  /** Narrow reading column instead of the full page width. */
+  narrow?: boolean;
+  /** Heading level of the title (h2 by default). */
+  level?: 2 | 3;
+  class?: string;
+}
+
+const { id, eyebrow, title, intro, tone = 'default', narrow = false, level = 2, class: className } = Astro.props;
+const Heading = level === 3 ? 'h3' : 'h2';
+const headingId = id && title ? `${id}-title` : undefined;
+---
+
+<section
+  id={id}
+  class:list={['section', `section-${tone}`, className]}
+  aria-labelledby={headingId}
+>
+  <div class:list={['container', { 'container-narrow': narrow }]}>
+    {
+      (eyebrow || title || intro) && (
+        <div class="section-head">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          {title && <Heading id={headingId}>{title}</Heading>}
+          {intro && <p class="intro">{intro}</p>}
+        </div>
+      )
+    }
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section { padding-block: var(--space-8); }
+  .section-alt { background: var(--surface); border-block: 1px solid var(--border); }
+  .section-head { max-width: 720px; margin-bottom: var(--space-6); }
+  .eyebrow {
+    margin: 0 0 var(--space-2);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .intro { font-size: 18px; color: var(--ink-2); margin: 0; }
+  @media (max-width: 719px) {
+    .section { padding-block: var(--space-7); }
+  }
+</style>

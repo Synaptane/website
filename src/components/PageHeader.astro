@@ -1,0 +1,32 @@
+---
+/** Title block at the top of a site page: h1, one-sentence intro, optional extra content. */
+interface Props {
+  title: string;
+  intro?: string;
+  eyebrow?: string;
+}
+const { title, intro, eyebrow } = Astro.props;
+---
+
+<header class="page-header">
+  <div class="container">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {intro && <p class="lead">{intro}</p>}
+    <slot />
+  </div>
+</header>
+
+<style>
+  .page-header { padding-block: var(--space-8) var(--space-6); }
+  .eyebrow {
+    margin: 0 0 var(--space-3);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 { max-width: 20ch; }
+  .lead { margin: var(--space-4) 0 0; }
+</style>

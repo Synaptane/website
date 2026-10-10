@@ -1,0 +1,84 @@
+name: Sync docs
+
+# Copies the documentation of synaptane/synaptane (folder docs/) at a ref, and opens a pull
+# request when it changed. Manual run: Actions → Sync docs → Run workflow (ref: a tag such as
+# v1.0.0-rc.1, a branch or a commit). From the main repository (e.g. its release workflow):
+#
+#   gh api repos/synaptane/website/dispatches \
+#     -f event_type=sync-docs -F 'client_payload[ref]=v1.0.0'
+#
+# (needs a token with write access to synaptane/website: a fine-grained PAT or a GitHub App).
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Ref of synaptane/synaptane to copy the docs from (tag, branch or commit)
+        required: true
+        default: main
+  repository_dispatch:
+    types: [sync-docs]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-docs
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write # push the sync branch
+      pull-requests: write # open the pull request
+    env:
+      ASTRO_TELEMETRY_DISABLED: 1
+      REF: ${{ github.event.inputs.ref || github.event.client_payload.ref || 'main' }}
+    steps:
+      - name: Check the ref
+        run: |
+          if ! [[ "$REF" =~ ^[A-Za-z0-9._/-]+$ ]]; then echo "Invalid ref: $REF"; exit 1; fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true # the branch is pushed below
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Copy the docs
+        env:
+          # Read access to synaptane/synaptane while it is private (fine-grained token,
+          # Contents: read). Can be removed once the repository is public.
+          SYNC_DOCS_TOKEN: ${{ secrets.SYNC_DOCS_TOKEN }}
+        run: npm run sync-docs -- --ref "$REF"
+      - name: Build and check (the pull request must be mergeable as is)
+        run: |
+          npm run check
+          npm run build
+          npm run check-links
+      - name: Open a pull request if the docs changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Docs already up to date with synaptane/synaptane@$REF."
+            exit 0
+          fi
+          branch="sync-docs/${REF//\//-}"
+          commit=$(node -p "require('./docs-sync.json').commit.slice(0, 12)")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$branch"
+          git add -A src/content/docs public/docs docs-sync.json
+          git commit -m "Docs: sync from synaptane/synaptane@$REF ($commit)"
+          git push --force origin "$branch"
+          if gh pr view "$branch" --json state --jq .state 2>/dev/null | grep -q OPEN; then
+            echo "Pull request updated."
+          else
+            gh pr create --base main --head "$branch" \
+              --title "Docs: sync from synaptane/synaptane@$REF" \
+              --body "Documentation copied by \`npm run sync-docs -- --ref $REF\` (commit $commit of synaptane/synaptane). Built, type-checked and link-checked by the workflow."
+          fi
