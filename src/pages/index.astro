@@ -1,70 +1,356 @@
 ---
 // Home page (English). French twin: src/pages/fr/index.astro.
+// Facts on this page are checked against the documentation of synaptane/synaptane (README,
+// docs/concepts.md, docs/guide/mcp.md, docs/admin/*.md); the comparison table against each
+// product's public documentation and announcements, as of October 2026.
 import Base from '../layouts/Base.astro';
 import Button from '../components/Button.astro';
 import CodeBlock from '../components/CodeBlock.astro';
 import Screenshot from '../components/Screenshot.astro';
 import Section from '../components/Section.astro';
-import Todo from '../components/Todo.astro';
+import Hero from '../components/home/Hero.astro';
+import Journey from '../components/home/Journey.astro';
+import FeatureGrid, { type Feature } from '../components/home/FeatureGrid.astro';
+import Gallery from '../components/home/Gallery.astro';
+import Comparison, { type Row } from '../components/home/Comparison.astro';
+import HomeIcon from '../components/home/HomeIcon.astro';
+import '../components/home/home.css';
 import { SITE } from '../site';
+
+const imageVersion = SITE.version.replace(/^v/, '');
+
+const features: Feature[] = [
+  {
+    icon: 'git',
+    title: 'Git is the source of truth',
+    text: 'Each space is a Git repository, on GitHub, GitLab, Gitea or any host. Its content/ folder is plain Markdown you can read, grep and clone without Synaptane. Every change is a commit.',
+    href: '/docs/admin/git/',
+    linkLabel: 'Git repositories',
+  },
+  {
+    icon: 'plug',
+    title: 'Built for AI assistants',
+    text: 'An MCP server with 20 tools and 3 prompts, over OAuth 2.1 or personal tokens. Tested with Claude.ai, Claude Desktop, Claude Code and ChatGPT. A connection can be read-only or limited to some spaces.',
+    href: '/docs/guide/mcp/',
+    linkLabel: 'Connect an assistant',
+  },
+  {
+    icon: 'inbox',
+    title: 'Inbox and nightly tidy-up',
+    text: 'Notes from assistants, the web UI or the API wait in an inbox. Every night an AI agent files them, updates existing pages, fixes links and commits. Deletions and spending are capped, and a run can be undone in one click.',
+    href: '/docs/concepts/#tidy-up',
+    linkLabel: 'How the tidy-up works',
+  },
+  {
+    icon: 'clock',
+    title: 'Scheduled routines',
+    text: 'Agents that run on a schedule, such as a weekly consistency check or a Friday digest. They write a report page, drop items into the inbox, send an email or call a webhook.',
+    href: '/docs/admin/ai/#agent-routines-per-space',
+    linkLabel: 'Routines',
+  },
+  {
+    icon: 'search',
+    title: 'Search that finds things',
+    text: 'Full-text search with accent folding and light stemming, including text from PDF, Office files and images (OCR). Optional search by meaning with pgvector, and related pages on every page.',
+    href: '/docs/guide/wiki/#search',
+    linkLabel: 'Search',
+  },
+  {
+    icon: 'shield',
+    title: 'Knowledge you can trust',
+    text: 'Page owners, verification dates and review cycles. A health tab lists broken links, orphan pages and pages to review. Probable secrets are refused before any commit.',
+    href: '/docs/guide/wiki/#verify-a-page',
+    linkLabel: 'Verified pages',
+  },
+  {
+    icon: 'chip',
+    title: 'Bring your own model',
+    text: 'Anthropic, OpenAI, Mistral, Ollama or any OpenAI-compatible endpoint, with a monthly budget per organization. Without a provider, the wiki, search, the inbox and MCP still work.',
+    href: '/docs/admin/ai/',
+    linkLabel: 'AI providers',
+  },
+  {
+    icon: 'users',
+    title: 'Made for teams',
+    text: 'Organizations, spaces and roles, email invitations, single sign-on with OIDC, GitHub, GitLab or Google. A REST API with its OpenAPI schema, and signed webhooks.',
+    href: '/docs/admin/sso/',
+    linkLabel: 'Single sign-on',
+  },
+];
+
+const installCode = `# 1. Get the release
+git clone --branch ${SITE.version} https://github.com/synaptane/synaptane.git && cd synaptane
+
+# 2. Write a minimal .env (the last line is for the demo only)
+printf 'PUBLIC_URL=http://localhost:8000\\nPOSTGRES_PASSWORD=%s\\nSYNAPTANE_VERSION=${imageVersion}\\n' \\
+  "$(openssl rand -hex 24)" > .env
+echo 'COMPOSE_FILE=compose.yaml:examples/compose.demo.yaml' >> .env
+
+# 3. Start, then load the demo wiki
+docker compose up -d
+docker compose exec app synaptane demo`;
+
+const rows: Row[] = [
+  {
+    label: 'Self-hosted',
+    cells: [
+      { level: 'yes', text: 'Yes, with Docker Compose' },
+      { level: 'no', text: 'No, cloud only' },
+      { level: 'no', text: 'Rovo is cloud only; Data Center reaches end of life in 2029' },
+      { level: 'yes', text: 'Yes' },
+      { level: 'partial', text: 'Desktop and mobile app, no server' },
+      { level: 'yes', text: 'Yes' },
+    ],
+  },
+  {
+    label: 'Content as plain files',
+    hint: 'Readable without the tool',
+    cells: [
+      { level: 'yes', text: 'Markdown in your Git repository, one commit per change' },
+      { level: 'partial', text: 'Through export (Markdown, HTML, PDF)' },
+      { level: 'partial', text: 'Through export (PDF, Word, HTML)' },
+      { level: 'partial', text: 'Through export (Markdown)' },
+      { level: 'yes', text: 'Markdown files on your disk' },
+      { level: 'yes', text: 'Markdown, with optional Git sync' },
+    ],
+  },
+  {
+    label: 'MCP server',
+    hint: 'For Claude, ChatGPT and others',
+    cells: [
+      { level: 'yes', text: 'Built in: search, read, write, inbox' },
+      { level: 'yes', text: 'Official, hosted by Notion' },
+      { level: 'yes', text: 'Rovo MCP server (cloud)' },
+      { level: 'yes', text: 'Built in since February 2026' },
+      { level: 'partial', text: 'Community plugins' },
+      { level: 'no', text: 'No official server' },
+    ],
+  },
+  {
+    label: 'AI that files new notes',
+    hint: 'On a schedule, into the right pages',
+    cells: [
+      { level: 'yes', text: 'Every night, in one commit you can undo' },
+      { level: 'partial', text: 'Possible with Custom Agents (Business and Enterprise plans)' },
+      { level: 'partial', text: 'Possible with Rovo agents in Automation rules' },
+      { level: 'no', text: 'Not built in' },
+      { level: 'no', text: 'Not built in' },
+      { level: 'no', text: 'Not built in' },
+    ],
+  },
+  {
+    label: 'Teams and single sign-on',
+    cells: [
+      { level: 'yes', text: 'Organizations and roles; OIDC, GitHub, GitLab, Google' },
+      { level: 'yes', text: 'SAML SSO on Business and Enterprise plans' },
+      { level: 'yes', text: 'SSO with Atlassian Guard' },
+      { level: 'yes', text: 'Sign-in through Google, Slack, Microsoft or OIDC' },
+      { level: 'partial', text: 'Shared vaults with paid Sync; no SSO' },
+      { level: 'yes', text: 'OIDC, SAML, LDAP and more' },
+    ],
+  },
+  {
+    label: 'Open source license',
+    cells: [
+      { level: 'yes', text: 'Apache-2.0' },
+      { level: 'no', text: 'Proprietary' },
+      { level: 'no', text: 'Proprietary' },
+      { level: 'partial', text: 'BSL 1.1 (source available)' },
+      { level: 'no', text: 'Proprietary, free to use' },
+      { level: 'yes', text: 'AGPL-3.0' },
+    ],
+  },
+];
 ---
 
-<Base description="Synaptane is a self-hosted team second brain stored in Git. Your AI assistants search it over MCP, and an AI agent files their notes into a plain-Markdown wiki every night.">
-  <section class="hero container">
-    <p class="status">Alpha · {SITE.version}</p>
-    <h1>The team second brain, stored in Git.</h1>
-    <p class="lead">
-      Your AI assistants search it and drop what they learn into an inbox over MCP. Every night, an
-      AI agent files those notes into a plain-Markdown wiki and commits the result.
-    </p>
-    <div class="actions">
-      <Button href="/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Install Synaptane</Button>
-      <Button href="/demo/" size="lg">Try the demo</Button>
-      <Button href={SITE.github} size="lg" iconBefore="github">GitHub</Button>
+<Base
+  title="Your team's memory, in Git"
+  description="Synaptane is a self-hosted team second brain stored in Git. Your AI assistants search it and add to it over MCP; an AI agent files their notes into a Markdown wiki every night."
+>
+  <Hero
+    status="Alpha: first public release"
+    statusHref="/releases/"
+    title="Your team's memory, in Git."
+    titleMuted="Fed by your AI assistants, tidied by AI every night."
+    lead="Synaptane is a self-hosted wiki in plain Markdown. Your AI assistants search it and save what they learn over MCP, and every night an AI agent files their notes into the right pages, in a Git commit."
+    screenshotAlt="A Synaptane wiki page: the space tree, a table, a verified badge, pages linking here and related pages"
+    caption="A page of the demo wiki of Acme, a fictional IT team."
+  >
+    <Fragment slot="actions">
+      <Button href="/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Get started</Button>
+      <Button href="/demo/" size="lg">See the demo</Button>
+      <Button href={SITE.github} size="lg" variant="quiet" iconBefore="github">GitHub</Button>
+    </Fragment>
+  </Hero>
+
+  <Section
+    id="how-it-works"
+    tone="alt"
+    class="home-journey"
+    eyebrow="How it works"
+    title="From a conversation to the wiki, and back"
+    intro="What your team explains to its assistants no longer vanishes when the chat ends. Follow one note from Tuesday afternoon to Wednesday morning."
+  >
+    <Journey lang="en" />
+  </Section>
+
+  <Section
+    id="features"
+    eyebrow="Features"
+    title="A wiki your assistants read, feed and keep tidy"
+    intro="Synaptane is a plain Markdown wiki first. Everything else is built around it, and around the assistants your team already uses."
+  >
+    <FeatureGrid items={features} />
+  </Section>
+
+  <Section
+    id="get-started"
+    tone="alt"
+    eyebrow="Get started"
+    title="Running in three steps"
+    intro="On Linux, or WSL2 on Windows, with Docker. This starts a local instance with the demo wiki of Acme, a fictional IT team."
+  >
+    <div class="home-split">
+      <div>
+        <ol class="home-steps">
+          <li><strong>Get the release</strong>Clone the tagged release: it holds the Compose file, the nginx configuration and the server scripts.</li>
+          <li><strong>Write a minimal <code>.env</code></strong>A local address, a random database password and the image version. The last line lets the demo use a local Git repository: keep it for a throwaway instance.</li>
+          <li><strong>Start and load the demo</strong>Then open <code>http://localhost:8000/o/acme/it</code> and sign in with the password the command prints.</li>
+        </ol>
+        <p class="home-note">
+          <strong>For a real server,</strong> skip the demo line, create the first account with
+          <code>synaptane admin create</code>, serve it over HTTPS and run <code>synaptane doctor</code>.
+          The guide covers the two proxy modes, upgrades and encrypted off-site backups.
+        </p>
+        <div class="home-links">
+          <Button href="/docs/admin/installation/" variant="primary" icon="arrow-right">Installation guide</Button>
+          <Button href="/docs/guide/mcp/">Connect an assistant</Button>
+        </div>
+      </div>
+      <div class="home-code">
+        <CodeBlock title="Terminal" lang="sh" code={installCode} />
+        <p class="home-after">The tidy-up needs an AI provider; the wiki, search, the inbox and MCP work without one.</p>
+      </div>
     </div>
-    <Todo>Hero: final headline, one-sentence pitch and calls to action (keep a single primary button).</Todo>
-    <Screenshot
-      light="/docs/assets/screenshot-wiki-light.png"
-      dark="/docs/assets/screenshot-wiki-dark.png"
-      width={2000}
-      height={1250}
-      eager
-      alt="A Synaptane wiki page: the space tree, a table, a verified badge, pages linking here and related pages"
+  </Section>
+
+  <Section
+    id="screenshots"
+    eyebrow="Screenshots"
+    title="Inside the application"
+    intro="Screenshots taken on the demo data set. Acme and its people are fictional."
+  >
+    <Gallery
+      openLabel="(full-size image)"
+      items={[
+        { shot: 'search', title: 'Ctrl+K search', text: 'across all your spaces, by words or by meaning.', alt: 'The Ctrl+K search palette with results from several pages' },
+        { shot: 'inbox', title: 'Inbox:', text: 'notes and direct changes waiting for the nightly tidy-up.', alt: 'The inbox of a space: notes and changed pages, and a form to drop information' },
+        { shot: 'history', title: 'History:', text: 'every change is a Git commit, with its diff.', alt: 'The diff of a page change in the history' },
+        { shot: 'health', title: 'Wiki health:', text: 'broken links, orphan pages, pages to review.', alt: 'The health tab of a space, listing broken links and pages to review' },
+        { shot: 'assistants', title: 'Connect an assistant', text: 'over MCP, and see its calls arrive.', alt: 'The page to connect an AI assistant over MCP' },
+        { shot: 'routines', title: 'Routines:', text: 'scheduled agents, such as a weekly consistency check.', alt: 'The list of scheduled agent routines of a space' },
+      ]}
     />
+  </Section>
+
+  <Section
+    id="compare"
+    tone="alt"
+    eyebrow="Comparison"
+    title="How Synaptane compares"
+    intro="Each of these tools is good at what it does. This table only covers what Synaptane is built around: your own server, plain files, assistants, and an AI that keeps the wiki tidy."
+  >
+    <Comparison
+      caption="Synaptane compared with Notion AI, Confluence with Rovo, Outline, Obsidian and Wiki.js"
+      regionLabel="Comparison table (scrolls sideways)"
+      criterion="Criterion"
+      columns={['Synaptane', 'Notion AI', 'Confluence + Rovo', 'Outline', 'Obsidian', 'Wiki.js']}
+      levels={{ yes: 'Yes', partial: 'Partly', no: 'No' }}
+      rows={rows}
+    />
+    <p class="home-small">
+      As of October 2026, from each product's public documentation and announcements. These products
+      change quickly: if something here is out of date, please <a href={SITE.discussions}>tell us on GitHub Discussions</a>.
+    </p>
+  </Section>
+
+  <Section
+    id="architecture"
+    eyebrow="Architecture"
+    title="Simple to run, easy to leave"
+    intro="One application, one worker, PostgreSQL and your Git repositories. If you stop using Synaptane, your wiki is still a folder of Markdown files."
+    class="home-arch"
+  >
+    <div class="home-split">
+      <ul class="home-arch-list">
+        <li><strong>One FastAPI app</strong> serves the three interfaces: MCP for assistants, the web UI and the REST API.</li>
+        <li><strong>A worker</strong> runs the nightly tidy-up, the routines, Git sync, indexing and webhooks.</li>
+        <li><strong>PostgreSQL with pgvector</strong> holds accounts, permissions and the search index. The rest can be rebuilt from the repositories.</li>
+        <li><strong>The AI provider is optional:</strong> only the tidy-up, routines and search by meaning need one.</li>
+      </ul>
+      <Screenshot
+        light="/docs/assets/architecture.svg"
+        dark="/docs/assets/architecture-dark.svg"
+        width={1040}
+        height={452}
+        alt="Architecture: AI assistants (MCP, OAuth 2.1), browsers (web UI) and scripts (REST API) reach the FastAPI app; a worker handles the nightly tidy-up, routines, Git sync, indexing and webhooks; both share PostgreSQL with pgvector and local Git working copies; the worker syncs one Git repository per space and calls an optional AI provider."
+      />
+    </div>
+  </Section>
+
+  <Section id="open-source" tone="alt" eyebrow="Open source" title="Free software, honest about its stage">
+    <div class="home-oss">
+      <div>
+        <p>
+          Synaptane is under the Apache License 2.0. The code, the documentation and this website are
+          on GitHub, and contributions are welcome: commits are signed off under the Developer
+          Certificate of Origin.
+        </p>
+        <p>
+          It is <strong>alpha software</strong>. The first public release is {SITE.version}, maintained
+          by one person on a best-effort basis. The REST API, the MCP tools and the configuration may
+          still change: back up before each upgrade.
+        </p>
+      </div>
+      <div>
+        <ul class="home-link-list">
+          <li>
+            <a href={SITE.github}>
+              <HomeIcon name="code" size={20} />
+              <span>Read the code<span class="home-link-sub">synaptane/synaptane on GitHub</span></span>
+              <HomeIcon name="external" size={16} class="home-arrow" />
+            </a>
+          </li>
+          <li>
+            <a href={`${SITE.github}/blob/main/CONTRIBUTING.md`}>
+              <HomeIcon name="git" size={20} />
+              <span>Contribute<span class="home-link-sub">How to propose a change</span></span>
+              <HomeIcon name="external" size={16} class="home-arrow" />
+            </a>
+          </li>
+          <li>
+            <a href={SITE.discussions}>
+              <HomeIcon name="discuss" size={20} />
+              <span>Ask a question, share an idea<span class="home-link-sub">GitHub Discussions</span></span>
+              <HomeIcon name="external" size={16} class="home-arrow" />
+            </a>
+          </li>
+        </ul>
+        <p class="home-hosted">
+          <strong>A hosted Synaptane?</strong> It is being considered. If you would use one, <a href={SITE.discussions}>tell us on GitHub Discussions</a>.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <section class="container home-cta-band" aria-labelledby="cta-title">
+    <div class="home-cta">
+      <h2 id="cta-title">Give your assistants a memory your team owns.</h2>
+      <p>Start with the demo on your own machine, or read the documentation first.</p>
+      <div class="home-links">
+        <Button href="/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Get started</Button>
+        <Button href={SITE.github} size="lg" iconBefore="github">GitHub</Button>
+      </div>
+    </div>
   </section>
-
-  <Section id="features" title="What Synaptane does">
-    <Todo>Feature grid (CardGrid + Card): Git storage, Markdown wiki, full-text and semantic search, MCP server, inbox and nightly tidy-up, self-hosted.</Todo>
-  </Section>
-
-  <Section id="how-it-works" tone="alt" title="How it works">
-    <Todo>The loop: assistants drop notes → inbox → nightly tidy-up → commit. Reuse /docs/assets/architecture.svg (and architecture-dark.svg).</Todo>
-  </Section>
-
-  <Section id="get-started" title="Get started">
-    <Todo>Quick start in three steps, with the commands below, then links to the docs.</Todo>
-    <CodeBlock title="Terminal" lang="sh" code={`git clone --branch ${SITE.version} https://github.com/synaptane/synaptane.git ~/synaptane
-cd ~/synaptane
-cp .env.example .env && chmod 600 .env
-docker compose pull
-docker compose up -d`} />
-  </Section>
 </Base>
-
-<style>
-  .hero { padding-block: var(--space-8) var(--space-7); }
-  .status {
-    display: inline-flex;
-    margin: 0 0 var(--space-4);
-    padding: 2px 10px;
-    border-radius: 999px;
-    background: var(--accent-soft);
-    color: var(--ink);
-    font-size: 13px;
-    font-weight: 500;
-  }
-  h1 { max-width: 16ch; }
-  .lead { margin-top: var(--space-4); }
-  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 var(--space-5); }
-  .hero :global(.screenshot) { margin-top: var(--space-6); }
-</style>

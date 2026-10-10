@@ -1,0 +1,80 @@
+---
+/** Grid of the main features: an icon, a title, two or three sentences, an optional link. */
+import HomeIcon, { type HomeIconName } from './HomeIcon.astro';
+
+export interface Feature {
+  icon: HomeIconName;
+  title: string;
+  text: string;
+  href?: string;
+  linkLabel?: string;
+}
+
+interface Props {
+  items: Feature[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="features">
+  {
+    items.map((f) => (
+      <li class="feature">
+        <span class="icon">
+          <HomeIcon name={f.icon} size={18} />
+        </span>
+        <h3>{f.title}</h3>
+        <p>{f.text}</p>
+        {f.href && (
+          <a class="more" href={f.href}>
+            {f.linkLabel}
+            <span aria-hidden="true"> →</span>
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--border);
+    gap: 1px;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) {
+    .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1000px) {
+    .features { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  .feature {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-5);
+    background: var(--surface);
+    min-width: 0;
+  }
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  h3 { font-size: 16.5px; margin: 0 0 var(--space-2); }
+  p { margin: 0 0 var(--space-3); color: var(--ink-2); font-size: 14.5px; line-height: 1.55; }
+  .more { margin-top: auto; font-size: 14px; font-weight: 500; text-decoration: none; }
+  .more:hover { text-decoration: underline; }
+</style>
