@@ -14,7 +14,6 @@ export const SITE = {
 export const mainNav = [
   { key: 'docs', path: '/docs/' },
   { key: 'demo', path: '/demo/' },
-  { key: 'blog', path: '/blog/' },
   { key: 'roadmap', path: '/roadmap/' },
   { key: 'about', path: '/about/' },
 ] as const;

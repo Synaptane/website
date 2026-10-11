@@ -93,7 +93,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 }
 .container-narrow { max-width: calc(760px + 2 * var(--gutter)); }
 
-/* Long text (about, legal, blog posts): the app's reading style (Newsreader in Paper). */
+/* Long text (about, legal): the app's reading style (Newsreader in Paper). */
 .prose {
   font-family: var(--font-read);
   font-size: var(--read-size);

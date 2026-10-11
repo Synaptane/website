@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docsLoader, i18nLoader } from '@astrojs/starlight/loaders';
 import { docsSchema, i18nSchema } from '@astrojs/starlight/schema';
@@ -12,30 +11,10 @@ import { parseChangelog, versionAnchor } from './lib/changelog';
  *   src/content/docs/docs/**     English, served under /docs/
  *   src/content/docs/fr/docs/**  French, served under /fr/docs/
  *
- * blog: the posts, one Markdown file per language with the same file name in both folders
- * (the file name is the URL slug and pairs the translations).
- *   src/content/blog/en/<slug>.md  -> /blog/<slug>/
- *   src/content/blog/fr/<slug>.md  -> /fr/blog/<slug>/
- *
  * releases: one entry per version of src/content/releases/CHANGELOG.md, the changelog of the
  * main repository copied by `npm run sync-docs` (do not edit it by hand). Rendered by
  * src/pages/releases/index.astro and its French twin.
  */
-const blog = defineCollection({
-  loader: glob({ base: './src/content/blog', pattern: '{en,fr}/**/[^_]*.{md,mdx}' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    date: z.coerce.date(),
-    author: z.string().default('René Cotton'),
-    lang: z.enum(['en', 'fr']),
-    /** Last significant update, shown next to the date. */
-    updated: z.coerce.date().optional(),
-    /** Drafts are shown by `npm run dev` only. */
-    draft: z.boolean().default(false),
-  }),
-});
-
 const CHANGELOG = 'src/content/releases/CHANGELOG.md';
 
 const releases = defineCollection({
@@ -78,6 +57,5 @@ export const collections = {
   docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
   /** Overrides of Starlight's interface strings: src/content/i18n/{en,fr}.json. */
   i18n: defineCollection({ loader: i18nLoader(), schema: i18nSchema() }),
-  blog,
   releases,
 };

@@ -20,7 +20,6 @@ export const fr: Dictionary = {
   nav: {
     docs: 'Documentation',
     demo: 'Démo',
-    blog: 'Blog',
     roadmap: 'Feuille de route',
     about: 'À propos',
     releases: 'Versions',
@@ -65,15 +64,6 @@ export const fr: Dictionary = {
   screenshot: {
     light: 'thème clair',
     dark: 'thème sombre',
-  },
-  blog: {
-    readMore: "Lire l’article",
-    by: 'Par',
-    published: 'Publié le',
-    updated: 'Mis à jour le',
-    empty: "Aucun article pour l’instant.",
-    backToList: 'Tous les articles',
-    translationMissing: "Cet article n’existe pas en anglais.",
   },
   todo: 'À faire',
   notFound: {

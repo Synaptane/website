@@ -34,17 +34,16 @@ src/
   layouts/Base.astro    layout of every site page: SEO head, hreflang, header, footer
   components/           Button, Section, Card, CardGrid, CodeBlock (copy button), Screenshot
                         (light/dark), PageHeader, Todo, Icon, ThemeControl, LanguageSwitcher,
-                        SiteHeader, SiteFooter; blog/ (PostList, PostPage); content/ (ReleaseNotes,
-                        Roadmap, AuthorCard, NewsletterNote, FeedLink)
+                        SiteHeader, SiteFooter, Lightbox (screenshot viewer); content/
+                        (ReleaseNotes, Roadmap, AuthorCard, NewsletterNote)
   components/starlight/ Starlight overrides: Header (+ site links), ThemeSelect, LanguageSelect,
                         MobileMenuFooter, EditLink (edits the source in synaptane/synaptane)
   styles/tokens.css     the application's tokens and @font-face (shared by site and docs)
   styles/site.css       base styles of the site pages
   styles/starlight.css  Starlight variables mapped onto the tokens
   pages/                site pages in English; pages/fr/ the same pages in French
-  content/blog/{en,fr}/ blog posts (schema in src/content.config.ts)
   content/releases/     GENERATED copy of the main repository's CHANGELOG.md (release notes)
-  lib/                  blog.ts (posts), feed.ts (RSS feeds), changelog.ts (CHANGELOG parser)
+  lib/                  changelog.ts (CHANGELOG parser)
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
 public/                 served as is: CNAME, favicon, og.png, robots.txt, fonts/ (OFL), images/,
@@ -78,7 +77,6 @@ slash (`trailingSlash: 'always'`); build links with `localizePath('/docs/', lang
 | Home | `src/pages/index.astro`, `src/pages/fr/index.astro` | Replace the `<Todo>` blocks. |
 | Demo | `src/pages/demo/index.astro`, `src/pages/fr/demo/index.astro` | Presents the demo and links to it. |
 | Static demo | `public/demo/app/` → `/demo/app/`, `public/fr/demo/app/` → `/fr/demo/app/` | **Generated** by `scripts/build-demo/`, committed; do not edit. `check-links` and `check-demo` cover them. Not indexed (Pagefind, `noindex`). |
-| Blog | `src/content/blog/en/<slug>.md`, `src/content/blog/fr/<slug>.md` | Front matter: `title`, `description`, `date`, `author`, `lang` (+ `updated`, `draft`). Same file name in both languages. See [Blog](#blog) below. |
 | Releases | `src/pages/releases/index.astro` (+ `fr/`) | Generated from the main repository's `CHANGELOG.md` (`npm run sync-docs`): one section per version. Do not write release notes here. |
 | Roadmap, About, Legal | `src/pages/{roadmap,about,legal}.astro` (+ `fr/`) | |
 | 404 | `src/pages/404.astro` | One bilingual page (GitHub Pages serves a single `404.html`). |
@@ -99,20 +97,6 @@ Light (Paper) and dark (Slate) follow `prefers-color-scheme`. The switch stores 
 share it. The tokens are a copy of the application's (`src/synaptane/web/static/app.css`):
 update `src/styles/tokens.css` when they change there.
 
-### Blog
-
-A post is a Markdown file per language, with the same file name (the URL slug) in
-`src/content/blog/en/` and `src/content/blog/fr/`. Each language has an RSS feed with the full
-text of its posts: `/blog/rss.xml` and `/fr/blog/rss.xml`.
-
-**Drafts.** A post with `draft: true` is shown by `npm run dev` only (with a "draft" label):
-the production build leaves it out of the blog list, the feeds, the sitemap and the pages
-(`getPosts` in `src/lib/blog.ts`). To publish a post:
-
-1. in both language files, set `date:` to the publication day (`YYYY-MM-DD`) and change
-   `draft: true` to `draft: false` (or remove the line);
-2. `npm run build && npm run check-links`, and check `dist/blog/<slug>/` and `dist/fr/blog/<slug>/`;
-3. commit and push to `main`: the deployment workflow publishes it.
 
 ## Documentation
 

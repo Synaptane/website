@@ -22,7 +22,6 @@ export const en = {
   nav: {
     docs: 'Docs',
     demo: 'Demo',
-    blog: 'Blog',
     roadmap: 'Roadmap',
     about: 'About',
     releases: 'Releases',
@@ -67,15 +66,6 @@ export const en = {
   screenshot: {
     light: 'light theme',
     dark: 'dark theme',
-  },
-  blog: {
-    readMore: 'Read the post',
-    by: 'By',
-    published: 'Published on',
-    updated: 'Updated on',
-    empty: 'No posts yet.',
-    backToList: 'All posts',
-    translationMissing: 'This post is not available in French.',
   },
   todo: 'To do',
   notFound: {
