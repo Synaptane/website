@@ -157,7 +157,23 @@ const items = mainNav.map((item) => ({
     padding: var(--space-3) var(--gutter) var(--space-5);
     background: var(--bg);
     border-bottom: 1px solid var(--border);
-    box-shadow: 0 16px 32px rgb(0 0 0 / 0.08);
+    box-shadow: 0 16px 32px rgb(0 0 0 / 0.12);
+  }
+  /* A veil over the page under the open menu; a tap on it closes the menu (it belongs to the
+     summary). Positioned against the header, which is sticky. */
+  .menu[open] summary::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--header-height);
+    height: 100vh;
+    background: rgb(10 12 15 / 0.32);
+    cursor: default;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .menu[open] summary::before { animation: veil-in 0.2s ease-out; }
+    @keyframes veil-in { from { opacity: 0; } }
   }
   .panel ul { display: grid; gap: 2px; }
   .panel nav a { display: flex; height: 44px; font-size: 16px; }

@@ -13,7 +13,7 @@
  * off screen.
  *
  * The fictional content comes from the demo data set (examples/acme-wiki of the main
- * repository): the note "NAS capacity raised to 16 TB", filed into infra/storage.md.
+ * repository): the note "NAS capacity raised to 16 TB", filed into infra/storage.md.
  */
 import HomeIcon from './HomeIcon.astro';
 import type { Lang } from '../../i18n';
@@ -29,21 +29,21 @@ const copy = ({
     label: 'The journey of a note',
     pause: 'Pause',
     play: 'Play',
-    show: 'Show this step',
+    show: 'Show this step: ',
     reply: 'Reply to Claude…',
     steps: [
       {
-        when: 'Tuesday, 4:10 PM',
+        when: 'Tuesday, 4:10 PM',
         title: 'Saved from the conversation',
-        text: 'Hugo tells Claude the NAS now has 16 TB and asks it to save that for the team. Claude drops a note into the IT space’s inbox, over MCP.',
+        text: 'Hugo tells Claude the NAS now has 16 TB and asks it to save that for the team. Claude drops a note into the IT space’s inbox, over MCP.',
       },
       {
-        when: 'That night, 2:00 AM',
+        when: 'That night, 2:00 AM',
         title: 'Filed overnight',
         text: 'The tidy-up agent reads the inbox, finds the existing Storage page and updates it instead of creating a duplicate. One commit, pushed to your Git repository.',
       },
       {
-        when: 'Wednesday, 9:15 AM',
+        when: 'Wednesday, 9:15 AM',
         title: 'Found the next morning',
         text: 'Inès asks her own assistant about the NAS. It searches Synaptane and answers from the Storage page, with a link to it.',
       },
@@ -51,11 +51,11 @@ const copy = ({
     s1: {
       who: 'Hugo · Claude',
       mcp: 'Synaptane',
-      user: 'We put four more disks in the NAS: 16 TB usable now, still RAID 6. Save this for the team.',
+      user: 'We put four more disks in the NAS: 16 TB usable now, still RAID 6. Save this for the team.',
       tool: 'inbox_add',
       toolArg: 'acme/it',
       noteLabel: 'Note in the inbox',
-      noteTitle: 'NAS capacity raised to 16 TB',
+      noteTitle: 'NAS capacity raised to 16 TB',
       noteHint: 'Suggested place:',
       ai: ['Saved in the inbox of ', 'acme/it', '. It will be filed tonight; a page already covers this: ', 'Storage', '.'],
     },
@@ -63,12 +63,12 @@ const copy = ({
       who: 'Nightly tidy-up · acme/it',
       time: '02:00',
       inbox: 'Inbox',
-      items: ['NAS capacity raised to 16 TB', 'VM backups', 'No deployments on Friday afternoons'],
+      items: ['NAS capacity raised to 16 TB', 'VM backups', 'No deployments on Friday afternoons'],
       pending: 'reading…',
       filed: 'filed',
       heading: '# Storage',
-      del: 'The NAS in rack B provides 8 TB of usable space in RAID 6.',
-      add: 'The NAS in rack B provides 16 TB of usable space in RAID 6, since four disks were added on 1 October 2026.',
+      del: 'The NAS in rack B provides 8 TB of usable space in RAID 6.',
+      add: 'The NAS in rack B provides 16 TB of usable space in RAID 6, since four disks were added on 1 October 2026.',
       ctx: 'It receives the vzdump backups and hosts the team’s file shares. Shares are mounted from nas.acme.internal.',
       ctx2: 'A replacement by distributed storage is being studied: see the [Ceph project](../projects/ceph.md).',
       summary: '3 filed, 0 left',
@@ -83,8 +83,8 @@ const copy = ({
       tool: 'search',
       toolArg: '"NAS"',
       resultTitle: 'Storage',
-      excerpt: ['The NAS in rack B provides ', '16 TB', ' of usable space in RAID 6…'],
-      ai: 'The NAS has 16 TB of usable space, in RAID 6, since four disks were added on 1 October 2026.',
+      excerpt: ['The NAS in rack B provides ', '16 TB', ' of usable space in RAID 6…'],
+      ai: 'The NAS has 16 TB of usable space, in RAID 6, since four disks were added on 1 October 2026.',
       source: 'Source:',
     },
   },
@@ -92,21 +92,21 @@ const copy = ({
     label: 'Le parcours d’une note',
     pause: 'Pause',
     play: 'Lecture',
-    show: 'Afficher cette étape',
+    show: 'Afficher cette étape : ',
     reply: 'Répondre à Claude…',
     steps: [
       {
-        when: 'Mardi, 16 h 10',
+        when: 'Mardi, 16 h 10',
         title: 'Déposée depuis la conversation',
-        text: 'Hugo annonce à Claude que le NAS passe à 16 To et lui demande de le garder pour l’équipe. Claude dépose une note dans l’inbox de l’espace IT, par MCP.',
+        text: 'Hugo annonce à Claude que le NAS passe à 16 To et lui demande de le garder pour l’équipe. Claude dépose une note dans l’inbox de l’espace IT, par MCP.',
       },
       {
-        when: 'La nuit suivante, 2 h',
+        when: 'La nuit suivante, 2 h',
         title: 'Rangée pendant la nuit',
         text: 'L’agent de rangement lit l’inbox, retrouve la page Stockage et la met à jour plutôt que d’en créer une seconde. Un commit, poussé dans votre dépôt Git.',
       },
       {
-        when: 'Mercredi, 9 h 15',
+        when: 'Mercredi, 9 h 15',
         title: 'Retrouvée le lendemain',
         text: 'Inès interroge son propre assistant sur le NAS. Il cherche dans Synaptane et répond d’après la page Stockage, lien à l’appui.',
       },
@@ -114,26 +114,26 @@ const copy = ({
     s1: {
       who: 'Hugo · Claude',
       mcp: 'Synaptane',
-      user: 'On a ajouté quatre disques au NAS : 16 To utiles maintenant, toujours en RAID 6. Garde ça pour l’équipe.',
+      user: 'On a ajouté quatre disques au NAS : 16 To utiles maintenant, toujours en RAID 6. Garde ça pour l’équipe.',
       tool: 'inbox_add',
       toolArg: 'acme/it',
       noteLabel: 'Note dans l’inbox',
-      noteTitle: 'Capacité du NAS portée à 16 To',
-      noteHint: 'Emplacement suggéré :',
-      ai: ['C’est noté dans l’inbox de ', 'acme/it', '. Ce sera rangé cette nuit ; une page traite déjà du sujet : ', 'Stockage', '.'],
+      noteTitle: 'Capacité du NAS portée à 16 To',
+      noteHint: 'Emplacement suggéré :',
+      ai: ['C’est noté dans l’inbox de ', 'acme/it', '. Ce sera rangé cette nuit ; une page traite déjà du sujet : ', 'Stockage', '.'],
     },
     s2: {
       who: 'Rangement nocturne · acme/it',
       time: '02:00',
       inbox: 'Inbox',
-      items: ['Capacité du NAS portée à 16 To', 'Sauvegardes des VM', 'Pas de mise en production le vendredi'],
+      items: ['Capacité du NAS portée à 16 To', 'Sauvegardes des VM', 'Pas de mise en production le vendredi'],
       pending: 'lecture…',
       filed: 'rangée',
       heading: '# Stockage',
-      del: 'Le NAS de la baie B offre 8 To utiles en RAID 6.',
-      add: 'Le NAS de la baie B offre 16 To utiles en RAID 6, depuis l’ajout de quatre disques le 1er octobre 2026.',
+      del: 'Le NAS de la baie B offre 8 To utiles en RAID 6.',
+      add: 'Le NAS de la baie B offre 16 To utiles en RAID 6, depuis l’ajout de quatre disques le 1er octobre 2026.',
       ctx: 'Il reçoit les sauvegardes vzdump et héberge les partages de fichiers de l’équipe. Les partages sont montés depuis nas.acme.internal.',
-      ctx2: 'Un remplacement par un stockage distribué est à l’étude : voir le [projet Ceph](../projects/ceph.md).',
+      ctx2: 'Un remplacement par un stockage distribué est à l’étude : voir le [projet Ceph](../projects/ceph.md).',
       summary: '3 rangées, 0 restante',
       commit: 'Tidy-up: 3 item(s) filed',
       author: 'Synaptane tidy-up',
@@ -142,13 +142,13 @@ const copy = ({
     s3: {
       who: 'Inès · Claude',
       mcp: 'Synaptane',
-      user: 'Combien d’espace utile a le NAS ?',
+      user: 'Combien d’espace utile a le NAS ?',
       tool: 'search',
       toolArg: '"NAS"',
       resultTitle: 'Stockage',
-      excerpt: ['Le NAS de la baie B offre ', '16 To', ' utiles en RAID 6…'],
-      ai: 'Le NAS offre 16 To utiles, en RAID 6, depuis l’ajout de quatre disques le 1er octobre 2026.',
-      source: 'Source :',
+      excerpt: ['Le NAS de la baie B offre ', '16 To', ' utiles en RAID 6…'],
+      ai: 'Le NAS offre 16 To utiles, en RAID 6, depuis l’ajout de quatre disques le 1er octobre 2026.',
+      source: 'Source :',
     },
   },
 } as const)[lang];
@@ -168,7 +168,7 @@ const durations = [8, 9.5, 8] as const;
         <p class="step-when"><span class="step-num" aria-hidden="true">1</span>{copy.steps[0].when}</p>
         <h3 class="step-title">{copy.steps[0].title}</h3>
         <p class="step-desc">{copy.steps[0].text}</p>
-        <button type="button" class="step-jump" data-journey-jump="0" hidden><span class="sr-only">{copy.show}: {copy.steps[0].title}</span></button>
+        <button type="button" class="step-jump" data-journey-jump="0" hidden><span class="sr-only">{copy.show}{copy.steps[0].title}</span></button>
       </div>
       <div class="scene scene-chat scene-1">
         <div class="bar">
@@ -200,7 +200,7 @@ const durations = [8, 9.5, 8] as const;
         <p class="step-when"><span class="step-num" aria-hidden="true">2</span>{copy.steps[1].when}</p>
         <h3 class="step-title">{copy.steps[1].title}</h3>
         <p class="step-desc">{copy.steps[1].text}</p>
-        <button type="button" class="step-jump" data-journey-jump="1" hidden><span class="sr-only">{copy.show}: {copy.steps[1].title}</span></button>
+        <button type="button" class="step-jump" data-journey-jump="1" hidden><span class="sr-only">{copy.show}{copy.steps[1].title}</span></button>
       </div>
       <div class="scene scene-tidy scene-2">
         <div class="bar">
@@ -256,7 +256,7 @@ const durations = [8, 9.5, 8] as const;
         <p class="step-when"><span class="step-num" aria-hidden="true">3</span>{copy.steps[2].when}</p>
         <h3 class="step-title">{copy.steps[2].title}</h3>
         <p class="step-desc">{copy.steps[2].text}</p>
-        <button type="button" class="step-jump" data-journey-jump="2" hidden><span class="sr-only">{copy.show}: {copy.steps[2].title}</span></button>
+        <button type="button" class="step-jump" data-journey-jump="2" hidden><span class="sr-only">{copy.show}{copy.steps[2].title}</span></button>
       </div>
       <div class="scene scene-chat scene-3">
         <div class="bar">
@@ -288,7 +288,7 @@ const durations = [8, 9.5, 8] as const;
       {
         copy.steps.map((step, i) => (
           <button type="button" class="dot-jump" data-journey-jump={i} hidden>
-            <span class="sr-only">{copy.show}: {step.title}</span>
+            <span class="sr-only">{copy.show}{step.title}</span>
           </button>
         ))
       }
@@ -721,6 +721,12 @@ const durations = [8, 9.5, 8] as const;
   }
   .toggle:hover { color: var(--ink); background: var(--hover); }
   .toggle[hidden] { display: none; }
+  /* Phones and tablets: touch targets of 40px. */
+  @media (max-width: 959px) {
+    .dots { gap: 0; }
+    .dot-jump { width: 40px; height: 40px; }
+    .toggle { height: 40px; padding: 0 14px; }
+  }
   .toggle :is(.icon-pause, .icon-play) { display: inline-flex; }
   .toggle :is(.icon-play, .toggle-play) { display: none; }
   .is-user-paused .toggle :is(.icon-play, .toggle-play) { display: inline-flex; }
@@ -760,7 +766,7 @@ const durations = [8, 9.5, 8] as const;
   @keyframes j-highlight { 0%, 100% { background: transparent; } 15%, 80% { background: var(--accent-soft); } }
   @keyframes j-slide { from { opacity: 0; transform: translateX(-8px); } }
 
-  .is-active .a-user { animation: j-in 0.5s var(--ease) 0.3s both; }
+  /* The question is there from the start: the conversation window is never empty. */
   .is-active .a-tool { animation: j-in 0.45s var(--ease) 1.4s both; }
   .is-active .a-wait { animation: j-show 0.01s 1.4s forwards, j-spin 0.7s linear 1.4s infinite, j-out 0.15s 2.5s forwards; }
   .is-active .a-done { animation: j-pop 0.3s var(--ease) 2.55s both; }

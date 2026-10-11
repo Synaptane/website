@@ -89,6 +89,10 @@ const options = [
     padding: 0;
   }
   button:hover { color: var(--ink); }
+  /* Phones: touch targets of 40px. */
+  @media (max-width: 859px) {
+    button { width: 40px; height: 40px; }
+  }
   button[aria-pressed='true'] {
     background: var(--surface);
     box-shadow: 0 0 0 1px var(--border);

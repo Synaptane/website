@@ -1,6 +1,5 @@
 ---
 // À propos (français). Jumelle anglaise : src/pages/about.astro.
-// BROUILLON à relire par René Cotton : le texte parle en son nom.
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import AuthorCard from '../../components/content/AuthorCard.astro';
@@ -44,8 +43,12 @@ import { SITE } from '../../site';
         <h2>Me contacter</h2>
         <p>
           Il n’y a pas d’adresse e-mail : vos questions, idées et retours sont les bienvenus dans les{' '}
-          <a href={SITE.discussions}>Discussions GitHub</a>, où les réponses profitent à tous. Les bogues vont dans les{' '}
+          <a href={SITE.discussions}>Discussions GitHub</a>, où les réponses profitent à tous. Les bugs vont dans les{' '}
           <a href={`${SITE.github}/issues`}>issues</a>.
+        </p>
+        <p>
+          Vulnérabilités : signalez-les en privé, jamais dans une issue publique. Voir{' '}
+          <a href={`${SITE.github}/blob/main/SECURITY.fr.md`}>SECURITY.fr.md</a>.
         </p>
       </div>
       <NewsletterNote title="Une newsletter hebdomadaire sur l’IA" linkLabel="La lire sur rene-cotton.fr">

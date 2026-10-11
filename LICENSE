@@ -1,12 +1,29 @@
 Source of synaptane.com
 Copyright 2026 René Cotton and the Synaptane contributors
 
-The code of this website is licensed under the Apache License, Version 2.0 (text below).
+The code of this website is licensed under the Apache License, Version 2.0 (text below), except
+for the following files, which keep their own terms:
 
-The documentation under src/content/docs/ and public/docs/ is copied from the main repository,
-https://github.com/synaptane/synaptane (folder docs/), and is distributed under the same
-license, Apache License 2.0. The fonts in public/fonts/ are distributed under the SIL Open Font
-License 1.1 (see the OFL-*.txt files next to them).
+- The documentation under src/content/docs/ and public/docs/, and the release notes in
+  src/content/releases/, are copied from the main repository,
+  https://github.com/synaptane/synaptane, and are distributed under the same license, Apache
+  License 2.0.
+- The static demo under public/demo/app/ and public/fr/demo/app/ is generated from Synaptane (its
+  interface, styles, icons and the fictional Acme demo data): it is distributed under the license
+  of the Synaptane project, Apache License 2.0, with that project's third-party notices
+  (https://github.com/synaptane/synaptane/blob/main/THIRD_PARTY_NOTICES.md).
+- The photo public/images/rene-cotton.jpg is not licensed: all rights reserved.
+- The GitHub logo (Octicons "mark-github", in src/components/Icon.astro) is a trademark of
+  GitHub, Inc., used only to link to GitHub; its use is governed by GitHub's logo guidelines
+  (https://github.com/logos), not by this license.
+- The Synaptane name and logo belong to René Cotton: as section 6 of the license states, it does
+  not grant permission to use them, except to describe the origin of the work.
+- Some pictograms (src/components/Icon.astro, src/components/home/HomeIcon.astro) reuse or adapt
+  path data from Feather (MIT License, Copyright (c) 2013-2023 Cole Bemis) and Lucide (ISC
+  License, Copyright (c) 2026 Lucide Icons and Contributors); their license texts are in
+  public/THIRD_PARTY_NOTICES.txt, served at https://synaptane.com/THIRD_PARTY_NOTICES.txt.
+- The fonts in public/fonts/ are distributed under the SIL Open Font License 1.1 (see the
+  OFL-*.txt files next to them).
 
 --------------------------------------------------------------------------------
 

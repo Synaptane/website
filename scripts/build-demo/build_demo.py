@@ -71,10 +71,12 @@ LANGS = {
         "banner_title": "Static demo",
         "banner_text": " — nothing you do here is saved.",
         "banner_link": "Install Synaptane to try it for real.",
+        "legal": ("/legal/", "Legal notice"),
         "flash": "Read-only demo: this action is not available here.",
         "other": ("fr", "Français", "Version française"),
         "appearance": "Appearance",
-        "themes": ("Light", "Dark", "System"),
+        # The site's labels (src/i18n/en.ts, theme): the same three choices, shared with the site.
+        "themes": ("Light (Paper)", "Dark (Slate)", "System"),
         "search_note": "In the static demo, search is limited to these words:",
         "search_miss": "This search is not part of the static demo. Try one of these words:",
         "unavailable_title": "Not available in the static demo",
@@ -91,18 +93,20 @@ LANGS = {
         "about": "/fr/demo/",
         "banner_label": "Démo figée",
         "banner_title": "Démo figée",
-        "banner_text": " : rien n'est enregistré.",
-        "banner_link": "Installez Synaptane pour l'essayer pour de vrai.",
-        "flash": "Démo en lecture seule : cette action n'est pas disponible ici.",
+        "banner_text": " : rien n’est enregistré.",
+        "banner_link": "Installez Synaptane pour l’essayer pour de vrai.",
+        "legal": ("/fr/legal/", "Mentions légales"),
+        "flash": "Démo en lecture seule : cette action n’est pas disponible ici.",
         "other": ("en", "English", "English version"),
         "appearance": "Apparence",
-        "themes": ("Clair", "Sombre", "Système"),
-        "search_note": "Dans la démo figée, la recherche se limite à ces mots :",
-        "search_miss": "Cette recherche ne fait pas partie de la démo figée. Essayez l'un de ces mots :",
+        # Les libellés du site (src/i18n/fr.ts, theme).
+        "themes": ("Clair (Papier)", "Sombre (Ardoise)", "Système"),
+        "search_note": "Dans la démo figée, la recherche se limite à ces mots :",
+        "search_miss": "Cette recherche ne fait pas partie de la démo figée. Essayez l’un de ces mots :",
         "unavailable_title": "Indisponible dans la démo figée",
         "unavailable_text": (
-            "Cette page modifie des données ou demande un serveur en marche : elle ne fait pas "
-            "partie de la démo figée. Tout ici est une copie figée d'une vraie instance Synaptane."
+            "Cette page modifie des données ou demande un serveur en marche : elle ne fait pas "
+            "partie de la démo figée. Tout ici est une copie figée d’une vraie instance Synaptane."
         ),
         "unavailable_back": "Retour à la démo",
         "unavailable_install": "Installer Synaptane",
@@ -423,8 +427,42 @@ class Rewriter:
         else:
             head.append(script)
         head.append(soup.new_tag("link", attrs={"rel": "stylesheet", "href": f"{ASSETS}/demo.css"}))
-        body.insert(0, BeautifulSoup(self.banner(ref), "html.parser"))
+        self.insert_banner(body, ref)
         body["class"] = [*body.get("class", []), "demo-static"]
+
+    def insert_banner(self, body: Tag, ref: Ref) -> None:
+        # The banner comes right after the application's skip link: that link stays the first
+        # thing the keyboard reaches.
+        banner = BeautifulSoup(self.banner(ref), "html.parser")
+        skip = body.find("a", class_="skip-link")
+        if skip is not None:
+            skip.insert_after(banner)
+        else:
+            body.insert(0, banner)
+        # Phones: the banner has no room for the theme switch and the legal notice; they go at
+        # the bottom of the navigation drawer (shown by demo.css on narrow screens only).
+        footer = body.find(class_="sidebar-footer")
+        if footer is not None:
+            footer.insert(0, BeautifulSoup(self.drawer_tools(), "html.parser"))
+
+    def theme_switch(self, extra_class: str) -> str:
+        """The application's theme buttons (enabled and bound by its preferences.js)."""
+        t = self.t
+        buttons = "".join(
+            f'<button type="button" data-theme-option="{value}" aria-pressed="false" '
+            f'title="{label}" aria-label="{label}" disabled>{svg(icon)}</button>'
+            for value, label, icon in zip(
+                ("light", "dark", "system"), t["themes"], ("sun", "moon", "monitor"), strict=True
+            )
+        )
+        return f'<div class="segmented {extra_class}" role="group" aria-label="{t["appearance"]}">{buttons}</div>'
+
+    def drawer_tools(self) -> str:
+        legal_href, legal_label = self.t["legal"]
+        return (
+            f'<div class="demo-drawer-tools">{self.theme_switch("demo-theme")}'
+            f'<a class="demo-drawer-legal" href="{legal_href}">{legal_label}</a></div>'
+        )
 
     def banner(self, ref: Ref) -> str:
         t = self.t
@@ -433,13 +471,7 @@ class Rewriter:
         twin = static_url(ref, twin_prefix) if ref in self.twins else f"{twin_prefix}/"
         if ref.path == "/unavailable":
             twin = f"{twin_prefix}{UNAVAILABLE}/"
-        buttons = "".join(
-            f'<button type="button" data-theme-option="{value}" aria-pressed="false" '
-            f'title="{label}" aria-label="{label}" disabled>{svg(icon)}</button>'
-            for value, label, icon in zip(
-                ("light", "dark", "system"), t["themes"], ("sun", "moon", "monitor"), strict=True
-            )
-        )
+        legal_href, legal_label = t["legal"]
         return (
             f'<div class="demo-banner" role="region" aria-label="{t["banner_label"]}" '
             f'data-flash="{t["flash"]}">'
@@ -448,7 +480,8 @@ class Rewriter:
             f'<a href="{t["install"]}">{t["banner_link"]}</a></p>'
             f'<p class="demo-banner-flash" role="status" aria-live="polite"></p>'
             f'<div class="demo-banner-tools">'
-            f'<div class="segmented demo-theme" role="group" aria-label="{t["appearance"]}">{buttons}</div>'
+            f'{self.theme_switch("demo-theme")}'
+            f'<a class="demo-banner-legal" href="{legal_href}">{legal_label}</a>'
             f'<a class="demo-banner-lang" href="{twin}" hreflang="{other}" lang="{other}" '
             f'title="{other_title}">{other_label}</a>'
             f"</div></div>"

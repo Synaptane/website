@@ -3,6 +3,7 @@
 import Icon from './Icon.astro';
 import { localizePath, useTranslations, type Lang } from '../i18n';
 import { SITE } from '../site';
+import { releaseSentence, releaseStatus } from '../lib/release';
 
 interface Props {
   lang: Lang;
@@ -12,13 +13,14 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const p = (path: string) => localizePath(path, lang);
 const year = new Date().getFullYear();
+const release = releaseSentence(await releaseStatus(), lang);
 ---
 
 <footer class="site-footer">
   <div class="container grid">
     <div class="about">
       <p class="tagline">{t.footer.tagline}</p>
-      <p class="muted">{t.footer.status}</p>
+      <p class="muted"><a href={p('/releases/')}>{release}</a></p>
       <p class="muted">
         {t.footer.madeBy} <a href={p('/about/')}>{t.footer.author}</a>.
       </p>
@@ -41,7 +43,7 @@ const year = new Date().getFullYear();
   </div>
   <div class="container legal">
     <p class="muted">
-      © {year} {SITE.author}. <a href={`${SITE.github}/blob/main/LICENSE`}>{t.footer.license}</a>
+      © {year} {t.footer.copyright} <a href={`${SITE.github}/blob/main/LICENSE`}>{t.footer.license}</a>
     </p>
   </div>
 </footer>
@@ -65,10 +67,19 @@ const year = new Date().getFullYear();
   .tagline { font-weight: 600; color: var(--ink); margin-bottom: var(--space-2); }
   .about p { margin-bottom: var(--space-2); }
   nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
-  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); align-content: start; }
-  a { color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-  a:hover { color: var(--ink); text-decoration: underline; }
-  .about a, .legal a { color: var(--accent); text-decoration: underline; display: inline; }
+  /* Every link has the same height (the GitHub icon included): the two columns stay aligned,
+     and each link is a touch target of at least 40px on phones. */
+  ul { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-rows: 32px; align-content: start; }
+  nav a { color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; height: 100%; }
+  nav a:hover { color: var(--ink); text-decoration: underline; }
+  .about a, .legal a { color: var(--accent); text-decoration: underline; }
+  /* The first line of the left column lines up with the first link of the right columns. */
+  .about { padding-top: 5px; }
+  @media (max-width: 719px) {
+    ul { grid-auto-rows: 44px; }
+    .about p { margin-bottom: var(--space-3); }
+    .about a, .legal a { display: inline-block; padding-block: 10px; margin-block: -10px; }
+  }
   .legal { padding-bottom: var(--space-6); }
   .legal p { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--border); font-size: 13px; }
 </style>

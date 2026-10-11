@@ -5,7 +5,7 @@ export const fr: Dictionary = {
   meta: {
     siteName: 'Synaptane',
     defaultDescription:
-      "Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers (PDF, scans, Office, images), une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
+      "Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers (PDF, scans, Office, images), une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
     ogImageAlt: "Synaptane, le second cerveau d’équipe stocké dans Git",
     ogLocale: 'fr_FR',
   },
@@ -53,8 +53,15 @@ export const fr: Dictionary = {
     license: 'Synaptane est un logiciel libre sous licence Apache 2.0.',
     madeBy: 'Conçu par',
     author: 'René Cotton',
-    contact: 'Questions et idées : GitHub Discussions',
-    status: 'Alpha. Première version : v1.0.0-rc.1.',
+    contact: 'Questions et idées : Discussions GitHub',
+    copyright: 'René Cotton et les contributeurs de Synaptane.',
+    licenseShort: 'Licence Apache 2.0',
+  },
+  release: {
+    preview: 'Préversion',
+    upcoming: 'Préversion à venir',
+    released: 'Préversion : {version}, publiée le {date}.',
+    coming: 'Préversion : {version}, à venir.',
   },
   code: {
     copy: 'Copier',

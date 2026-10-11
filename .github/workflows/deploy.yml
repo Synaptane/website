@@ -31,6 +31,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Test the docs conversion (sync-docs)
+        run: npm run test-sync-docs
       - name: Types and Astro diagnostics
         run: npm run check
       - run: npm run build

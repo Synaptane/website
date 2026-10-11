@@ -1,0 +1,49 @@
+---
+/**
+ * Starlight override of the docs footer: Starlight's own (edit link, previous / next), plus a
+ * line with the copyright, the license, the release notes and the legal notice, as at the
+ * bottom of the site pages (SiteFooter.astro).
+ */
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { getLang, localizePath, useTranslations } from '../../i18n';
+import { SITE } from '../../site';
+
+const lang = getLang(Astro.locals.starlightRoute.lang);
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<Default><slot /></Default>
+<div class="site-legal print:hidden">
+  <p>© {year} {t.footer.copyright}</p>
+  <ul>
+    <li><a href={`${SITE.github}/blob/main/LICENSE`}>{t.footer.licenseShort}</a></li>
+    <li><a href={localizePath('/releases/', lang)}>{t.nav.releases}</a></li>
+    <li><a href={localizePath('/legal/', lang)}>{t.nav.legal}</a></li>
+  </ul>
+</div>
+
+<style>
+  .site-legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.25rem 1.5rem;
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sl-color-hairline);
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+  .site-legal p { margin: 0; }
+  ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; list-style: none; margin: 0; padding: 0; }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+  }
+  a:hover { color: var(--sl-color-white); text-decoration: underline; }
+</style>

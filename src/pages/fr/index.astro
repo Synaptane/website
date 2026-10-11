@@ -17,8 +17,11 @@ import Comparison, { type Row } from '../../components/home/Comparison.astro';
 import HomeIcon from '../../components/home/HomeIcon.astro';
 import '../../components/home/home.css';
 import { SITE } from '../../site';
+import { installCode as installCodeFor } from '../../lib/install';
+import { releaseLabel, releaseStatus } from '../../lib/release';
 
-const imageVersion = SITE.version.replace(/^v/, '');
+const release = await releaseStatus();
+
 
 const features: Feature[] = [
   {
@@ -33,26 +36,26 @@ const features: Feature[] = [
     title: 'Pensé pour les assistants IA',
     text: 'Un serveur MCP de 20 outils et 3 prompts, en OAuth 2.1 ou par jeton personnel. Testé avec Claude.ai, Claude Desktop, Claude Code et ChatGPT. Une connexion peut être limitée à la lecture ou à certains espaces.',
     href: '/fr/docs/guide/mcp/',
-    linkLabel: 'Connecter un assistant',
+    linkLabel: 'Brancher un assistant',
   },
   {
     icon: 'inbox',
     title: 'Inbox et rangement nocturne',
-    text: 'Les notes des assistants, de l’interface web ou de l’API attendent dans une inbox. Chaque nuit, un agent IA les range, complète les pages existantes, répare les liens et commite. Suppressions et dépenses plafonnées, passage annulable en un clic.',
+    text: 'Les notes des assistants, de l’interface web ou de l’API attendent dans une inbox. Chaque nuit, un agent IA les range, complète les pages existantes, répare les liens et commite. Suppressions plafonnées, budget mensuel facultatif (20 € suggérés), passage annulable en un clic.',
     href: '/fr/docs/concepts/#rangement',
     linkLabel: 'Le rangement en détail',
   },
   {
     icon: 'clock',
     title: 'Routines planifiées',
-    text: 'Des agents qui tournent à heure fixe : contrôle de cohérence hebdomadaire, synthèse du vendredi. Ils écrivent une page de rapport, déposent dans l’inbox, envoient un e-mail ou appellent un webhook.',
+    text: 'Des agents qui tournent à heure fixe : contrôle de cohérence hebdomadaire, synthèse du vendredi. Ils écrivent une page de rapport, déposent dans l’inbox, envoient un e-mail ou appellent un webhook.',
     href: '/fr/docs/admin/ai/#routines-dagent-par-espace',
     linkLabel: 'Routines',
   },
   {
     icon: 'search',
     title: 'Une recherche qui trouve',
-    text: 'Recherche plein texte insensible aux accents, avec une racinisation légère, dans les pages et dans le texte des PDF, documents Office et images, scans compris (OCR). Recherche par le sens en option (pgvector), et pages proches sur chaque page.',
+    text: 'Recherche plein texte insensible aux accents, avec une racinisation prudente, dans les pages et dans le texte des PDF, documents Office et images, scans compris (OCR). Recherche par le sens en option (pgvector), et pages proches sur chaque page.',
     href: '/fr/docs/guide/wiki/#chercher',
     linkLabel: 'Chercher',
   },
@@ -73,9 +76,9 @@ const features: Feature[] = [
   {
     icon: 'users',
     title: 'Fait pour les équipes',
-    text: 'Organisations, espaces et rôles, invitations par e-mail, authentification unique par OIDC, GitHub, GitLab ou Google. Une API REST décrite en OpenAPI, et des webhooks signés.',
+    text: 'Organisations, espaces et rôles, invitations par e-mail, connexion SSO par OIDC, GitHub, GitLab ou Google. Une API REST, avec son schéma OpenAPI (facultatif), et des webhooks signés.',
     href: '/fr/docs/admin/sso/',
-    linkLabel: 'Authentification unique',
+    linkLabel: 'Connexion SSO',
   },
 ];
 
@@ -88,7 +91,7 @@ const formats: FileFormat[] = [
     text: 'Écrites par votre équipe, vos assistants et le rangement nocturne. Tout le reste s’organise autour d’elles.',
     wiki: 'Pages rendues, avec liens, rétroliens, sommaire, vérification et pages proches',
     search: 'Texte intégral',
-    assistants: 'Lecture et écriture ; le rangement écrit en Markdown',
+    assistants: 'Lecture et écriture ; le rangement écrit en Markdown',
   },
   {
     icon: 'file-text',
@@ -140,17 +143,7 @@ const formats: FileFormat[] = [
   },
 ];
 
-const installCode = `# 1. Récupérer la version publiée
-git clone --branch ${SITE.version} https://github.com/synaptane/synaptane.git && cd synaptane
-
-# 2. Écrire un .env minimal (la dernière ligne ne sert qu’à la démo)
-printf 'PUBLIC_URL=http://localhost:8000\\nPOSTGRES_PASSWORD=%s\\nSYNAPTANE_VERSION=${imageVersion}\\n' \\
-  "$(openssl rand -hex 24)" > .env
-echo 'COMPOSE_FILE=compose.yaml:examples/compose.demo.yaml' >> .env
-
-# 3. Démarrer, puis charger le wiki de démonstration
-docker compose up -d
-docker compose exec app synaptane demo`;
+const installCode = installCodeFor('fr');
 
 const rows: Row[] = [
   {
@@ -158,7 +151,7 @@ const rows: Row[] = [
     cells: [
       { level: 'yes', text: 'Oui, avec Docker Compose' },
       { level: 'no', text: 'Non, en ligne uniquement' },
-      { level: 'no', text: 'Rovo en ligne uniquement ; fin de vie de Data Center en 2029' },
+      { level: 'no', text: 'Rovo en ligne uniquement ; fin de vie de Data Center en 2029' },
       { level: 'yes', text: 'Oui' },
       { level: 'partial', text: 'Application de bureau et mobile, sans serveur' },
       { level: 'yes', text: 'Oui' },
@@ -180,7 +173,7 @@ const rows: Row[] = [
     label: 'Serveur MCP',
     hint: 'Pour Claude, ChatGPT et les autres',
     cells: [
-      { level: 'yes', text: 'Intégré : recherche, lecture, écriture, inbox' },
+      { level: 'yes', text: 'Intégré : recherche, lecture, écriture, inbox' },
       { level: 'yes', text: 'Officiel, hébergé par Notion' },
       { level: 'yes', text: 'Serveur MCP Rovo (en ligne)' },
       { level: 'yes', text: 'Intégré depuis février 2026' },
@@ -201,13 +194,13 @@ const rows: Row[] = [
     ],
   },
   {
-    label: 'Équipes et authentification unique',
+    label: 'Équipes et connexion SSO',
     cells: [
-      { level: 'yes', text: 'Organisations et rôles ; OIDC, GitHub, GitLab, Google' },
+      { level: 'yes', text: 'Organisations et rôles ; OIDC, GitHub, GitLab, Google' },
       { level: 'yes', text: 'SSO SAML sur les offres Business et Enterprise' },
       { level: 'yes', text: 'SSO avec Atlassian Guard' },
       { level: 'yes', text: 'Connexion par Google, Slack, Microsoft ou OIDC' },
-      { level: 'partial', text: 'Coffres partagés avec Sync (payant) ; pas de SSO' },
+      { level: 'partial', text: 'Coffres partagés avec Sync (payant) ; pas de SSO' },
       { level: 'yes', text: 'OIDC, SAML, LDAP et d’autres' },
     ],
   },
@@ -227,15 +220,15 @@ const rows: Row[] = [
 
 <Base
   title="La mémoire de votre équipe, dans Git"
-  description="Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers, tous cherchables. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes."
+  description="Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers, tous cherchables. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes."
 >
   <Hero
-    status="Alpha : première version publique"
+    status={releaseLabel(release, 'fr')}
     statusHref="/fr/releases/"
     title="La mémoire de votre équipe, dans Git."
     titleMuted="Vos assistants IA l’alimentent, une IA la range chaque nuit."
-    lead="Synaptane est un wiki que vous hébergez : le Markdown d’abord, et tous vos fichiers, PDF et scans compris, tous cherchables. Vos assistants IA y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et commite le résultat dans Git."
-    screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, un tableau, un badge « vérifiée », les pages qui y renvoient et les pages proches"
+    lead="Synaptane est un wiki que vous hébergez : le Markdown d’abord, et tous vos fichiers, PDF et scans compris, tous cherchables. Vos assistants IA y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et commite le résultat dans Git."
+    screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, un tableau, un badge « vérifiée », les pages qui y renvoient et les pages proches"
     caption="Une page du wiki de démonstration d’Acme, une équipe informatique fictive."
   >
     <Fragment slot="actions">
@@ -277,14 +270,14 @@ const rows: Row[] = [
         <h3 class="home-files-title">Trois façons d’ajouter un fichier</h3>
         <ul class="home-files-ways">
           <li><HomeIcon name="upload" size={18} /><span><strong>L’interface web</strong>Ajoutez un fichier dans n’importe quel dossier, jusqu’à 25 Mo.</span></li>
-          <li><HomeIcon name="inbox" size={18} /><span><strong>Vos assistants</strong>Les pièces jointes d’une note déposée par MCP ou par l’API, classées par le rangement nocturne.</span></li>
+          <li><HomeIcon name="inbox" size={18} /><span><strong>Vos assistants</strong>Les pièces jointes d’une note déposée par MCP ou par l’API, rangées par le rangement nocturne.</span></li>
           <li><HomeIcon name="git" size={18} /><span><strong>Un git push</strong>Un fichier du dossier content/ est un fichier du wiki.</span></li>
         </ul>
         <p class="home-small">
           Le texte devient cherchable quelques secondes à quelques minutes après l’arrivée du fichier.
           Sur les espaces où la recherche par le sens est activée, elle porte sur tout ce texte, pages
           et documents. Les anciens formats .doc, .ppt et .xls sont lus aussi, zones de texte,
-          tableaux et notes du présentateur d’un .ppt compris ; un fichier protégé par un mot de
+          tableaux et notes du présentateur d’un .ppt compris ; un fichier protégé par un mot de
           passe n’a pas de texte.
         </p>
         <p class="home-files-links">
@@ -304,8 +297,8 @@ const rows: Row[] = [
     <div class="home-split">
       <div>
         <ol class="home-steps">
-          <li><strong>Récupérer la version publiée</strong>Clonez l’étiquette de la version : elle contient le fichier Compose, la configuration nginx et les scripts du serveur.</li>
-          <li><strong>Écrire un <code>.env</code> minimal</strong>Une adresse locale, un mot de passe de base de données aléatoire et la version de l’image. La dernière ligne permet à la démo d’utiliser un dépôt Git local : à réserver à une instance jetable.</li>
+          <li><strong>Récupérer la version publiée</strong>Clonez la version étiquetée : elle contient le fichier Compose, la configuration nginx et les scripts du serveur.</li>
+          <li><strong>Écrire un <code>.env</code> minimal</strong>Une adresse locale, un mot de passe de base de données aléatoire et la version de l’image. La dernière ligne permet à la démo d’utiliser un dépôt Git local : à réserver à une instance jetable.</li>
           <li><strong>Démarrer et charger la démo</strong>Ouvrez ensuite <code>http://localhost:8000/o/acme/it</code> et connectez-vous avec le mot de passe affiché par la commande.</li>
         </ol>
         <p class="home-note">
@@ -315,12 +308,12 @@ const rows: Row[] = [
         </p>
         <div class="home-links">
           <Button href="/fr/docs/admin/installation/" variant="primary" icon="arrow-right">Guide d’installation</Button>
-          <Button href="/fr/docs/guide/mcp/">Connecter un assistant</Button>
+          <Button href="/fr/docs/guide/mcp/">Brancher un assistant</Button>
         </div>
       </div>
       <div class="home-code">
         <CodeBlock title="Terminal" lang="sh" code={installCode} />
-        <p class="home-after">Le rangement nécessite un fournisseur d’IA ; le wiki, la recherche, l’inbox et MCP s’en passent.</p>
+        <p class="home-after">Le rangement nécessite un fournisseur d’IA ; le wiki, la recherche, l’inbox et MCP s’en passent.</p>
       </div>
     </div>
   </Section>
@@ -336,14 +329,14 @@ const rows: Row[] = [
       openLabel="(image en taille réelle)"
       items={[
         { shot: 'search', title: 'Recherche Ctrl+K', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'La palette de recherche Ctrl+K, avec des résultats venant de plusieurs pages' },
-        { shot: 'pdf', title: 'Lecteur PDF :', text: 'un contrat s’ouvre dans sa page, et son texte est indexé.', alt: 'Un contrat de support en PDF affiché dans le lecteur intégré, à côté de l’arborescence de l’espace' },
-        { shot: 'office', title: 'Documents Office :', text: 'un lien de téléchargement, et le texte extrait qui sert à la recherche.', alt: 'Un fichier PowerPoint dans le wiki : un lien de téléchargement et le texte extrait de ses diapositives' },
-        { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF, au-dessus du texte reconnu par OCR' },
-        { shot: 'inbox', title: 'Inbox :', text: 'les notes et les modifications directes qui attendent le rangement nocturne.', alt: 'L’inbox d’un espace : notes et pages modifiées, et le formulaire de dépôt' },
-        { shot: 'history', title: 'Historique :', text: 'chaque modification est un commit Git, avec son diff.', alt: 'Le diff d’une modification de page dans l’historique' },
-        { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace, avec les liens cassés et les pages à revoir' },
-        { shot: 'assistants', title: 'Connecter un assistant', text: 'par MCP, et voir ses appels arriver.', alt: 'La page pour connecter un assistant IA par MCP' },
-        { shot: 'routines', title: 'Routines :', text: 'des agents planifiés, comme un contrôle de cohérence hebdomadaire.', alt: 'La liste des routines d’agent planifiées d’un espace' },
+        { shot: 'pdf', title: 'Lecteur PDF :', text: 'un contrat s’ouvre dans sa page, et son texte est indexé.', alt: 'Un contrat de support en PDF affiché dans le lecteur intégré, à côté de l’arborescence de l’espace' },
+        { shot: 'office', title: 'Documents Office :', text: 'un lien de téléchargement, et le texte extrait qui sert à la recherche.', alt: 'Un fichier PowerPoint dans le wiki : un lien de téléchargement et le texte extrait de ses diapositives' },
+        { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF, au-dessus du texte reconnu par OCR' },
+        { shot: 'inbox', title: 'Inbox :', text: 'les notes et les modifications directes qui attendent le rangement nocturne.', alt: 'L’inbox d’un espace : notes et pages modifiées, et le formulaire de dépôt' },
+        { shot: 'history', title: 'Historique :', text: 'chaque modification est un commit Git, avec son diff.', alt: 'Le diff d’une modification de page dans l’historique' },
+        { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace, avec les liens cassés et les pages à revoir' },
+        { shot: 'assistants', title: 'Brancher un assistant', text: 'par MCP, et voir ses appels arriver.', alt: 'La page pour brancher un assistant IA par MCP' },
+        { shot: 'routines', title: 'Routines :', text: 'des agents planifiés, comme un contrôle de cohérence hebdomadaire.', alt: 'La liste des routines d’agent planifiées d’un espace' },
       ]}
     />
   </Section>
@@ -352,7 +345,7 @@ const rows: Row[] = [
     id="compare"
     eyebrow="Comparatif"
     title="Synaptane face aux autres outils"
-    intro="Chacun de ces outils fait bien ce qu’il fait. Ce tableau ne retient que ce autour de quoi Synaptane est construit : votre serveur, des fichiers qui vous appartiennent, les assistants, et une IA qui tient le wiki en ordre."
+    intro="Chacun de ces outils fait bien ce qu’il fait. Ce tableau ne retient que ce autour de quoi Synaptane est construit : votre serveur, des fichiers qui vous appartiennent, les assistants, et une IA qui tient le wiki en ordre."
   >
     <Comparison
       caption="Synaptane comparé à Notion AI, Confluence avec Rovo, Outline, Obsidian et Wiki.js"
@@ -364,7 +357,7 @@ const rows: Row[] = [
     />
     <p class="home-small">
       État en octobre 2026, d’après la documentation publique et les annonces de chaque produit. Ces
-      produits évoluent vite : si une information n’est plus à jour, <a href={SITE.discussions}>signalez-le sur GitHub Discussions</a>.
+      produits évoluent vite : si une information n’est plus à jour, <a href={SITE.discussions}>signalez-le dans les Discussions GitHub</a>.
     </p>
   </Section>
 
@@ -376,21 +369,21 @@ const rows: Row[] = [
     intro="Une application, un worker, PostgreSQL et vos dépôts Git. Si vous arrêtez Synaptane, votre wiki reste un dossier de pages Markdown et de vos fichiers d’origine."
     class="home-arch"
   >
-    <div class="home-split">
-      <ul class="home-arch-list">
-        <li><strong>Une application FastAPI</strong> sert les trois interfaces : MCP pour les assistants, l’interface web et l’API REST.</li>
-        <li><strong>Un worker</strong> s’occupe du rangement nocturne, des routines, de la synchronisation Git, de l’indexation (avec l’extraction du texte et l’OCR) et des webhooks.</li>
-        <li><strong>PostgreSQL avec pgvector</strong> conserve les comptes, les droits et l’index de recherche. Le reste se reconstruit à partir des dépôts.</li>
-        <li><strong>Le fournisseur d’IA est facultatif :</strong> seuls le rangement, les routines et la recherche par le sens en ont besoin.</li>
-      </ul>
       <Screenshot
         light="/docs/assets/architecture.svg"
         dark="/docs/assets/architecture-dark.svg"
         width={1040}
         height={452}
-        alt="Architecture : les assistants IA (MCP, OAuth 2.1), les navigateurs (interface web) et les scripts (API REST) passent par l’application FastAPI ; un worker gère le rangement nocturne, les routines, la synchronisation Git, l’indexation et les webhooks ; tous deux partagent PostgreSQL avec pgvector et les copies de travail Git locales ; le worker synchronise un dépôt Git par espace et appelle un fournisseur d’IA facultatif."
+        zoom="home"
+        zoomCaption="Architecture de Synaptane : l’application, le worker, PostgreSQL, les dépôts Git et le fournisseur d’IA facultatif."
+        alt="Architecture : les assistants IA (MCP, OAuth 2.1), les navigateurs (interface web) et les scripts (API REST) passent par l’application FastAPI ; un worker gère le rangement nocturne, les routines, la synchronisation Git, l’indexation et les webhooks ; tous deux partagent PostgreSQL avec pgvector et les copies de travail Git locales ; le worker synchronise un dépôt Git par espace et appelle un fournisseur d’IA facultatif."
       />
-    </div>
+      <ul class="home-arch-list">
+        <li><strong>Une application FastAPI</strong> sert les trois interfaces : MCP pour les assistants, l’interface web et l’API REST.</li>
+        <li><strong>Un worker</strong> s’occupe du rangement nocturne, des routines, de la synchronisation Git, de l’indexation (avec l’extraction du texte et l’OCR) et des webhooks.</li>
+        <li><strong>PostgreSQL</strong> conserve les comptes, les droits, les paramètres et l’index sémantique (pgvector). Le reste se reconstruit à partir des dépôts.</li>
+        <li><strong>Le fournisseur d’IA est facultatif :</strong> seuls le rangement, les routines et la recherche par le sens en ont besoin.</li>
+      </ul>
   </Section>
 
   <Section id="open-source" eyebrow="Logiciel libre" title="Libre, et franc sur sa maturité">
@@ -398,13 +391,13 @@ const rows: Row[] = [
       <div>
         <p>
           Synaptane est publié sous licence Apache 2.0. Le code, la documentation et ce site sont sur
-          GitHub, et les contributions sont bienvenues : les commits sont signés selon le Developer
+          GitHub, et les contributions sont bienvenues : les commits sont signés selon le Developer
           Certificate of Origin.
         </p>
         <p>
-          C’est un <strong>logiciel en alpha</strong>. La première version publique est {SITE.version},
-          maintenue par une seule personne, selon ses disponibilités. L’API REST, les outils MCP et la
-          configuration peuvent encore changer : sauvegardez avant chaque mise à jour.
+          Synaptane est en <strong>préversion</strong> ({SITE.version}, la première version publique),
+          maintenu par une seule personne, selon ses disponibilités. L’API REST, les outils MCP et la
+          configuration peuvent encore changer : sauvegardez avant chaque mise à jour.
         </p>
       </div>
       <div>
@@ -426,13 +419,13 @@ const rows: Row[] = [
           <li>
             <a href={SITE.discussions}>
               <HomeIcon name="discuss" size={20} />
-              <span>Poser une question, proposer une idée<span class="home-link-sub">GitHub Discussions</span></span>
+              <span>Poser une question, proposer une idée<span class="home-link-sub">Discussions GitHub</span></span>
               <HomeIcon name="external" size={16} class="home-arrow" />
             </a>
           </li>
         </ul>
         <p class="home-hosted">
-          <strong>Un Synaptane hébergé ?</strong> L’idée est à l’étude. Si vous l’utiliseriez, <a href={SITE.discussions}>dites-le-nous sur GitHub Discussions</a>.
+          <strong>Un Synaptane hébergé ?</strong> L’idée est à l’étude. Si cela vous intéresse, <a href={SITE.discussions}>dites-le-nous dans les Discussions GitHub</a>.
         </p>
       </div>
     </div>

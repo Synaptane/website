@@ -7,6 +7,7 @@ import Card from '../../../components/Card.astro';
 import CardGrid from '../../../components/CardGrid.astro';
 import CodeBlock from '../../../components/CodeBlock.astro';
 import PageHeader from '../../../components/PageHeader.astro';
+import { installCode } from '../../../lib/install';
 import Screenshot from '../../../components/Screenshot.astro';
 import Section from '../../../components/Section.astro';
 import manifest from '../../../../public/demo/app/MANIFEST.json';
@@ -23,8 +24,8 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
 });
 ---
 
-<Base title="Démo" description="Parcourez Synaptane dans votre navigateur : la copie figée d’une vraie instance, avec le wiki d’une équipe informatique fictive, Acme, ses pages et ses fichiers. En lecture seule, rien à installer.">
-  <PageHeader title="Démo" intro="Parcourez une vraie instance Synaptane dans votre navigateur, figée à une date : le wiki de l’équipe informatique d’Acme, une entreprise fictive. Rien à installer, pas de compte.">
+<Base title="Démo" description="Parcourez Synaptane dans votre navigateur : la copie figée d’une vraie instance, avec le wiki d’une équipe informatique fictive, Acme, ses pages et ses fichiers. En lecture seule, rien à installer.">
+  <PageHeader title="Démo" intro="Parcourez une vraie instance Synaptane dans votre navigateur, figée à une date : le wiki de l’équipe informatique d’Acme, une entreprise fictive. Rien à installer, pas de compte.">
     <div class="actions">
       <Button href={`${app}/`} variant="primary" size="lg" icon="arrow-right">Ouvrir la démo</Button>
       <Button href="/fr/docs/admin/installation/" size="lg">Installer Synaptane</Button>
@@ -37,63 +38,64 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       dark={demoDark}
       eager
       zoom="demo"
-      alt="La démo figée : une page du wiki de l’équipe informatique d’Acme, avec l’arborescence de l’espace, un badge de vérification et un tableau d’objectifs de restauration"
+      alt="La démo figée : une page du wiki de l’équipe informatique d’Acme, avec l’arborescence de l’espace, un badge de vérification et un tableau d’objectifs de restauration"
     />
   </div>
 
-  <Section id="what" title="Ce que vous y voyez" intro="Les pages de la vraie interface, générées depuis une instance Synaptane chargée avec les données de démonstration. Vous y naviguez comme dans le produit : l’arborescence, les liens entre pages, les onglets.">
+  <Section id="what" title="Ce que vous y voyez" intro="Les pages de la vraie interface, générées depuis une instance Synaptane chargée avec les données de démonstration. Vous y naviguez comme dans le produit : l’arborescence, les liens entre pages, les onglets.">
     <CardGrid columns={3}>
       <Card title="Le wiki" href={`${app}/o/acme/it/p/procedures/restore.md/`}>
-        <p>Cinquante pages Markdown rangées en dossiers, avec leurs documents : tableaux, code, liens entre pages, sommaire, responsables et pages vérifiées.</p>
+        <p>Cinquante pages Markdown rangées en dossiers, avec leurs documents : tableaux, code, liens entre pages, sommaire, propriétaires et pages vérifiées.</p>
       </Card>
       <Card title="PDF et scans" href={`${app}/o/acme/it/p/infra/documents/brightrack-support-contract.pdf/`}>
         <p>Un contrat de support dans le lecteur intégré, et un bon de livraison scanné dont le texte a été lu par OCR.</p>
       </Card>
       <Card title="Documents Office" href={`${app}/o/acme/it/p/team/documents/2026-q3-infrastructure-review.pptx/`}>
-        <p>Une présentation, une liste de contrôle Word et des tableurs, dont un à l’ancien format .xls : un lien de téléchargement, et le texte extrait qui sert à la recherche.</p>
+        <p>Une présentation, une checklist Word et des tableurs, dont un à l’ancien format .xls : un lien de téléchargement, et le texte extrait qui sert à la recherche.</p>
       </Card>
       <Card title="Images et HTML" href={`${app}/o/acme/it/p/infra/servers.md/`}>
         <p>Un schéma de baie affiché dans sa page et lu par OCR, et un rapport hebdomadaire en HTML, rendu tel quel.</p>
       </Card>
       <Card title="Historique et modifications" href={`${app}/o/acme/it/history/procedures/restore.md/`}>
-        <p>Chaque modification est un commit Git : qui a changé quoi, quand, et la différence.</p>
+        <p>Chaque modification est un commit Git : qui a changé quoi, quand, et la différence.</p>
       </Card>
       <Card title="L’inbox" href={`${app}/o/acme/it/inbox/`}>
-        <p>Six notes en attente du rangement de la nuit : un fait à ajouter, un doublon, une contradiction, une pièce jointe…</p>
+        <p>Six notes en attente du rangement de la nuit : un fait à ajouter, un doublon, une contradiction, une pièce jointe…</p>
       </Card>
       <Card title="Santé du wiki" href={`${app}/o/acme/it/health/`}>
-        <p>Un lien cassé, une page à revoir, des pages vers lesquelles rien ne pointe : ce qu’il faut corriger, trouvé sans IA.</p>
+        <p>Un lien cassé et une page à revoir ; aucune page orpheline ni vide. Ce qu’il faut corriger, trouvé sans IA.</p>
       </Card>
       <Card title="Recherche" href={`${app}/search/kestrel/`}>
-        <p>Recherche plein texte dans les pages, les documents et l’inbox, avec les passages qui correspondent : essayez <em>kestrel</em>, trouvé dans un scan.</p>
+        <p>Recherche plein texte dans les pages, les documents et l’inbox, avec les passages qui correspondent : essayez <em>kestrel</em>, trouvé dans un scan.</p>
       </Card>
       <Card title="Assistants IA" href={`${app}/account/assistants/`}>
-        <p>L’adresse MCP, et comment y connecter Claude, ChatGPT ou un autre assistant.</p>
+        <p>L’adresse MCP, et comment y brancher Claude, ChatGPT ou un autre assistant.</p>
       </Card>
     </CardGrid>
     <p class="more">
-      Et aussi : l’<a href={`${app}/o/acme/it/activity/`}>activité</a> de l’espace, sa <a href={`${app}/o/acme/it/-/vocation/`}>vocation</a> et ses <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. L’interface existe en français et en
-      anglais (le lien de langue en haut de chaque page) ; le wiki lui-même est rédigé en anglais.
+      Et aussi : l’<a href={`${app}/o/acme/it/activity/`}>activité</a> de l’espace, sa <a href={`${app}/o/acme/it/-/vocation/`}>vocation</a> et ses <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. L’interface existe en français et en
+      anglais (le lien de langue en haut de chaque page) ; le wiki lui-même est rédigé en anglais.
     </p>
   </Section>
 
   <Section id="limits" tone="alt" title="Ce que la démo ne fait pas" narrow>
     <ul class="limits">
-      <li><strong>Lecture seule.</strong> Les boutons et formulaires qui modifieraient quelque chose sont désactivés, et rien de ce que vous faites n’est enregistré. Modifier une page, déposer une note ou ouvrir les paramètres mène à une page « Indisponible dans la démo figée ».</li>
-      <li><strong>Recherche limitée</strong> à quelques mots préparés : {manifest.queries.map((q, i) => (
+      <li><strong>Lecture seule.</strong> Les boutons et formulaires qui modifieraient quelque chose sont désactivés, et rien de ce que vous faites n’est enregistré. Modifier une page, déposer une note ou ouvrir les paramètres mène à une page « Indisponible dans la démo figée ».</li>
+      <li><strong>Recherche limitée</strong> à quelques mots préparés : {manifest.queries.map((q, i) => (
         <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
       ))}. La palette de recherche (<kbd>Ctrl</kbd> <kbd>K</kbd>) ouvre la page de recherche à la place.</li>
-      <li><strong>Pas d’IA.</strong> Le rangement de la nuit, les routines et la recherche par le sens demandent un fournisseur d’IA : la démo montre une instance qui n’en a pas. Rien n’appelle un serveur : les pages sont de simples fichiers.</li>
-      <li><strong>Un instantané.</strong> Généré depuis Synaptane {version} le {generated} ; les dates des pages sont relatives à ce jour-là.</li>
+      <li><strong>Pas d’IA.</strong> Le rangement de la nuit, les routines et la recherche par le sens demandent un fournisseur d’IA : la démo montre une instance qui n’en a pas. Rien n’appelle un serveur : les pages sont de simples fichiers.</li>
+      <li><strong>Un instantané.</strong> Généré depuis Synaptane {version} le {generated} ; les dates des pages sont relatives à ce jour-là.</li>
     </ul>
   </Section>
 
-  <Section id="for-real" title="L’essayer pour de vrai" intro="Les mêmes données sur votre propre instance, avec toutes les fonctions : installez Synaptane, puis chargez le wiki de démonstration en une commande.">
-    <CodeBlock title="Terminal" lang="sh" code={`SYNAPTANE_ALLOW_LOCAL_REPOS=true synaptane demo`} />
+  <Section id="for-real" title="L’essayer pour de vrai" intro="Les mêmes données sur votre propre instance, avec toutes les fonctions : sous Linux, ou WSL2 sous Windows, avec Docker, ces commandes installent Synaptane et chargent le wiki de démonstration.">
+    <CodeBlock title="Terminal" lang="sh" code={installCode('fr')} />
     <p class="more">
-      Voir <a href="/fr/docs/admin/installation/#données-de-démonstration">Données de démonstration</a>
-      dans le guide d’installation (avec Docker Compose aussi). Utilisez une instance jetable : la
-      démo autorise les dépôts Git locaux.
+      Ouvrez ensuite <code>http://localhost:8000/o/acme/it</code> et connectez-vous avec le mot de passe
+      affiché par la dernière commande. Utilisez une instance jetable : la démo autorise les dépôts Git
+      locaux. Voir <a href="/fr/docs/admin/installation/#données-de-démonstration">Données de démonstration</a>{' '}
+      dans le guide d’installation (et sans Docker).
     </p>
     <div class="actions">
       <Button href="/fr/docs/admin/installation/" variant="primary" icon="arrow-right">Installer Synaptane</Button>

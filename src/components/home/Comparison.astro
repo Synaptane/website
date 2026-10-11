@@ -3,7 +3,8 @@
  * Comparison table: one row per criterion, one column per product, the first one being
  * Synaptane. Each cell has a level (yes, partial, no) shown by an icon AND a word for screen
  * readers, plus a short factual note. On narrow screens the table scrolls sideways inside its
- * frame, with the criteria column kept in view.
+ * frame, with the criteria column kept in view and a shadow on the right edge while there is
+ * more to see (CSS only: the shadow is covered once the end of the table is reached).
  */
 export type Level = 'yes' | 'partial' | 'no';
 export interface Cell {
@@ -77,7 +78,12 @@ const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
     overflow-x: auto;
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    background: var(--surface);
+    /* Scroll hint: a shadow fixed on the right edge (scroll), hidden by a patch of the surface
+       colour that moves with the content and reaches the edge at the end of the table (local). */
+    background:
+      linear-gradient(to left, var(--surface) 40%, transparent) right / 48px 100% no-repeat local,
+      radial-gradient(farthest-side at 100% 50%, rgb(0 0 0 / 0.16), transparent) right / 18px 100% no-repeat scroll,
+      var(--surface);
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
   }
@@ -96,15 +102,18 @@ const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
     text-align: left;
     vertical-align: top;
     border-bottom: 1px solid var(--border);
+    /* Whole words only: the body allows breaking a word anywhere, not the table. */
+    overflow-wrap: normal;
+    word-break: normal;
   }
   tbody tr:last-child > * { border-bottom: 0; }
   thead th {
     font-size: 14px;
     font-weight: 600;
     color: var(--ink);
-    background: var(--surface);
     white-space: nowrap;
   }
+  thead .criterion { background: var(--surface); }
   .criterion {
     position: sticky;
     left: 0;
@@ -135,8 +144,9 @@ const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
   .level-partial .level { color: var(--warn-ink); background: var(--warn-bg); }
   .level-no .level { color: var(--ink-3); background: var(--bg-2); }
   @media (max-width: 719px) {
-    table { min-width: 860px; font-size: 13.5px; }
-    .criterion { width: 116px; padding-inline: 12px; }
+    /* 6 product columns of about 160px: the longest words fit without being cut. */
+    table { min-width: 1100px; font-size: 13.5px; }
+    .criterion { width: 128px; padding-inline: 12px; }
     th, td { padding-block: 12px; }
     .hint { font-size: 12px; }
   }

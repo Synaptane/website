@@ -50,9 +50,11 @@ button { cursor: pointer; }
 code, kbd, pre, samp { font-family: var(--font-mono); }
 :not(pre) > code {
   font-size: 0.88em;
-  padding: 1px 5px;
+  padding: 0 5px;
+  border: 1px solid var(--border);
   border-radius: 5px;
-  background: var(--bg-2);
+  /* --hover stands out from --bg and --surface in both themes (--bg-2 is nearly --bg in Slate). */
+  background: var(--hover);
   overflow-wrap: anywhere;
 }
 h1, h2, h3, h4 {

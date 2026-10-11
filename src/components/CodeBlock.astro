@@ -96,6 +96,9 @@ const t = useTranslations(getLang(Astro.currentLocale));
     font: 500 12.5px/1 var(--font-body);
   }
   .copy[hidden] { display: none; }
+  /* A 40px touch target around the small button. */
+  .copy { position: relative; } /* (absolute in an untitled bar, see above) */
+  .copy::after { content: ''; position: absolute; inset: -7px -4px; }
   .copy:hover { color: var(--ink); }
   .copy :global(.icon-done), .copy.done :global(.icon-copy) { display: none; }
   .copy.done :global(.icon-done) { display: block; color: var(--ok); }

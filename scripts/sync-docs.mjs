@@ -4,7 +4,8 @@
 //
 //   docs/X.md     -> src/content/docs/docs/X.md       (English, served at /docs/X/)
 //   docs/X.fr.md  -> src/content/docs/fr/docs/X.md    (French,  served at /fr/docs/X/)
-//   docs/assets/* -> public/docs/assets/*             (served at /docs/assets/*)
+//   docs/assets/* -> public/docs/assets/*             (served at /docs/assets/*; only the files
+//                                                      used by the docs or the site, see ASSETS)
 //   CHANGELOG.md  -> src/content/releases/CHANGELOG.md (release notes, rendered at /releases/)
 //
 // Usage:
@@ -21,7 +22,12 @@
 // The generated files are committed (the site builds without the main repository). Each one
 // starts with a "generated" comment, and docs-sync.json lists them with the source commit: a
 // new sync first removes the files of the previous one, so pages deleted upstream disappear.
-// No dependency: Node >= 22 and git.
+// The pages are converted on the way (scripts/docs-transform.mjs, tested by
+// `npm run test-sync-docs`): GitHub alerts (`> [!NOTE]`) become Starlight asides (`:::note`),
+// and the French pages get French typography outside code (’, non-breaking spaces).
+// Typography changes the ids of some French headings (`## Annexe : x` -> #annexe-x instead of
+// #annexe--x): the links to them are updated (ids computed with github-slugger, as Astro does).
+// Requirements: Node >= 22, git, and `npm ci` done (github-slugger comes with Astro).
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
@@ -30,6 +36,8 @@ import { tmpdir } from 'node:os';
 import { dirname, join, posix, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
+import GithubSlugger from 'github-slugger';
+import { convertCallouts, frenchTypography, isFence, mapOutsideInlineCode, updateFence } from './docs-transform.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const MANIFEST = join(ROOT, 'docs-sync.json');
@@ -38,6 +46,10 @@ const FR_DIR = 'src/content/docs/fr/docs';
 const ASSETS_DIR = 'public/docs/assets';
 const CHANGELOG = 'src/content/releases/CHANGELOG.md';
 const DOCS_BASE = { en: '/docs/', fr: '/fr/docs/' };
+// docs/assets/ also holds files for the repository itself (logo, icon, social preview): only the
+// assets a page of the docs or a file of the site (src/) links to are copied, plus these
+// patterns, which the site builds at run time (src/components/home/Gallery.astro).
+const ASSETS = [/^screenshot-[\w-]+\.png$/, /^architecture[\w-]*\.svg$/];
 
 const { values: args } = parseArgs({
   options: {
@@ -51,7 +63,8 @@ const { values: args } = parseArgs({
 });
 
 if (args.help) {
-  console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1, 25).join('\n').replace(/^\/\/ ?/gm, ''));
+  const header = readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1);
+  console.log(header.slice(0, header.findIndex((l) => !l.startsWith('//'))).join('\n').replace(/^\/\/ ?/gm, ''));
   process.exit(0);
 }
 
@@ -117,16 +130,43 @@ async function main() {
   /** @type {Map<string, string | Buffer>} generated path (from ROOT) -> content */
   const out = new Map();
   const warnings = [];
+  /** @type {Map<string, Map<string, string>>} page URL (/fr/docs/x/) -> old id -> new id */
+  const anchors = new Map();
 
   for (const page of pages) {
     const lang = page.endsWith('.fr.md') ? 'fr' : 'en';
     const slug = page.replace(/(\.fr)?\.md$/, '');
     const target = posix.join(lang === 'fr' ? FR_DIR : EN_DIR, `${slug}.md`);
     const text = await readFile(join(docsRoot, page), 'utf8');
-    out.set(target, convert(text, { page, lang, slug, order, warnings, file: `docs/${page}` }));
+    out.set(target, convert(text, { page, lang, slug, order, warnings, file: `docs/${page}`, anchors }));
   }
+  // French headings whose id changed with the typography: update the links to them.
+  for (const [target, content] of out) {
+    if (target.startsWith(`${FR_DIR}/`)) out.set(target, updateAnchors(content, target, anchors));
+  }
+  // Assets used by the docs (links rewritten to /docs/assets/…) or by the site sources.
+  const used = new Set();
+  const collect = (text) => {
+    // (a name built at run time, `screenshot-${name}.png`, is covered by ASSETS)
+    for (const m of text.matchAll(/\/docs\/assets\/([^\s"'`)<>?#${}]+)(?![$\w{-])/g)) used.add(decodeURI(m[1]));
+  };
+  for (const content of out.values()) collect(content);
+  for (const file of await walk(join(ROOT, 'src'))) {
+    if (/\.(astro|ts|mjs|js|css|md|mdx|json)$/.test(file) && !file.startsWith(join(ROOT, 'src/content/docs'))) {
+      collect(await readFile(file, 'utf8'));
+    }
+  }
+  let skipped = 0;
   for (const asset of assets) {
-    out.set(posix.join(ASSETS_DIR, asset.slice('assets/'.length)), await readFile(join(docsRoot, asset)));
+    const name = asset.slice('assets/'.length);
+    if (!used.has(name) && !ASSETS.some((re) => re.test(name))) {
+      skipped++;
+      continue;
+    }
+    out.set(posix.join(ASSETS_DIR, name), await readFile(join(docsRoot, asset)));
+  }
+  for (const name of used) {
+    if (!assets.includes(`assets/${name}`)) warnings.push(`/docs/assets/${name} is linked to but not in docs/assets/.`);
   }
 
   // The changelog (Keep a Changelog, English only), parsed by the `releases` collection
@@ -181,11 +221,11 @@ async function main() {
   await removeEmptyDirs([EN_DIR, FR_DIR, ASSETS_DIR].map((d) => join(ROOT, d)));
 
   for (const w of warnings) console.warn(`warning: ${w}`);
-  console.log(`Synced ${pages.length} pages, ${assets.length} assets${out.has(CHANGELOG) ? ' and the changelog' : ''} from ${args.repo}@${ref} (${commit.slice(0, 12)}); ${stale.length} stale file(s) removed.`);
+  console.log(`Synced ${pages.length} pages, ${assets.length - skipped} assets (${skipped} unused, not copied)${out.has(CHANGELOG) ? ' and the changelog' : ''} from ${args.repo}@${ref} (${commit.slice(0, 12)}); ${stale.length} stale file(s) removed.`);
 }
 
 // ---------- Conversion of one page ----------
-function convert(text, { page, lang, slug, order, warnings, file }) {
+function convert(text, { page, lang, slug, order, warnings, file, anchors }) {
   let lines = text.replace(/\r\n?/g, '\n').split('\n');
 
   // Front matter of the source, if any (kept and merged).
@@ -203,6 +243,17 @@ function convert(text, { page, lang, slug, order, warnings, file }) {
   if (first >= 0 && /^\s*\[?English\]?(\([^)]*\))?\s*\|\s*\[?Français\]?(\([^)]*\))?\s*$/.test(lines[first])) {
     lines.splice(first, 1);
   }
+
+  // GitHub alerts -> Starlight asides; French typography (title and description included).
+  let prose = convertCallouts(lines.join('\n'));
+  if (lang === 'fr') {
+    const before = headingIds(prose);
+    prose = frenchTypography(prose);
+    const after = headingIds(prose);
+    const changed = new Map(before.map((id, i) => [id, after[i]]).filter(([a, b]) => a !== b));
+    if (changed.size) anchors.set(`${DOCS_BASE.fr}${slug.replace(/(^|\/)index$/, '')}${slug === 'index' ? '' : '/'}`, changed);
+  }
+  lines = prose.split('\n');
 
   // Title: the first level-1 heading outside code blocks, removed from the body.
   let title;
@@ -294,6 +345,37 @@ function rewriteUrl(url, { lang, warnings, file }) {
   return `${GITHUB}/${kind}/${linkRef}/${encodeURI(target)}${hash}`;
 }
 
+// ---------- Heading ids ----------
+/** Ids of the headings of a Markdown text (outside code blocks), as Astro computes them. */
+function headingIds(markdown) {
+  const slugger = new GithubSlugger();
+  const ids = [];
+  let fence = null;
+  for (const line of markdown.split('\n')) {
+    const wasFence = fence;
+    fence = updateFence(fence, line);
+    if (wasFence || fence) continue;
+    const m = /^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$/.exec(line);
+    if (m) ids.push(slugger.slug(stripInline(m[1])));
+  }
+  return ids;
+}
+
+/** Updates the links of a French page to the headings whose id changed (same page or another). */
+function updateAnchors(content, target, anchors) {
+  if (!anchors.size) return content;
+  const self = `${DOCS_BASE.fr}${target.slice(FR_DIR.length + 1).replace(/\.md$/, '').replace(/(^|\/)index$/, '')}`;
+  const selfUrl = self.endsWith('/') ? self : `${self}/`;
+  const fix = (page, id) => {
+    const map = anchors.get(page || selfUrl);
+    if (!map) return id;
+    const decoded = safe(() => decodeURIComponent(id)) || id;
+    return map.has(decoded) ? map.get(decoded) : id;
+  };
+  return content
+    .replace(/(\]\(|\bhref=")(\/fr\/docs\/[^)"#\s]*)?#([^)"\s]+)/g, (_, open, page = '', id) => `${open}${page}#${fix(page, id)}`);
+}
+
 // ---------- Helpers ----------
 function sidebarOrder(indexMarkdown) {
   const order = new Map([['index', 0]]);
@@ -307,47 +389,11 @@ function sidebarOrder(indexMarkdown) {
   return order;
 }
 
-function isFence(line) {
-  return /^\s{0,3}(`{3,}|~{3,})/.test(line);
-}
-
-/** Tracks fenced code blocks: returns the open fence after `line`, or null. */
-function updateFence(open, line) {
-  const m = /^\s{0,3}(`{3,}|~{3,})(.*)$/.exec(line);
-  if (!m) return open;
-  if (!open) return m[1];
-  if (m[1][0] === open[0] && m[1].length >= open.length && m[2].trim() === '') return null;
-  return open;
-}
-
-/** Applies `fn` to the parts of `line` that are not inline code spans. */
-function mapOutsideInlineCode(line, fn) {
-  let result = '';
-  let i = 0;
-  while (i < line.length) {
-    const start = line.indexOf('`', i);
-    if (start < 0) break;
-    let run = 1;
-    while (line[start + run] === '`') run++;
-    const ticks = '`'.repeat(run);
-    let end = line.indexOf(ticks, start + run);
-    while (end >= 0 && line[end + run] === '`') end = line.indexOf(ticks, end + run + 1);
-    if (end < 0) {
-      // Unclosed span on this line (it may continue on the next one): leave the rest as is.
-      result += fn(line.slice(i, start)) + line.slice(start);
-      return result;
-    }
-    result += fn(line.slice(i, start)) + line.slice(start, end + run);
-    i = end + run;
-  }
-  return result + fn(line.slice(i));
-}
-
 function firstParagraph(body) {
   const blocks = body.split(/\n\s*\n/);
   for (const block of blocks) {
     const t = block.trim();
-    if (!t || /^(#|```|~~~|[-*+] |\d+\. |>|\||<|!\[)/.test(t)) continue;
+    if (!t || /^(#|```|~~~|:::|[-*+] |\d+\. |>|\||<|!\[)/.test(t)) continue;
     let text = stripInline(t.replace(/\s*\n\s*/g, ' '));
     if (text.length > 200) text = `${text.slice(0, 197).replace(/\s+\S*$/, '')}…`;
     return text;

@@ -1,0 +1,40 @@
+---
+// Page 404 en français. GitHub Pages ne sert qu’un seul /404.html (src/pages/404.astro, bilingue) :
+// pour une adresse sous /fr/, celui-ci charge cette page à la place, qui remet dans la barre
+// d’adresse l’adresse demandée.
+// Exclue du sitemap par @astrojs/sitemap (page de code d’état).
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+import { fr } from '../../i18n/fr';
+---
+
+<Base title={fr.notFound.title} description={fr.notFound.text} alternate={null} noindex>
+  <script is:inline slot="head">
+    try {
+      const asked = sessionStorage.getItem('synaptane-404');
+      if (asked) {
+        sessionStorage.removeItem('synaptane-404');
+        history.replaceState(null, '', asked);
+      }
+    } catch {}
+  </script>
+  <div class="container not-found">
+    <p class="code" aria-hidden="true">404</p>
+    <section>
+      <h1>{fr.notFound.title}</h1>
+      <p class="lead">{fr.notFound.text}</p>
+      <div class="actions">
+        <Button href="/fr/" variant="primary">{fr.notFound.home}</Button>
+        <Button href="/fr/docs/">{fr.notFound.docs}</Button>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .not-found { padding-block: var(--space-8); display: grid; gap: var(--space-7); }
+  .code { margin: 0; font: 600 14px/1 var(--font-mono); color: var(--ink-3); letter-spacing: 0.1em; }
+  h1 { font-size: clamp(28px, 5vw, 40px); }
+  .lead { margin-top: var(--space-3); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+</style>

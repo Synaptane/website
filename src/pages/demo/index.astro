@@ -7,6 +7,7 @@ import Card from '../../components/Card.astro';
 import CardGrid from '../../components/CardGrid.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
 import PageHeader from '../../components/PageHeader.astro';
+import { installCode } from '../../lib/install';
 import Screenshot from '../../components/Screenshot.astro';
 import Section from '../../components/Section.astro';
 import manifest from '../../../public/demo/app/MANIFEST.json';
@@ -62,7 +63,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
         <p>Six notes waiting for the nightly tidy-up: a fact to add, a duplicate, a contradiction, an attachment…</p>
       </Card>
       <Card title="Wiki health" href={`${app}/o/acme/it/health/`}>
-        <p>A broken link, a page to review, pages nobody links to: what to fix, found without AI.</p>
+        <p>A broken link and a page to review; no orphan or empty page. What to fix, found without AI.</p>
       </Card>
       <Card title="Search" href={`${app}/search/kestrel/`}>
         <p>Full-text search across pages, documents and the inbox, with the passages that match: try <em>kestrel</em>, found in a scan.</p>
@@ -88,11 +89,12 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
     </ul>
   </Section>
 
-  <Section id="for-real" title="Try it for real" intro="The same data on your own instance, with every feature: install Synaptane, then load the demo wiki with one command.">
-    <CodeBlock title="Terminal" lang="sh" code={`SYNAPTANE_ALLOW_LOCAL_REPOS=true synaptane demo`} />
+  <Section id="for-real" title="Try it for real" intro="The same data on your own instance, with every feature: on Linux, or WSL2 on Windows, with Docker, these commands install Synaptane and load the demo wiki.">
+    <CodeBlock title="Terminal" lang="sh" code={installCode('en')} />
     <p class="more">
-      See <a href="/docs/admin/installation/#demo-data">Demo data</a> in the installation guide
-      (with Docker Compose too). Use a throwaway instance: the demo allows local Git repositories.
+      Then open <code>http://localhost:8000/o/acme/it</code> and sign in with the password printed by
+      the last command. Use a throwaway instance: the demo allows local Git repositories.
+      See <a href="/docs/admin/installation/#demo-data">Demo data</a> in the installation guide (without Docker too).
     </p>
     <div class="actions">
       <Button href="/docs/admin/installation/" variant="primary" icon="arrow-right">Install Synaptane</Button>

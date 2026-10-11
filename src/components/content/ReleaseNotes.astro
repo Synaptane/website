@@ -2,9 +2,10 @@
 /**
  * The release notes, one section per version, from the `releases` collection (the changelog of
  * the main repository, see src/content.config.ts). The notes themselves are in English; the
- * labels around them follow the page language.
+ * labels around them, and the section headings of Keep a Changelog (Added, Changed…), follow
+ * the page language.
  */
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { formatDate, type Lang } from '../../i18n';
 import { SITE } from '../../site';
 
@@ -15,7 +16,8 @@ interface Props {
 const { lang } = Astro.props;
 const labels = {
   en: {
-    unreleased: 'Unreleased',
+    unreleased: 'Coming soon',
+    upcomingPreview: 'Preview coming soon',
     unreleasedTitle: 'Coming changes',
     yanked: 'Withdrawn',
     released: 'Released on',
@@ -25,21 +27,37 @@ const labels = {
     empty: 'No release notes yet.',
   },
   fr: {
-    unreleased: 'Pas encore publiée',
+    unreleased: 'À venir',
+    upcomingPreview: 'Préversion à venir',
     unreleasedTitle: 'Changements à venir',
     yanked: 'Retirée',
     released: 'Publiée le',
     release: 'La version sur GitHub',
     changelog: 'Le CHANGELOG sur GitHub',
     versions: 'Versions',
-    empty: "Aucune note de version pour l'instant.",
+    empty: 'Aucune note de version pour l’instant.',
   },
 }[lang];
 
+/** Section headings of Keep a Changelog, in French (the notes below them stay in English). */
+const sections: Record<string, string> = {
+  Added: 'Ajouté',
+  Changed: 'Modifié',
+  Deprecated: 'Obsolète',
+  Removed: 'Supprimé',
+  Fixed: 'Corrigé',
+  Security: 'Sécurité',
+  Notes: 'Notes',
+};
+const translateHeadings = (html: string) =>
+  lang === 'en'
+    ? html
+    : html.replace(/<h3([^>]*)>([^<]+)<\/h3>/g, (match, attrs: string, text: string) =>
+        sections[text.trim()] ? `<h3${attrs} lang="fr">${sections[text.trim()]}</h3>` : match,
+      );
+
 const entries = (await getCollection('releases')).sort((a, b) => a.data.position - b.data.position);
-const versions = await Promise.all(
-  entries.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
-);
+const versions = entries.map((entry) => ({ entry, html: translateHeadings(entry.rendered?.html ?? '') }));
 const changelogUrl = `${SITE.github}/blob/main/CHANGELOG.md`;
 const title = (version: string) => (version === 'Unreleased' ? labels.unreleasedTitle : `v${version}`);
 ---
@@ -60,7 +78,7 @@ const title = (version: string) => (version === 'Unreleased' ? labels.unreleased
 
 <div class="releases">
   {
-    versions.map(({ entry, Content }) => {
+    versions.map(({ entry, html }) => {
       const { version, date, unreleased, yanked, url } = entry.data;
       // A version without a date has no GitHub release yet: link to the changelog instead.
       const link = !unreleased && url ? { href: url, label: labels.release } : { href: changelogUrl, label: labels.changelog };
@@ -76,15 +94,13 @@ const title = (version: string) => (version === 'Unreleased' ? labels.unreleased
                   {labels.released} <time datetime={date}>{formatDate(new Date(`${date}T00:00:00Z`), lang)}</time>
                 </span>
               ) : (
-                <span class="badge">{labels.unreleased}</span>
+                <span class="badge">{/-/.test(version) ? labels.upcomingPreview : labels.unreleased}</span>
               )}
               {yanked && <span class="badge badge-danger">{labels.yanked}</span>}
               <a href={link.href}>{link.label}</a>
             </p>
           </header>
-          <div class="prose notes" lang="en">
-            <Content />
-          </div>
+          <div class="prose notes" lang="en" set:html={html} />
         </section>
       );
     })

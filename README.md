@@ -20,6 +20,7 @@ npm run check         # astro check: TypeScript and Astro diagnostics
 npm run check-links   # internal links and #anchors of dist/ (after a build, no network)
 npm run check-demo    # the static demo: read-only, no secret, links (python3, no dependency)
 npm run sync-docs     # copy the docs from ../synaptane-public (see below)
+npm run test-sync-docs # tests of the Markdown conversion of sync-docs (node --test)
 npm run build-demo    # regenerate the static demo from ../synaptane-public (see below)
 ```
 
@@ -79,7 +80,7 @@ slash (`trailingSlash: 'always'`); build links with `localizePath('/docs/', lang
 | Static demo | `public/demo/app/` → `/demo/app/`, `public/fr/demo/app/` → `/fr/demo/app/` | **Generated** by `scripts/build-demo/`, committed; do not edit. `check-links` and `check-demo` cover them. Not indexed (Pagefind, `noindex`). |
 | Releases | `src/pages/releases/index.astro` (+ `fr/`) | Generated from the main repository's `CHANGELOG.md` (`npm run sync-docs`): one section per version. Do not write release notes here. |
 | Roadmap, About, Legal | `src/pages/{roadmap,about,legal}.astro` (+ `fr/`) | |
-| 404 | `src/pages/404.astro` | One bilingual page (GitHub Pages serves a single `404.html`). |
+| 404 | `src/pages/404.astro`, `src/pages/fr/404.astro` | GitHub Pages serves a single bilingual `404.html`; under `/fr/` it loads the French one, which restores the address. |
 | Docs | **not here**: `docs/` of synaptane/synaptane | See below. |
 
 Before the launch, `grep -rn "<Todo" src/` must return nothing.
@@ -104,7 +105,14 @@ The docs are written in the main repository (`docs/X.md` in English, `docs/X.fr.
 and copied here by `npm run sync-docs`:
 
 - `docs/X.md` → `src/content/docs/docs/X.md` (`/docs/X/`), `docs/X.fr.md` →
-  `src/content/docs/fr/docs/X.md` (`/fr/docs/X/`), `docs/assets/*` → `public/docs/assets/`;
+  `src/content/docs/fr/docs/X.md` (`/fr/docs/X/`), `docs/assets/*` → `public/docs/assets/`
+  (only the assets a page or a file of `src/` links to, plus `screenshot-*.png` and
+  `architecture*.svg`, which the home page uses);
+- GitHub alerts (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`) become
+  Starlight asides (`:::note`, `:::tip`, `:::note[Important]`, `:::caution`, `:::danger`);
+- the French pages get French typography outside code, URLs and HTML (`’`, a non-breaking space
+  before `:` and inside « », a narrow one before `; ? !`), and the links to the headings whose
+  id changed are updated (`scripts/docs-transform.mjs`, tested by `npm run test-sync-docs`);
 - the "English | Français" line is dropped (Starlight has its language switcher), the first
   `# Title` becomes the front matter `title`, the first paragraph the `description`, and the
   order of the links in `docs/index.md` the sidebar order;
@@ -114,7 +122,10 @@ and copied here by `npm run sync-docs`:
   `releases` collection (`src/content.config.ts`, parser in `src/lib/changelog.ts`) splits it into
   versions (Keep a Changelog: `## [1.0.0] - 2026-11-02`, `## [Unreleased]`, `[1.0.0]: <url>`), and
   `/releases/` renders one section per version. A version without a date shows "Unreleased" and
-  links to the changelog on GitHub instead of its release page.
+  links to the changelog on GitHub instead of its release page, with a "Coming soon" badge
+("Preview coming soon" for a pre-release); the hero and the footer say the same
+(`src/lib/release.ts`). On the French page, the section headings (Added, Changed…) are
+translated; the notes stay in English.
 
 The generated files are committed (the site builds without the main repository), start with a
 "generated" comment, and are listed in `docs-sync.json` with the source commit. Do not edit

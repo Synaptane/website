@@ -1,6 +1,5 @@
 ---
 // About (English). French twin: src/pages/fr/about.astro.
-// DRAFT for René Cotton to review: the text below speaks in his name.
 import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import AuthorCard from '../components/content/AuthorCard.astro';
@@ -44,6 +43,10 @@ import { SITE } from '../site';
           There is no email address: questions, ideas and feedback go to{' '}
           <a href={SITE.discussions}>GitHub Discussions</a>, where the answers help everyone. Bugs go to{' '}
           <a href={`${SITE.github}/issues`}>issues</a>.
+        </p>
+        <p>
+          Security vulnerabilities: report them privately, never in a public issue. See{' '}
+          <a href={`${SITE.github}/blob/main/SECURITY.md`}>SECURITY.md</a>.
         </p>
       </div>
       <NewsletterNote title="A weekly newsletter on AI, in French" linkLabel="Read it on rene-cotton.fr">

@@ -34,7 +34,11 @@ html:has(body.demo-static) { scroll-padding-top: calc(var(--demo-banner) + var(-
 .demo-banner-tools { flex: none; display: flex; align-items: center; gap: 10px; }
 .demo-banner .segmented { padding: 2px; background: var(--hover); }
 .demo-banner .segmented button { width: 26px; height: 22px; }
-.demo-banner-lang { padding: 2px 4px; white-space: nowrap; }
+.demo-banner-lang, .demo-banner-legal { padding: 2px 4px; white-space: nowrap; }
+.demo-banner .demo-banner-legal { color: var(--ink-2); font-weight: 400; }
+
+/* Phones: the theme switch and the legal notice, at the bottom of the navigation drawer. */
+.demo-drawer-tools { display: none; }
 
 /* Disabled actions keep their place: they show what the product does. */
 form[data-demo-off] [disabled] { cursor: not-allowed; }
@@ -53,7 +57,18 @@ form[data-demo-off] [disabled] { cursor: not-allowed; }
   :root { --demo-banner: 50px; }
   .demo-banner { gap: 8px; padding: 0 8px 0 12px; font-size: 12.5px; }
   .demo-banner-text, .demo-banner-flash { white-space: normal; }
-  .demo-banner .segmented { display: none; }
+  .demo-banner .segmented, .demo-banner-legal { display: none; }
+  .demo-drawer-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .demo-drawer-tools .segmented { padding: 3px; background: var(--hover); }
+  .demo-drawer-tools .segmented button { width: 40px; height: 40px; }
+  .demo-drawer-legal { display: inline-flex; align-items: center; min-height: 40px; color: var(--ink-2); font-size: 13px; }
 }
 @media print {
   .demo-banner { position: static; }

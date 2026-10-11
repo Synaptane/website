@@ -1,6 +1,6 @@
 ---
 // Mentions légales (français). Jumelle anglaise : src/pages/legal.astro.
-// Éditeur personne physique non professionnelle (loi n° 2004-575 du 21 juin 2004, LCEN).
+// Éditeur personne physique non professionnelle (loi n° 2004-575 du 21 juin 2004, LCEN).
 import Base from '../../layouts/Base.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import { SITE } from '../../site';
@@ -28,7 +28,7 @@ const fontNames: Record<string, string> = {
         Contact : par les <a href={SITE.discussions}>Discussions GitHub</a> du projet Synaptane.
       </p>
       <p>
-        Comme le permet la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique (LCEN) à un
+        Comme le permet la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique (LCEN) à un
         éditeur non professionnel, ses coordonnées personnelles ne sont pas publiées : ses éléments d’identification
         ont été communiqués à l’hébergeur, dont le nom et l’adresse figurent ci-dessous.
       </p>
@@ -49,15 +49,20 @@ const fontNames: Record<string, string> = {
           Sa documentation, reprise sur ce site, est sous la même licence.
         </li>
         <li>
-          Le code de ce site, y compris le texte de ses pages et de ses articles, est lui aussi publié sous licence
-          Apache 2.0.
+          Le code de ce site, y compris le texte de ses pages, est lui aussi publié sous licence Apache 2.0. La démo
+          figée est une copie générée de l’interface de Synaptane, sous la licence du projet Synaptane.
         </li>
         <li>
           Le nom Synaptane et son logo appartiennent à René Cotton. Comme le précise l’article 6 de la licence
           Apache 2.0, celle-ci ne donne pas le droit de les utiliser, sauf pour indiquer de façon raisonnable
           l’origine du logiciel.
         </li>
-        <li>La photo de René Cotton n’est couverte par aucune de ces licences.</li>
+        <li>La photo de René Cotton n’est couverte par aucune de ces licences. Le logo GitHub appartient à GitHub, Inc.</li>
+        <li>
+          Certains pictogrammes sont adaptés de <a href="https://github.com/feathericons/feather">Feather</a> (licence MIT)
+          et de <a href="https://github.com/lucide-icons/lucide">Lucide</a> (licence ISC) :{' '}
+          <a href="/THIRD_PARTY_NOTICES.txt">mentions des tiers</a> (en anglais).
+        </li>
         <li>
           Les polices de caractères ({fonts.map((f, i) => (
             <>{i > 0 && ', '}<a href={`/fonts/OFL-${f}.txt`}>{fontNames[f]}</a></>
@@ -71,14 +76,14 @@ const fontNames: Record<string, string> = {
         charge aucun script ni aucune ressource depuis un autre domaine. Il n’a ni formulaire ni compte.
       </p>
       <p>
-        Votre choix de thème (clair, sombre ou celui du système) est enregistré dans votre navigateur
-        (<code>localStorage</code>) et n’est transmis à personne. Vous pouvez l’effacer en supprimant les données du
-        site dans votre navigateur.
+        Vos préférences d’affichage (le thème, et l’état de la barre latérale de la démo) sont enregistrées dans votre
+        navigateur (<code>localStorage</code>) et ne sont transmises à personne. Vous pouvez les effacer en supprimant
+        les données du site dans votre navigateur.
       </p>
       <p>
         Comme tout site servi par GitHub Pages, ce site est soumis à la journalisation de l’hébergeur : GitHub
         enregistre et conserve l’adresse IP des visiteurs à des fins de sécurité, qu’ils aient un compte GitHub ou non.
-        Ce traitement relève de GitHub ; il est décrit dans la{' '}
+        Ce traitement relève de GitHub ; il est décrit dans la{' '}
         <a href="https://docs.github.com/fr/site-policy/privacy-policies/github-general-privacy-statement">déclaration de confidentialité de GitHub</a>{' '}
         et dans la <a href="https://docs.github.com/fr/pages/getting-started-with-github-pages/what-is-github-pages#data-collection">documentation de GitHub Pages</a>.
       </p>

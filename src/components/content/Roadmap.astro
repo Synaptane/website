@@ -34,7 +34,7 @@ const { lang, groups, legend } = Astro.props;
 
 const statusLabels: Record<Lang, Record<RoadmapStatus, string>> = {
   en: { next: 'Next', later: 'Later', exploring: 'Exploring' },
-  fr: { next: 'Prochainement', later: 'Plus tard', exploring: "À l'étude" },
+  fr: { next: 'Prochainement', later: 'Plus tard', exploring: 'À l’étude' },
 };
 const labels = statusLabels[lang];
 const order: RoadmapStatus[] = ['next', 'later', 'exploring'];

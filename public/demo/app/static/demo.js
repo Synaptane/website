@@ -1,7 +1,9 @@
 "use strict";
 // Static demo of Synaptane (synaptane.com/demo/app/): loaded before the application's
 // preferences.js. Generated pages, no server: nothing here sends a request.
-//  - theme: the site's choice (Starlight's "starlight-theme" key) applies to the demo, and back;
+//  - theme: the site's choice (Starlight's "starlight-theme" key) applies to the demo on every
+//    load (light or dark: copied; none: the system theme), and a choice made in the demo
+//    applies to the site;
 //  - forms: every action is disabled; a submission or a click on a disabled control shows the
 //    banner's message instead;
 //  - search: limited to the frozen queries (the palette needs a server, Ctrl+K opens the page).
@@ -9,12 +11,26 @@
   const root = document.documentElement;
   const appKey = "synaptane.ui.v1.demo.theme";
   const siteKey = "starlight-theme";
-  try {
-    if (!localStorage.getItem(appKey)) {
+  // The site's theme wins: it is copied before preferences.js reads the demo's key.
+  const syncTheme = () => {
+    try {
       const site = localStorage.getItem(siteKey);
       if (site === "light" || site === "dark") localStorage.setItem(appKey, site);
-    }
-  } catch { /* No storage: the system theme. */ }
+      else localStorage.removeItem(appKey);
+      return site === "light" || site === "dark" ? site : "system";
+    } catch { return null; /* No storage: the system theme. */ }
+  };
+  syncTheme();
+  // Back from the site through the browser's cache (no new load): apply its theme again.
+  window.addEventListener("pageshow", event => {
+    if (!event.persisted) return;
+    const theme = syncTheme();
+    if (!theme) return;
+    root.dataset.theme = theme;
+    document.querySelectorAll("[data-theme-option]").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.themeOption === theme));
+    });
+  });
 
   const searchPage = () => {
     const form = document.querySelector("[data-demo-search]");

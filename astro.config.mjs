@@ -40,6 +40,7 @@ export default defineConfig({
         { tag: 'meta', attrs: { property: 'og:image:width', content: '1280' } },
         { tag: 'meta', attrs: { property: 'og:image:height', content: '640' } },
         { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://synaptane.com/og.png' } },
+        // og:image:alt and twitter:image:alt, in the page's language: src/components/starlight/Head.astro
       ],
       components: {
         Header: './src/components/starlight/Header.astro',
@@ -47,6 +48,8 @@ export default defineConfig({
         LanguageSelect: './src/components/starlight/LanguageSelect.astro',
         MobileMenuFooter: './src/components/starlight/MobileMenuFooter.astro',
         EditLink: './src/components/starlight/EditLink.astro',
+        Footer: './src/components/starlight/Footer.astro',
+        Head: './src/components/starlight/Head.astro',
       },
       // The bilingual 404 page is src/pages/404.astro (GitHub Pages serves one 404.html).
       disable404Route: true,
@@ -76,7 +79,7 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Overview',
-          translations: { fr: "Vue d'ensemble" },
+          translations: { fr: 'Vue d’ensemble' },
           items: [
             { slug: 'docs', label: 'Introduction', translations: { fr: 'Introduction' } },
             { slug: 'docs/concepts' },

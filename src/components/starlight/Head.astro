@@ -1,0 +1,15 @@
+---
+/**
+ * Starlight override of the docs <head>: Starlight's own, plus the alternative text of the
+ * social preview image (og:image and twitter:image are set in astro.config.mjs), in the
+ * language of the page.
+ */
+import Default from '@astrojs/starlight/components/Head.astro';
+import { getLang, useTranslations } from '../../i18n';
+
+const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
+---
+
+<Default><slot /></Default>
+<meta property="og:image:alt" content={t.meta.ogImageAlt} />
+<meta name="twitter:image:alt" content={t.meta.ogImageAlt} />

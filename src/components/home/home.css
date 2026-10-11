@@ -81,10 +81,14 @@
 .home-small { margin: var(--space-4) 0 0; font-size: 14px; color: var(--ink-3); max-width: 80ch; }
 
 /* Architecture: the diagram and its explanation. */
-.home-arch-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); }
+/* Architecture: the diagram at full width (its labels stay readable), the list below it. */
+.home-arch-list { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; gap: var(--space-4); }
+@media (min-width: 720px) {
+  .home-arch-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) var(--space-7); }
+}
 .home-arch-list li { padding-left: var(--space-4); border-left: 2px solid var(--border); color: var(--ink-2); font-size: 15.5px; }
 .home-arch-list strong { color: var(--ink); }
-.home-arch .screenshot .frame { padding: var(--space-3); background: var(--surface); }
+.home-arch .screenshot .frame { background: var(--surface); }
 
 /* Open source: text, links, the hosted mention. */
 .home-oss { display: grid; gap: var(--space-6); grid-template-columns: minmax(0, 1fr); }

@@ -1,6 +1,8 @@
 ---
 // Bilingual 404 page: GitHub Pages serves this single /404.html for every missing URL, in
-// either language. The English text comes first; the French one has lang="fr".
+// either language. The English text comes first; the French one has lang="fr". Under /fr/, a
+// small script loads the French 404 page instead (src/pages/fr/404.astro: French header, footer
+// and text), which shows the requested address again; without JavaScript, both languages stay.
 import Base from '../layouts/Base.astro';
 import Button from '../components/Button.astro';
 import { en } from '../i18n/en';
@@ -8,6 +10,16 @@ import { fr } from '../i18n/fr';
 ---
 
 <Base title={`${en.notFound.title} · ${fr.notFound.title}`} description={en.notFound.text} alternate={null} noindex>
+  <script is:inline slot="head">
+    // Under /fr/: the French 404 page instead, which puts the address back (history.replaceState).
+    if (/^\/fr(\/|$)/.test(location.pathname) && location.pathname !== '/fr/404/') {
+      try {
+        sessionStorage.setItem('synaptane-404', location.pathname + location.search + location.hash);
+        document.documentElement.style.visibility = 'hidden';
+        location.replace('/fr/404/');
+      } catch {}
+    }
+  </script>
   <div class="container not-found">
     <p class="code" aria-hidden="true">404</p>
     <section lang="en">

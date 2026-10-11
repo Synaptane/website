@@ -17,8 +17,11 @@ import Comparison, { type Row } from '../components/home/Comparison.astro';
 import HomeIcon from '../components/home/HomeIcon.astro';
 import '../components/home/home.css';
 import { SITE } from '../site';
+import { installCode as installCodeFor } from '../lib/install';
+import { releaseLabel, releaseStatus } from '../lib/release';
 
-const imageVersion = SITE.version.replace(/^v/, '');
+const release = await releaseStatus();
+
 
 const features: Feature[] = [
   {
@@ -38,7 +41,7 @@ const features: Feature[] = [
   {
     icon: 'inbox',
     title: 'Inbox and nightly tidy-up',
-    text: 'Notes from assistants, the web UI or the API wait in an inbox. Every night an AI agent files them, updates existing pages, fixes links and commits. Deletions and spending are capped, and a run can be undone in one click.',
+    text: 'Notes from assistants, the web UI or the API wait in an inbox. Every night an AI agent files them, updates existing pages, fixes links and commits. Deletions are capped, an optional monthly budget (€20 suggested) limits spending, and a run can be undone in one click.',
     href: '/docs/concepts/#tidy-up',
     linkLabel: 'How the tidy-up works',
   },
@@ -73,7 +76,7 @@ const features: Feature[] = [
   {
     icon: 'users',
     title: 'Made for teams',
-    text: 'Organizations, spaces and roles, email invitations, single sign-on with OIDC, GitHub, GitLab or Google. A REST API with its OpenAPI schema, and signed webhooks.',
+    text: 'Organizations, spaces and roles, email invitations, single sign-on with OIDC, GitHub, GitLab or Google. A REST API with its OpenAPI schema (optional), and signed webhooks.',
     href: '/docs/admin/sso/',
     linkLabel: 'Single sign-on',
   },
@@ -140,17 +143,7 @@ const formats: FileFormat[] = [
   },
 ];
 
-const installCode = `# 1. Get the release
-git clone --branch ${SITE.version} https://github.com/synaptane/synaptane.git && cd synaptane
-
-# 2. Write a minimal .env (the last line is for the demo only)
-printf 'PUBLIC_URL=http://localhost:8000\\nPOSTGRES_PASSWORD=%s\\nSYNAPTANE_VERSION=${imageVersion}\\n' \\
-  "$(openssl rand -hex 24)" > .env
-echo 'COMPOSE_FILE=compose.yaml:examples/compose.demo.yaml' >> .env
-
-# 3. Start, then load the demo wiki
-docker compose up -d
-docker compose exec app synaptane demo`;
+const installCode = installCodeFor('en');
 
 const rows: Row[] = [
   {
@@ -230,7 +223,7 @@ const rows: Row[] = [
   description="Synaptane is a self-hosted team second brain stored in Git: Markdown first, and all your files, all searchable. Your AI assistants search it and add to it over MCP; an AI agent files their notes every night."
 >
   <Hero
-    status="Alpha: first public release"
+    status={releaseLabel(release, 'en')}
     statusHref="/releases/"
     title="Your team's memory, in Git."
     titleMuted="Fed by your AI assistants, tidied by AI every night."
@@ -375,21 +368,21 @@ const rows: Row[] = [
     intro="One application, one worker, PostgreSQL and your Git repositories. If you stop using Synaptane, your wiki is still a folder of Markdown pages and your original files."
     class="home-arch"
   >
-    <div class="home-split">
-      <ul class="home-arch-list">
-        <li><strong>One FastAPI app</strong> serves the three interfaces: MCP for assistants, the web UI and the REST API.</li>
-        <li><strong>A worker</strong> runs the nightly tidy-up, the routines, Git sync, indexing (with text extraction and OCR) and webhooks.</li>
-        <li><strong>PostgreSQL with pgvector</strong> holds accounts, permissions and the search index. The rest can be rebuilt from the repositories.</li>
-        <li><strong>The AI provider is optional:</strong> only the tidy-up, routines and search by meaning need one.</li>
-      </ul>
       <Screenshot
         light="/docs/assets/architecture.svg"
         dark="/docs/assets/architecture-dark.svg"
         width={1040}
         height={452}
+        zoom="home"
+        zoomCaption="Architecture of Synaptane: the application, the worker, PostgreSQL, the Git repositories and the optional AI provider."
         alt="Architecture: AI assistants (MCP, OAuth 2.1), browsers (web UI) and scripts (REST API) reach the FastAPI app; a worker handles the nightly tidy-up, routines, Git sync, indexing and webhooks; both share PostgreSQL with pgvector and local Git working copies; the worker syncs one Git repository per space and calls an optional AI provider."
       />
-    </div>
+      <ul class="home-arch-list">
+        <li><strong>One FastAPI app</strong> serves the three interfaces: MCP for assistants, the web UI and the REST API.</li>
+        <li><strong>A worker</strong> runs the nightly tidy-up, the routines, Git sync, indexing (with text extraction and OCR) and webhooks.</li>
+        <li><strong>PostgreSQL</strong> holds accounts, permissions, settings and the semantic index (pgvector). The rest can be rebuilt from the repositories.</li>
+        <li><strong>The AI provider is optional:</strong> only the tidy-up, routines and search by meaning need one.</li>
+      </ul>
   </Section>
 
   <Section id="open-source" eyebrow="Open source" title="Free software, honest about its stage">
@@ -401,7 +394,7 @@ const rows: Row[] = [
           Certificate of Origin.
         </p>
         <p>
-          It is <strong>alpha software</strong>. The first public release is {SITE.version}, maintained
+          Synaptane is a <strong>preview</strong> ({SITE.version}, the first public release), maintained
           by one person on a best-effort basis. The REST API, the MCP tools and the configuration may
           still change: back up before each upgrade.
         </p>

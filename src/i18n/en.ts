@@ -56,7 +56,14 @@ export const en = {
     madeBy: 'Made by',
     author: 'René Cotton',
     contact: 'Questions and ideas: GitHub Discussions',
-    status: 'Alpha. First release: v1.0.0-rc.1.',
+    copyright: 'René Cotton and the Synaptane contributors.',
+    licenseShort: 'Apache License 2.0',
+  },
+  release: {
+    preview: 'Preview',
+    upcoming: 'Preview coming soon',
+    released: 'Preview: {version}, released on {date}.',
+    coming: 'Preview: {version}, coming soon.',
   },
   code: {
     copy: 'Copy',
