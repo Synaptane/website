@@ -4,11 +4,18 @@
 - no console error (CSP violation, script error);
 - no active control in a frozen form; a forced submission changes nothing;
 - navigation by clicks, from page to page (tree fragment, history, diff, inbox, search);
+- files other than Markdown: the PDF opens in the browser's viewer, the HTML file is rendered
+  in its sandboxed frame, the extracted text of an Office document is shown;
 - screenshots of a few pages (light/dark, EN/FR, mobile) in screenshots/demo/ (ignored by Git);
-  with --preview, also the two images of the /demo/ page (src/assets/demo/, committed).
+  with --preview, also the two images of the /demo/ page (src/assets/demo/, committed); with
+  --gallery, the home page screenshots taken on the demo (src/assets/app/ and
+  public/images/app/, committed; needs Pillow).
+
+Chromium runs in its full headless mode (channel "chromium"): the lighter headless shell has no
+PDF viewer. The viewer's own requests (chrome-extension://, chrome://) are not the demo's.
 
     npm run build
-    uv run --no-project --with playwright python scripts/build-demo/browse.py [--dist dist]
+    uv run --no-project --with playwright [--with pillow] python scripts/build-demo/browse.py [--dist dist]
 """
 
 import argparse
@@ -22,6 +29,11 @@ from playwright.sync_api import Page, sync_playwright
 
 SITE = Path(__file__).resolve().parents[2]
 ALLOWED = ("/demo/app/", "/fr/demo/app/", "/fonts/")
+BROWSER_OWN = ("chrome-extension://", "chrome://")  # the PDF viewer
+DOCS = "/demo/app/o/acme/it/p/infra/documents/"
+PDF = DOCS + "brightrack-support-contract.pdf/"
+HTML_FILE = DOCS + "status-report-2026-w40.html/"
+SLIDES = "/demo/app/o/acme/it/p/team/documents/2026-q3-infrastructure-review.pptx/"
 
 PAGES = [
     "/demo/app/",
@@ -42,6 +54,18 @@ PAGES = [
     "/fr/demo/app/o/acme/it/p/infra/backups.md/",
     "/fr/demo/app/o/acme/it/inbox/",
     "/fr/demo/app/search/backup/",
+    PDF,
+    DOCS + "2026-09-delivery-note.pdf/",
+    DOCS + "hardware-inventory.xlsx/",
+    DOCS + "rack-b-elevation.png/",
+    HTML_FILE,
+    HTML_FILE + "@source-1/",
+    SLIDES,
+    "/fr/demo/app/o/acme/it/p/team/documents/onboarding-checklist.docx/",
+    "/demo/app/o/acme/it/p/infra/servers.md/",
+    "/demo/app/search/kestrel/",
+    "/fr/demo/app/search/mttr/",
+    "/demo/app/search/docking/",
 ]
 
 SHOTS = [
@@ -54,7 +78,30 @@ SHOTS = [
     ("fr-wiki-mobile", "/fr/demo/app/o/acme/it/p/procedures/restore.md/", "light", 390, 844),
     ("en-assistants-light", "/demo/app/account/assistants/", "light", 1280, 800),
     ("en-unavailable-light", "/demo/app/unavailable/", "light", 1280, 800),
+    ("en-pdf-light", PDF, "light", 1440, 900),
+    ("en-html-dark", HTML_FILE, "dark", 1440, 900),
+    ("fr-slides-dark", "/fr" + SLIDES, "dark", 1440, 900),
+    ("en-servers-mobile", "/demo/app/o/acme/it/p/infra/servers.md/", "light", 390, 844),
 ]
+
+# Screenshots of the home page gallery (--gallery): the real interface, without the demo banner.
+# (name, url, script run before the shot)
+SCAN_AND_TEXT = """() => {
+  document.querySelector('.doc-body > details').open = true;
+  document.querySelector('.doc-frame').style.height = '450px';
+}"""
+GALLERY = [
+    ("pdf", PDF, None),
+    ("office", SLIDES, None),
+    # The scanned delivery note and, below a shorter frame, the text read by OCR.
+    ("ocr", DOCS + "2026-09-delivery-note.pdf/", SCAN_AND_TEXT),
+]
+GALLERY_SIZE = (2000, 1250)
+WITHOUT_DEMO = """() => {
+  document.querySelector('.demo-banner')?.remove();
+  document.querySelector('.demo-search-note')?.remove();
+  document.body.classList.remove('demo-static');
+}"""
 
 PREVIEW = "/demo/app/o/acme/it/p/procedures/restore.md/"
 
@@ -81,13 +128,15 @@ def main() -> int:
     parser.add_argument("--dist", type=Path, default=SITE / "dist")
     parser.add_argument("--shots", type=Path, default=SITE / "screenshots" / "demo")
     parser.add_argument("--preview", action="store_true", help="also update src/assets/demo/*.png")
+    parser.add_argument("--gallery", action="store_true",
+                        help="also update the home page screenshots (src/assets/app/, public/images/app/)")
     args = parser.parse_args()
     server, origin = serve(args.dist.resolve())
     problems: list[str] = []
     requests: list[str] = []
     args.shots.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(channel="chromium")
         context = browser.new_context(viewport={"width": 1440, "height": 900})
         page = context.new_page()
         page.on("request", lambda r: requests.append(r.url))
@@ -126,6 +175,19 @@ def main() -> int:
         if stored != ["dark", "dark"]:
             problems.append(f"theme switch: not kept ({stored})")
         page.locator(".demo-banner [data-theme-option=system]").click()
+
+        # Files other than Markdown.
+        visit(PDF)
+        page.wait_for_timeout(1500)
+        if not any(f.url.startswith("chrome-extension://") for f in page.frames):
+            problems.append(f"{PDF}: the PDF viewer did not open")
+        visit(HTML_FILE)
+        frame = page.frame_locator("iframe.doc-frame")
+        if "Weekly status report" not in (frame.locator("h1").text_content(timeout=5000) or ""):
+            problems.append(f"{HTML_FILE}: the HTML file is not rendered")
+        visit(SLIDES)
+        if not page.locator(".doc-body details[open] pre").is_visible():
+            problems.append(f"{SLIDES}: no extracted text shown")
 
         # Navigation by clicks.
         steps: list[str] = []
@@ -178,10 +240,14 @@ def main() -> int:
                 tab.goto(origin + PREVIEW, wait_until="networkidle")
                 tab.screenshot(path=str(target / f"demo-{theme}.png"))
                 shot.close()
+        if args.gallery:
+            gallery(browser, origin)
         browser.close()
     server.shutdown()
 
     for url in requests:
+        if url.startswith(BROWSER_OWN):
+            continue
         if not url.startswith(origin):
             problems.append(f"request outside the site: {url}")
             continue
@@ -192,6 +258,45 @@ def main() -> int:
     for p in dict.fromkeys(problems):
         print("  ✗", p, file=sys.stderr)
     return 1 if problems else 0
+
+
+def gallery(browser, origin: str) -> None:
+    """Home page screenshots: 1440×900 at scale 2, reduced to 2000×1250, 256-color PNG
+    (libimagequant through the `imagequant` package if present, as pngquant does). The
+    thumbnail (src/assets/app/, optimized by Astro) and the full-size original opened by the
+    viewer (public/images/app/) are the same file."""
+    from PIL import Image
+
+    try:
+        import imagequant
+    except ImportError:
+        imagequant = None
+
+    assets, full = SITE / "src" / "assets" / "app", SITE / "public" / "images" / "app"
+    full.mkdir(parents=True, exist_ok=True)
+    for name, url, prepare in GALLERY:
+        shot = browser.new_context(viewport={"width": 1440, "height": 900},
+                                   color_scheme="light", device_scale_factor=2)
+        tab = shot.new_page()
+        tab.goto(origin + url, wait_until="networkidle")
+        tab.evaluate(WITHOUT_DEMO)
+        if prepare:
+            tab.evaluate(prepare)
+        tab.wait_for_timeout(2000)  # the PDF viewer renders after the load
+        raw = full / f"screenshot-{name}.raw.png"
+        tab.screenshot(path=str(raw))
+        shot.close()
+        with Image.open(raw) as image:
+            small = image.convert("RGB").resize(GALLERY_SIZE, Image.Resampling.LANCZOS)
+        if imagequant:
+            quantized = imagequant.quantize_pil_image(small.convert("RGBA"), dithering_level=1.0, max_colors=256)
+        else:
+            quantized = small.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.FLOYDSTEINBERG)
+        target = full / f"screenshot-{name}.png"
+        quantized.save(target, optimize=True)
+        raw.unlink()
+        (assets / f"{name}.png").write_bytes(target.read_bytes())
+        print(f"gallery: {name}.png, {target.stat().st_size // 1024} KiB")
 
 
 if __name__ == "__main__":

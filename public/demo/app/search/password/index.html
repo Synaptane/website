@@ -47,13 +47,13 @@
 
 <main id="content" tabindex="-1">
 <header class="page-header"><div><h1>Search</h1></div></header>
-<form class="search-form card" method="get" action="/demo/app/search/" role="search" data-demo-search="" data-demo-queries='{"backup": "/demo/app/search/backup/", "vpn": "/demo/app/search/vpn/", "onboarding": "/demo/app/search/onboarding/", "nas": "/demo/app/search/nas/", "firewall": "/demo/app/search/firewall/", "restore": "/demo/app/search/restore/", "wifi": "/demo/app/search/wifi/", "password": "/demo/app/search/password/"}'>
+<form class="search-form card" method="get" action="/demo/app/search/" role="search" data-demo-search="" data-demo-queries='{"backup": "/demo/app/search/backup/", "vpn": "/demo/app/search/vpn/", "onboarding": "/demo/app/search/onboarding/", "nas": "/demo/app/search/nas/", "firewall": "/demo/app/search/firewall/", "restore": "/demo/app/search/restore/", "wifi": "/demo/app/search/wifi/", "password": "/demo/app/search/password/", "kestrel": "/demo/app/search/kestrel/", "mttr": "/demo/app/search/mttr/", "docking": "/demo/app/search/docking/"}'>
 <div class="field search-q"><label for="q">Text to search for</label><input id="q" type="search" name="q" value="password" autofocus=""></div>
 <div class="field"><label for="space">Space</label><select id="space" name="space"><option value="">All my spaces</option><option value="acme/it">Acme / IT team</option></select></div>
 <label class="checkbox"><input type="checkbox" name="regex" value="true">Regular expression</label>
 <button class="button button-primary" type="submit"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>Search</button>
-</form><div class="notice demo-search-note" data-demo-search-note="" data-miss="This search is not part of the static demo. Try one of these words:"><p data-demo-search-text="">In the static demo, search is limited to these words:</p><p class="demo-search-queries"><a class="badge badge-quiet" href="/demo/app/search/backup/">backup</a> <a class="badge badge-quiet" href="/demo/app/search/vpn/">vpn</a> <a class="badge badge-quiet" href="/demo/app/search/onboarding/">onboarding</a> <a class="badge badge-quiet" href="/demo/app/search/nas/">nas</a> <a class="badge badge-quiet" href="/demo/app/search/firewall/">firewall</a> <a class="badge badge-quiet" href="/demo/app/search/restore/">restore</a> <a class="badge badge-quiet" href="/demo/app/search/wifi/">wifi</a> <a class="badge badge-quiet" href="/demo/app/search/password/">password</a></p></div>
-<p class="muted section-gap">11 results</p>
+</form><div class="notice demo-search-note" data-demo-search-note="" data-miss="This search is not part of the static demo. Try one of these words:"><p data-demo-search-text="">In the static demo, search is limited to these words:</p><p class="demo-search-queries"><a class="badge badge-quiet" href="/demo/app/search/backup/">backup</a> <a class="badge badge-quiet" href="/demo/app/search/vpn/">vpn</a> <a class="badge badge-quiet" href="/demo/app/search/onboarding/">onboarding</a> <a class="badge badge-quiet" href="/demo/app/search/nas/">nas</a> <a class="badge badge-quiet" href="/demo/app/search/firewall/">firewall</a> <a class="badge badge-quiet" href="/demo/app/search/restore/">restore</a> <a class="badge badge-quiet" href="/demo/app/search/wifi/">wifi</a> <a class="badge badge-quiet" href="/demo/app/search/password/">password</a> <a class="badge badge-quiet" href="/demo/app/search/kestrel/">kestrel</a> <a class="badge badge-quiet" href="/demo/app/search/mttr/">mttr</a> <a class="badge badge-quiet" href="/demo/app/search/docking/">docking</a></p></div>
+<p class="muted section-gap">12 results</p>
 <ol class="search-results">
 <li class="card search-hit">
 <a class="search-title" href="/demo/app/o/acme/it/p/procedures/password-rotation.md/"><mark>Password</mark> rotation</a>
@@ -96,19 +96,24 @@
 <div class="search-excerpt"><p>2025-01: Proxmox for virtualisation</p><p>2025-03: GitLab CI for continuous integration</p><p>2025-06: <mark>password</mark> policy</p><p>2026-02: remote work</p></div>
 </li>
 <li class="card search-hit">
-<a class="search-title" href="/demo/app/o/acme/it/p/team/onboarding.md/">Onboarding a newcomer</a>
-<p class="muted"><span class="badge badge-quiet">IT team</span> <code>team/onboarding.md</code></p>
-<div class="search-excerpt"><p>Prepare their laptop (see new laptop).</p><p>Send their VPN profile.</p><p>Add them to their team's collection in the <mark>password</mark> vault.</p><p>Walk them through the security awareness training.</p></div>
-</li>
-<li class="card search-hit">
 <a class="search-title" href="/demo/app/o/acme/it/p/faq.md/">Frequently asked questions</a>
 <p class="muted"><span class="badge badge-quiet">IT team</span> <code>faq.md</code></p>
 <div class="search-excerpt"><p>Through the VPN. Your profile is sent on your first day.</p><p>Where are the shared <mark>password</mark>s?</p><p>In the <mark>password</mark> vault, never in a wiki page or a chat message.</p></div>
 </li>
 <li class="card search-hit">
+<a class="search-title" href="/demo/app/o/acme/it/p/team/onboarding.md/">Onboarding a newcomer</a>
+<p class="muted"><span class="badge badge-quiet">IT team</span> <code>team/onboarding.md</code></p>
+<div class="search-excerpt"><p>Prepare their laptop (see new laptop).</p><p>Send their VPN profile.</p><p>Add them to their team's collection in the <mark>password</mark> vault.</p><p>Walk them through the security awareness training.</p></div>
+</li>
+<li class="card search-hit">
 <a class="search-title" href="/demo/app/o/acme/it/p/README.md/">IT team wiki</a>
 <p class="muted"><span class="badge badge-quiet">IT team</span> <code>README.md</code></p>
 <div class="search-excerpt"><p>Infrastructure: servers, virtualisation, storage, backups</p><p>Network: Wi-Fi, firewall, VLANs, topology</p><p>Tools: VPN, GitLab, chat, <mark>password</mark> vault, tickets</p><p>Team: who we are, meetings, on-call, onboarding</p><p>Procedures: step-by-step runbooks</p></div>
+</li>
+<li class="card search-hit">
+<a class="search-title" href="/demo/app/o/acme/it/p/team/documents/onboarding-checklist.docx/">onboarding-checklist.docx</a>
+<p class="muted"><span class="badge badge-quiet">IT team</span> <code>team/documents/onboarding-checklist.docx</code> · extracted text</p>
+<div class="search-excerpt"><p>Inès Petit</p><p>☐</p><p>Add them to their team's collection in the <mark>password</mark> vault</p><p>Hugo Bernard</p><p>First week</p></div>
 </li>
 </ol>
 </main>

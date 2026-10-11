@@ -38,8 +38,12 @@ ASSETS = "/demo/app/static"  # demo.js, demo.css and the application's files, sh
 PUBLIC_URL = "https://brain.acme.example"  # replaces the instance address (fictional, reserved)
 UNAVAILABLE = "/unavailable"
 
-# Searches frozen in the demo (the dataset is in English, in both interface languages).
-QUERIES = ["backup", "vpn", "onboarding", "nas", "firewall", "restore", "wifi", "password"]
+# Searches frozen in the demo (the dataset is in English, in both interface languages). The last
+# three find files other than Markdown: the scanned delivery note (OCR), the slides, the sheet.
+QUERIES = [
+    "backup", "vpn", "onboarding", "nas", "firewall", "restore", "wifi", "password",
+    "kestrel", "mttr", "docking",
+]
 
 SPACE_BASE = f"/o/{ORG}/{SPACE}"
 SEEDS = [
@@ -108,6 +112,11 @@ CSP = (
     "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; "
     "font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
 )
+# An HTML file of the wiki, shown rendered in a sandboxed frame (opaque origin) of its page. On
+# synaptane.com it is a static file: it gets the strict policy the application gives raw files
+# (its own styles, no script, nothing from the network), even when opened on its own.
+DOCUMENT_CSP = check_demo.DOCUMENT_CSP
+HTML_FILES = (".html", ".htm")
 
 ICONS = {
     "sun": '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
@@ -158,7 +167,12 @@ class Rules:
             return None
         rest = path[len(SPACE_BASE) + 1 :]
         if rest.startswith("p/"):
-            return Ref("page", path) if not q else None
+            if not q:
+                return Ref("page", path)
+            # "View source" of an HTML file (shown rendered by default).
+            if q == {"source": "1"} and path.lower().endswith(HTML_FILES):
+                return Ref("page", path, (("source", "1"),))
+            return None
         if rest.startswith("history/"):
             return Ref("page", path)
         if m := re.fullmatch(r"diff/([0-9a-f]{7,40})/(.+)", rest):
@@ -343,6 +357,9 @@ class Rewriter:
                 value = tag.get(attr)
                 if isinstance(value, str) and (new := self.target(value)) is not None:
                     tag[attr] = new
+                    # "Download": the static file has no Content-Disposition header.
+                    if attr == "href" and ("download", "1") in parse_qsl(urlsplit(value).query):
+                        tag["download"] = ""
             related = tag.get("data-related")
             if isinstance(related, str):
                 found = self.rules.classify(related)
@@ -351,6 +368,11 @@ class Rewriter:
                 else:
                     del tag["data-related"]
         self.freeze_forms(soup)
+        # A document without preview (Word, PowerPoint, Excel…): its extracted text is what
+        # there is to read, so the demo shows it unfolded.
+        if page and soup.select_one(".doc-body > .notice a[download]"):
+            for details in soup.select(".doc-body > details"):
+                details["open"] = ""
         if page:
             self.add_frame(soup, ref)
             if ref.path == "/search":
@@ -563,6 +585,11 @@ def main() -> int:
     parser.add_argument("--db-name", default="synaptane_staticdemo",
                         help="throwaway database, created then dropped (name must contain 'staticdemo')")
     args = parser.parse_args()
+    if shutil.which("tesseract") is None:
+        # The scanned delivery note and the rack image of the data set are searchable through
+        # OCR: without it, their extracted text and the "kestrel" search would be missing.
+        log("tesseract not found: install tesseract-ocr (eng, fra), see README.md")
+        return 1
     app = args.app.resolve()
     APP_STATIC = app / "src" / "synaptane" / "web" / "static"
     public = SITE / "public"
@@ -606,7 +633,10 @@ def main() -> int:
                 write(file_of(url, public), data)
                 continue
             if ref.kind == "file":
-                write(file_of(url, public), body.decode("utf-8").replace(base, PUBLIC_URL) if is_text(ref, result) else body)
+                data = body.decode("utf-8").replace(base, PUBLIC_URL) if is_text(ref, result) else body
+                if isinstance(data, str) and ref.path.lower().endswith(HTML_FILES):
+                    data = document_html(data)
+                write(file_of(url, public), data)
                 continue
             html = rewriter.rewrite(body.decode("utf-8"), ref)
             write(file_of(url, public), html)
@@ -642,6 +672,26 @@ def main() -> int:
     write(public / "demo" / "app" / "MANIFEST.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
     log(f"manifest: {len(manifest_pages)} pages")
     return check_demo.main(["--public", str(public)])
+
+
+def document_html(html: str) -> str:
+    """An HTML file of the wiki, frozen: the application's policy for raw files, noindex."""
+    soup = BeautifulSoup(html, "html.parser")
+    if soup.head is None:
+        raise RuntimeError("an HTML file of the demo wiki has no <head>")
+    for meta in soup.head.find_all("meta", attrs={"http-equiv": True}):
+        meta.decompose()
+    tags = [
+        soup.new_tag("meta", attrs={"http-equiv": "Content-Security-Policy", "content": DOCUMENT_CSP}),
+        soup.new_tag("meta", attrs={"name": "robots", "content": "noindex"}),
+    ]
+    anchor = soup.head.find("meta", attrs={"charset": True})
+    for tag in reversed(tags):
+        if anchor:
+            anchor.insert_after(tag)
+        else:
+            soup.head.insert(0, tag)
+    return serialize(soup)
 
 
 def is_text(ref: Ref, result: Crawl) -> bool:

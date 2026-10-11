@@ -157,10 +157,11 @@ Pagefind index, built for both languages, docs only.
 ## Static demo
 
 `/demo/app/` (English) and `/fr/demo/app/` (French) are a frozen copy of the real Synaptane
-interface, generated from the Acme demo wiki on a throwaway instance: about 150 pages per
-language (wiki, history and diffs, inbox, health, activity, routines, prepared searches, AI
-assistants), read-only, without any request to a server. `public/demo/app/MANIFEST.json` gives
-the Synaptane version and commit, the date and the list of pages.
+interface, generated from the Acme demo wiki on a throwaway instance: about 175 pages per
+language (wiki with its PDF, Office, image and HTML files, history and diffs, inbox, health,
+activity, routines, prepared searches, AI assistants), read-only, without any request to a
+server. `public/demo/app/MANIFEST.json` gives the Synaptane version and commit, the date and the
+list of pages.
 
 ```sh
 (cd ../synaptane-public && docker compose -f compose.dev.yaml up -d)   # PostgreSQL + pgvector

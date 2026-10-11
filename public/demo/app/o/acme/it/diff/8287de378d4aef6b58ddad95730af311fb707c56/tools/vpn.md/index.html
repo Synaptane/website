@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+
+<html lang="en" data-user-key="demo">
+<head>
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vpn.md · Synaptane</title>
+<link rel="icon" href="/demo/app/static/icon.svg" type="image/svg+xml">
+<script src="/demo/app/static/demo.js"></script><script src="/demo/app/static/preferences.js"></script>
+<link rel="stylesheet" href="/demo/app/static/app.css">
+<link rel="stylesheet" href="/demo/app/assets/code.css">
+<link rel="stylesheet" href="/demo/app/static/demo.css"></head>
+<body class="workspace demo-static"><div class="demo-banner" role="region" aria-label="Static demo" data-flash="Read-only demo: this action is not available here."><p class="demo-banner-text"><strong>Static demo</strong><span class="demo-banner-long"> — nothing you do here is saved.</span> <a href="/docs/admin/installation/">Install Synaptane to try it for real.</a></p><p class="demo-banner-flash" role="status" aria-live="polite"></p><div class="demo-banner-tools"><div class="segmented demo-theme" role="group" aria-label="Appearance"><button type="button" data-theme-option="light" aria-pressed="false" title="Light" aria-label="Light" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></button><button type="button" data-theme-option="dark" aria-pressed="false" title="Dark" aria-label="Dark" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button><button type="button" data-theme-option="system" aria-pressed="false" title="System" aria-label="System" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg></button></div><a class="demo-banner-lang" href="/fr/demo/app/o/acme/it/diff/8287de378d4aef6b58ddad95730af311fb707c56/tools/vpn.md/" hreflang="fr" lang="fr" title="Version française">Français</a></div></div>
+<svg hidden="" aria-hidden="true" focusable="false"><symbol id="i-folder" viewbox="0 0 24 24"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></symbol><symbol id="i-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol><symbol id="i-ft-md" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8 18v-6l2 2.5 2-2.5v6"></path><path d="M15.5 12v6M14 16.5l1.5 1.5 1.5-1.5"></path></symbol><symbol id="i-ft-html" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10 12.5 7.75 15 10 17.5M14 12.5l2.25 2.5L14 17.5"></path></symbol><symbol id="i-ft-pdf" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7" y="13" width="10" height="5" rx="1" fill="currentColor" stroke="none"></rect></symbol><symbol id="i-ft-image" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><circle cx="9.5" cy="12.5" r="1.2"></circle><path d="m7.5 18.5 3-3 2 2 2-2 2 2"></path></symbol><symbol id="i-ft-doc" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 12h7M8.5 15h7M8.5 18h4.5"></path></symbol><symbol id="i-ft-sheet" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="8" y="11" width="8" height="7.5" rx=".5"></rect><path d="M8 14.75h8M12 11v7.5"></path></symbol><symbol id="i-ft-slides" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7.5" y="11.5" width="9" height="5.5" rx=".5"></rect><path d="M12 17v2"></path></symbol><symbol id="i-ft-code" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="m8.5 12.5 2.5 2.5-2.5 2.5M13 18h3"></path></symbol><symbol id="i-ft-text" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 13h7M8.5 16.5h5"></path></symbol><symbol id="i-ft-archive" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M11 9.5h2M11 12h2M11 14.5h2"></path><rect x="10.5" y="16" width="3" height="3" rx=".5"></rect></symbol><symbol id="i-ft-media" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10.5 12v6l4.5-3z"></path></symbol><symbol id="i-ft-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol></svg>
+<a class="skip-link" href="#content">Skip to content</a>
+<div class="sidebar-scrim" data-sidebar-scrim="" aria-hidden="true"></div>
+<aside class="workspace-sidebar" id="workspace-sidebar" aria-label="Main navigation">
+<div class="sidebar-brand">
+<a class="brand" href="/demo/app/"><span class="brand-mark" aria-hidden="true"><svg width="26" height="26" viewbox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M23 9.5C21.6 6.6 9 6.2 9 11.6c0 2.2 1.3 3.1 3 3.6"></path><path d="M20 16.8c1.7.5 3 1.4 3 3.6 0 5.4-12.6 5-14 2.1"></path><circle cx="23" cy="9.5" r="2.4" fill="currentColor" stroke="none"></circle><circle cx="9" cy="22.5" r="2.4" fill="currentColor" stroke="none"></circle><circle class="mark-spark" cx="16" cy="16" r="1.8" stroke="none"></circle></svg></span>Synaptane</a>
+<button type="button" class="icon-button" data-sidebar-close="" aria-label="Hide navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"></path></svg></button>
+</div>
+<a class="button button-primary sidebar-deposit" data-test="deposit-link" href="/demo/app/unavailable/"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"></path></svg>Deposit information</a>
+<div class="sidebar-tree">
+<div class="tree-heading">Organizations</div>
+<div class="knowledge-tree">
+<div class="tree-node tree-organization">
+<a class="tree-org-link" href="/demo/app/o/acme/"><span class="tree-label">Acme</span></a>
+<div class="tree-children">
+<div class="sidebar-space">
+<div class="sidebar-space-row">
+<a class="sidebar-space-name" href="/demo/app/o/acme/it/"><span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg></span><span class="tree-label">IT team</span></a>
+<a class="sidebar-space-gear" href="/demo/app/unavailable/" aria-label="IT team settings" title="Settings"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></a>
+</div>
+<a class="sidebar-inbox" href="/demo/app/o/acme/it/inbox/">
+<span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"></path></svg></span><span class="tree-label">Inbox</span>
+<span class="sidebar-count" aria-hidden="true">6</span>
+<span class="sr-only">6 items waiting</span>
+</a>
+<nav class="space-tree" aria-label="File tree">
+<ul class="space-tree-list">
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/demo/app/o/acme/it/-/tree/clients.html" aria-label="Expand clients"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/clients/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>clients</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/demo/app/o/acme/it/-/tree/decisions.html" aria-label="Expand decisions"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/decisions/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>decisions</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/demo/app/o/acme/it/-/tree/infra.html" aria-label="Expand infra"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/infra/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>infra</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/demo/app/o/acme/it/-/tree/network.html" aria-label="Expand network"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/network/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>network</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/demo/app/o/acme/it/-/tree/procedures.html" aria-label="Expand procedures"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/procedures/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>procedures</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/demo/app/o/acme/it/-/tree/projects.html" aria-label="Expand projects"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/projects/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>projects</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/demo/app/o/acme/it/-/tree/team.html" aria-label="Expand team"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/team/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>team</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="true" data-tree="/demo/app/o/acme/it/-/tree/tools.html" aria-label="Expand tools"></button>
+<a class="space-tree-entry" href="/demo/app/o/acme/it/p/tools/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>tools</span></a>
+</div>
+<ul class="space-tree-list">
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/tools/gitlab.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>gitlab.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/tools/messaging.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>messaging.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/tools/password-vault.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>password-vault.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/tools/README.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>README.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/tools/tickets.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>tickets.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/tools/vpn.md/" aria-current="page"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>vpn.md</span></a></div></li>
+</ul>
+</li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/faq.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>faq.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/glossary.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>glossary.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/demo/app/o/acme/it/p/README.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>README.md</span></a></div></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sidebar-footer">
+<div class="sidebar-account">
+<a class="account-label" href="/demo/app/unavailable/"><span class="avatar" aria-hidden="true">D</span><span><strong>Demo</strong><small>@demo</small></span></a>
+<form data-demo-off=""><button class="icon-button" type="submit" aria-label="Sign out" title="Sign out" disabled="" aria-disabled="true"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></button></form>
+</div>
+</div>
+</aside>
+<div class="workspace-sheet">
+<header class="workspace-topbar">
+<button type="button" class="icon-button" id="sidebar-toggle" aria-controls="workspace-sidebar" aria-expanded="true" aria-label="Show or hide navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg></button>
+<nav class="topbar-crumbs" aria-label="Breadcrumb" data-more="Show the full path"><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><a href="/demo/app/o/acme/">Acme</a><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><a href="/demo/app/o/acme/it/">IT team</a><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><a href="/demo/app/o/acme/it/p/tools/">tools</a><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><span aria-current="page">vpn.md</span></nav>
+<a class="topbar-search" href="/demo/app/search/" aria-keyshortcuts="Control+K Meta+K /" title="Search (Ctrl+K or /)"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="topbar-search-label">Search</span><kbd data-shortcut-label="">Ctrl K</kbd></a>
+</header>
+
+<main id="content" tabindex="-1">
+<article class="wiki-main">
+<header class="doc-bar"><div class="doc-bar-main"><span class="doc-icon"><svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"></path></svg></span><div><h1 class="doc-title">Change <code>8287de37</code></h1><p class="doc-meta"><a href="/demo/app/o/acme/it/history/tools/vpn.md/">Back to history</a></p></div></div></header>
+<pre class="diff"><span class="diff-ctx">@@ -5,3 +5,10 @@ Remote access uses WireGuard. Profiles are generated from the `infra/vpn` reposi</span><span class="diff-ctx"> </span><span class="diff-ctx"> Every newcomer receives their profile on their first day (see [onboarding](../team/onboarding.md)).</span><span class="diff-ctx"> A profile is revoked the day someone leaves (see [offboarding](../procedures/offboarding.md)).</span><span class="diff-add">+</span><span class="diff-add">+## Troubleshooting</span><span class="diff-add">+</span><span class="diff-add">+- **The tunnel is up but nothing answers:** check that the profile still has `AllowedIPs`</span><span class="diff-add">+  for the server VLAN (10.10.0.0/24, see [VLANs](../network/vlans.md)).</span><span class="diff-add">+- **Connected at home, not at a hotel:** some networks block UDP. Use the TCP fallback profile.</span><span class="diff-add">+- **Lost laptop:** revoke the profile at once, as for an [offboarding](../procedures/offboarding.md).</span></pre>
+</article>
+</main>
+</div>
+</body>
+</html>

@@ -7,6 +7,8 @@ without the application, in CI too (`npm run check-demo`).
   The site's own pages (/docs/…, /fonts/…) are checked by check-links after the build.
 - Nothing calls a server: no external script, stylesheet, image or frame; no inline script,
   inline style or event attribute (the pages carry a strict Content-Security-Policy).
+- HTML files of the wiki (under /raw/, shown in a sandboxed frame): their own styles are
+  allowed, but no script, no event attribute, and a policy that forbids everything else.
 - Read-only: every form but search is marked data-demo-off and all its controls are
   disabled; every submit button anywhere is disabled.
 - No secret or local trace: CSRF token, session cookie, Bearer token, API key (sk-…),
@@ -25,7 +27,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 PREFIXES = ("/demo/app/", "/fr/demo/app/")
-ALLOWED_EMAIL = re.compile(r"@([a-z0-9-]+\.)*(acme\.example|acme\.internal|example\.(com|org|net))$", re.I)
+ALLOWED_EMAIL = re.compile(r"@([a-z0-9-]+\.)*([a-z0-9-]+\.example|acme\.internal|example\.(com|org|net))$", re.I)
 FORBIDDEN = [
     (re.compile(r"csrf", re.I), "CSRF field or token"),
     (re.compile(r"synaptane_session|synaptane_lang"), "session or language cookie name"),
@@ -38,12 +40,18 @@ FORBIDDEN = [
     (re.compile(r"/tmp/|/home/|synaptane-staticdemo-"), "local path"),
     (re.compile(r"name=[\"']?(token|password|api_key|secret)[\"' >]", re.I), "secret field"),
 ]
+# Policy of the wiki's HTML files (build_demo.py writes it into them).
+DOCUMENT_CSP = (
+    "default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; "
+    "form-action 'none'"
+)
 EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+")
 
 
 class Page(HTMLParser):
-    def __init__(self) -> None:
+    def __init__(self, document: bool = False) -> None:
         super().__init__(convert_charrefs=True)
+        self.document = document  # an HTML file of the wiki: inline styles allowed
         self.urls: list[tuple[str, str, str]] = []  # (tag, attr, value)
         self.problems: list[str] = []
         self.forms: list[dict] = []  # stack of open forms
@@ -54,7 +62,7 @@ class Page(HTMLParser):
         for k in a:
             if k.startswith("on"):
                 self.problems.append(f"event attribute {k} on <{tag}>")
-        if "style" in a:
+        if "style" in a and not self.document:
             self.problems.append(f"inline style on <{tag}>")
         if tag == "script":
             if "src" not in a:
@@ -127,10 +135,13 @@ def check(public: Path) -> list[str]:
         if file.suffix != ".html":
             continue
         pages += 1
-        parser = Page()
+        document = "/raw/" in rel
+        parser = Page(document)
         parser.feed(text)
         problems += [f"{rel}: {p}" for p in parser.problems]
-        is_page = "<html" in text[:300]
+        if document and f'content="{DOCUMENT_CSP}"' not in text:
+            problems.append(f"{rel}: HTML file without its Content-Security-Policy")
+        is_page = "<html" in text[:300] and not document
         if is_page and 'http-equiv="Content-Security-Policy"' not in text:
             problems.append(f"{rel}: no Content-Security-Policy")
         if is_page and 'class="demo-banner"' not in text:

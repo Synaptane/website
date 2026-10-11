@@ -12,8 +12,10 @@ changed.
 ## Regenerate
 
 Needs `uv`, `git`, a clone of [synaptane/synaptane](https://github.com/synaptane/synaptane)
-next to this repository (`../synaptane-public`, or `SYNAPTANE_APP=…`) and a PostgreSQL with
-pgvector, such as the application's development one:
+next to this repository (`../synaptane-public`, or `SYNAPTANE_APP=…`), `tesseract` with the
+English and French data (packages `tesseract-ocr`, `tesseract-ocr-eng`, `tesseract-ocr-fra`:
+the scanned PDF and the image of the data set are read by OCR; the build stops without it) and
+a PostgreSQL with pgvector, such as the application's development one:
 
 ```sh
 (cd ../synaptane-public && docker compose -f compose.dev.yaml up -d)   # 127.0.0.1:5433
@@ -21,6 +23,10 @@ npm run build-demo            # = scripts/build-demo/build.sh
 npm run build && npm run check-links && npm run check-demo
 uv run --no-project --with playwright python scripts/build-demo/browse.py   # headless check
 ```
+
+`browse.py --gallery` (with `--with pillow --with imagequant`) also retakes the three home page
+screenshots of files other than Markdown (PDF viewer, Office document, scan and its OCR text)
+in `src/assets/app/` and `public/images/app/`.
 
 Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databases, default
 `postgresql://synaptane:synaptane@127.0.0.1:5433/postgres`), `--db-name` (default
@@ -45,10 +51,12 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
    language (the account's language is switched between the two passes). The crawl follows
    links from a few seeds, within an allow list (`Rules.classify`): home, organization, space,
    every wiki page and folder (and the "missing page" view of the broken link), every page
-   history, the diffs of the fictional commits and of the pages they touch, raw files, inbox and
+   history, the diffs of the fictional commits and of the pages they touch, raw files (the
+   PDF, image, HTML and Office files of `infra/documents/` and `team/documents/`), inbox and
    notes (and the CSV attachment), tidying, activity (and its filters), health (and its periods),
-   routines (list and log), purpose, the prepared searches (`QUERIES`), and "AI assistants" (the
-   demo account has no token). Tree folders and "See also" panels, loaded by the page script,
+   routines (list and log), purpose, the prepared searches (`QUERIES`: the last three, `kestrel`,
+   `mttr` and `docking`, find the scan by OCR, the slides and the spreadsheet), "View source" of
+   the HTML file, and "AI assistants" (the demo account has no token). Tree folders and "See also" panels, loaded by the page script,
    are frozen as HTML fragments.
 3. **Rewrite** (`Rewriter`): internal links point to the frozen files
    (`/o/acme/it/p/x.md` → `/demo/app/o/acme/it/p/x.md/`, `?kind=page` → `/@kind-page/`,
@@ -65,16 +73,27 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
      instance address becomes `https://brain.acme.example` (fictional);
    - a strict `Content-Security-Policy` meta (the application's, plus `form-action 'none'`),
      `noindex`, `demo.css`, `demo.js` (before the application's `preferences.js`) and the
-     banner (theme switch shared with the site, link to the page in the other language).
+     banner (theme switch shared with the site, link to the page in the other language);
+   - "Download" links get the `download` attribute (a static file has no
+     `Content-Disposition`); a document without preview (Word, PowerPoint, Excel) shows its
+     extracted text unfolded.
+
+   Files keep their bytes: the PDF opens in the browser's viewer, in the page's frame, as in
+   the application. The HTML file is shown in its sandboxed frame (opaque origin); since
+   GitHub Pages sends no header, it carries the policy the application gives raw files as a
+   meta (`default-src 'none'; style-src 'unsafe-inline'`…): its own styles, no script, nothing
+   from the network, even opened on its own.
 4. **Manifest**: `public/demo/app/MANIFEST.json` (Synaptane version and commit, date, queries,
    every page with its English and French addresses and titles).
 5. **Checks**: `check_demo.py` (standard library only, also in CI as `npm run check-demo`):
-   links of the demo resolve, no external resource, no inline script/style/event attribute,
+   links of the demo resolve, no external resource, no inline script/style/event attribute
+   (inline styles allowed in the wiki's HTML files, which must carry their policy),
    every form frozen, and no CSRF token, cookie name, Bearer token, `sk-` key, localhost or
    127.0.0.1, local path, `file://` URL, or e-mail address outside `*.example`/`*.internal`.
-   `browse.py` (Playwright, after `npm run build`): every request stays on demo files or
-   `/fonts/`, no console error, no active control, a forced submission changes nothing, the
-   theme switch, a click-through path, and screenshots in `screenshots/demo/` (`--preview` also
+   `browse.py` (Playwright, full headless Chromium for its PDF viewer, after `npm run build`):
+   every request stays on demo files or `/fonts/`, no console error, no active control, a
+   forced submission changes nothing, the theme switch, the PDF viewer, the rendered HTML file,
+   the extracted text of the slides, a click-through path, and screenshots in `screenshots/demo/` (`--preview` also
    refreshes the two images of the `/demo/` page in `src/assets/demo/`).
 
 The instance is always torn down (server stopped, database dropped, folder deleted), even after
