@@ -1,9 +1,12 @@
 ---
 /**
  * Screenshots of the application (demo data set, light theme), with a caption each. Images are
- * optimized by Astro; each one links to the full-size original, opened in the Lightbox viewer. The files in src/assets/app/
- * are copies of docs/assets/screenshot-*.png of the main repository (also synced into
- * public/docs/assets/): copy them again when the screenshots change.
+ * optimized by Astro; each one links to the full-size original, opened in the Lightbox viewer.
+ * Two sources:
+ * - most files in src/assets/app/ are copies of docs/assets/screenshot-*.png of the main
+ *   repository (also synced into public/docs/assets/): copy them again when they change;
+ * - pdf, office and ocr are taken on the static demo by `scripts/build-demo/browse.py
+ *   --gallery`, which also writes their originals to public/images/app/.
  */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -13,8 +16,24 @@ import health from '../../assets/app/health.png';
 import history from '../../assets/app/history.png';
 import assistants from '../../assets/app/assistants.png';
 import routines from '../../assets/app/routines.png';
+import pdf from '../../assets/app/pdf.png';
+import office from '../../assets/app/office.png';
+import ocr from '../../assets/app/ocr.png';
 
-const shots = { search, inbox, health, history, assistants, routines } satisfies Record<string, ImageMetadata>;
+const docs = (name: string) => `/docs/assets/screenshot-${name}.png`;
+const demo = (name: string) => `/images/app/screenshot-${name}.png`;
+/** Each screenshot: the image Astro optimizes, and the full-size original the viewer opens. */
+const shots = {
+  search: { image: search, full: docs('search') },
+  inbox: { image: inbox, full: docs('inbox') },
+  health: { image: health, full: docs('health') },
+  history: { image: history, full: docs('history') },
+  assistants: { image: assistants, full: docs('assistants') },
+  routines: { image: routines, full: docs('routines') },
+  pdf: { image: pdf, full: demo('pdf') },
+  office: { image: office, full: demo('office') },
+  ocr: { image: ocr, full: demo('ocr') },
+} satisfies Record<string, { image: ImageMetadata; full: string }>;
 export type ShotName = keyof typeof shots;
 
 interface Props {
@@ -35,12 +54,12 @@ const { items, openLabel, group = 'home' } = Astro.props;
         <figure>
           <a
             class="frame"
-            href={`/docs/assets/screenshot-${item.shot}.png`}
+            href={shots[item.shot].full}
             data-lightbox={group}
             data-caption={`${item.title} ${item.text}`}
           >
             <Image
-              src={shots[item.shot]}
+              src={shots[item.shot].image}
               alt={item.alt}
               widths={[560, 800, 1120]}
               sizes="(min-width: 1000px) 360px, (min-width: 640px) 50vw, 100vw"
