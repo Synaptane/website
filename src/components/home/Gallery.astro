@@ -1,7 +1,7 @@
 ---
 /**
  * Screenshots of the application (demo data set, light theme), with a caption each. Images are
- * optimized by Astro; each one links to the full-size original. The files in src/assets/app/
+ * optimized by Astro; each one links to the full-size original, opened in the Lightbox viewer. The files in src/assets/app/
  * are copies of docs/assets/screenshot-*.png of the main repository (also synced into
  * public/docs/assets/): copy them again when the screenshots change.
  */
@@ -21,9 +21,11 @@ interface Props {
   items: { shot: ShotName; title: string; text: string; alt: string }[];
   /** Accessible suffix of the links to the full-size images. */
   openLabel: string;
+  /** Lightbox group: the gallery's screenshots and any other link of the same group. */
+  group?: string;
 }
 
-const { items, openLabel } = Astro.props;
+const { items, openLabel, group = 'home' } = Astro.props;
 ---
 
 <ul class="gallery">
@@ -31,7 +33,12 @@ const { items, openLabel } = Astro.props;
     items.map((item) => (
       <li>
         <figure>
-          <a class="frame" href={`/docs/assets/screenshot-${item.shot}.png`}>
+          <a
+            class="frame"
+            href={`/docs/assets/screenshot-${item.shot}.png`}
+            data-lightbox={group}
+            data-caption={`${item.title} ${item.text}`}
+          >
             <Image
               src={shots[item.shot]}
               alt={item.alt}

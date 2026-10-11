@@ -18,6 +18,7 @@ import '../styles/tokens.css';
 import '../styles/site.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import Lightbox from '../components/Lightbox.astro';
 import { getLang, localizePath, otherLang, translatePath, useTranslations } from '../i18n';
 import { SITE } from '../site';
 
@@ -121,5 +122,6 @@ const xDefault = hreflang.find((h) => h.lang === 'en')?.href;
       <slot />
     </main>
     <SiteFooter lang={lang} />
+    <Lightbox lang={lang} />
   </body>
 </html>

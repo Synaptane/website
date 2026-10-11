@@ -34,6 +34,17 @@ export const en = {
     label: 'Language',
     switchTo: 'Lire en français',
   },
+  lightbox: {
+    label: 'Screenshots',
+    open: '(opens a larger view)',
+    close: 'Close',
+    previous: 'Previous screenshot',
+    next: 'Next screenshot',
+    zoomIn: 'Show at actual size',
+    zoomOut: 'Fit to the screen',
+    thumbnails: 'All screenshots',
+    counter: '{n} of {total}',
+  },
   theme: {
     label: 'Appearance',
     light: 'Light (Paper)',

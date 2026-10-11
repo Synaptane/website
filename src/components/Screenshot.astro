@@ -30,9 +30,38 @@ interface Props {
   /** Displayed width hint for responsive images (CSS `sizes`). */
   sizes?: string;
   class?: string;
+  /** Lightbox group: a click opens the full-size image in the viewer, with the other
+   *  screenshots of the same group (see Lightbox.astro). */
+  zoom?: string;
+  /** Text shown under the enlarged image (defaults to the caption, then the alt text). */
+  zoomCaption?: string;
+  /** Full-size files when they differ from `light` / `dark` (e.g. the originals under /docs/assets/). */
+  full?: string;
+  fullDark?: string;
 }
 
-const { light, dark, alt, caption, width, height, eager = false, sizes = '(min-width: 1180px) 1120px, 100vw', class: className } = Astro.props;
+const {
+  light,
+  dark,
+  alt,
+  caption,
+  width,
+  height,
+  eager = false,
+  sizes = '(min-width: 1180px) 1120px, 100vw',
+  class: className,
+  zoom,
+  zoomCaption,
+  full,
+  fullDark,
+} = Astro.props;
+const urlOf = (src: ImageMetadata | string) => (typeof src === 'string' ? src : src.src);
+const fullLight = full ?? urlOf(light);
+const fullDarkUrl = fullDark ?? (dark ? urlOf(dark) : undefined);
+const FrameTag = zoom ? 'a' : 'div';
+const frameProps = zoom
+  ? { href: fullLight, 'data-lightbox': zoom, 'data-dark': fullDarkUrl, 'data-caption': zoomCaption ?? caption ?? alt }
+  : {};
 const loading = eager ? 'eager' : 'lazy';
 const versions = [
   { src: light, theme: 'light' },
@@ -43,7 +72,7 @@ const widthsFor = (image: ImageMetadata) => [...new Set([640, 1120, 1680, image.
 ---
 
 <figure class:list={['screenshot', { 'has-dark': !!dark }, className]}>
-  <div class="frame">
+  <FrameTag class:list={['frame', { zoomable: !!zoom }]} {...frameProps}>
     {
       versions.map((v) =>
         typeof v.src === 'string' ? (
@@ -53,7 +82,7 @@ const widthsFor = (image: ImageMetadata) => [...new Set([640, 1120, 1680, image.
         ),
       )
     }
-  </div>
+  </FrameTag>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
 
@@ -66,6 +95,11 @@ const widthsFor = (image: ImageMetadata) => [...new Set([640, 1120, 1680, image.
     background: var(--surface);
     box-shadow: var(--shadow);
   }
+  .frame { display: block; }
+  .zoomable { cursor: zoom-in; transition: box-shadow 0.2s, transform 0.2s; }
+  .zoomable:hover { transform: translateY(-2px); }
+  .zoomable:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .zoomable, .zoomable:hover { transition: none; transform: none; } }
   .shot { display: block; width: 100%; height: auto; }
   .has-dark .shot-dark { display: none; }
   :global(:root[data-theme='dark']) .has-dark .shot-light { display: none; }

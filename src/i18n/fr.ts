@@ -32,6 +32,17 @@ export const fr: Dictionary = {
     label: 'Langue',
     switchTo: 'Read in English',
   },
+  lightbox: {
+    label: 'Captures d’écran',
+    open: '(ouvre un aperçu en grand)',
+    close: 'Fermer',
+    previous: 'Capture précédente',
+    next: 'Capture suivante',
+    zoomIn: 'Afficher en taille réelle',
+    zoomOut: 'Ajuster à l’écran',
+    thumbnails: 'Toutes les captures',
+    counter: '{n} sur {total}',
+  },
   theme: {
     label: 'Apparence',
     light: 'Clair (Papier)',
