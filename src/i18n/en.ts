@@ -7,7 +7,7 @@ export const en = {
   meta: {
     siteName: 'Synaptane',
     defaultDescription:
-      'Synaptane is a self-hosted team second brain stored in Git: a Markdown wiki, full-text and semantic search, an MCP server for your AI assistants, and a nightly tidy-up by an AI agent.',
+      'Synaptane is a self-hosted team second brain stored in Git: Markdown first, and all your files (PDF, scans, Office, images), full-text and semantic search, an MCP server for your AI assistants, and a nightly tidy-up by an AI agent.',
     ogImageAlt: 'Synaptane, the team second brain stored in Git',
     ogLocale: 'en_US',
   },

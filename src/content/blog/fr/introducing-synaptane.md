@@ -1,6 +1,6 @@
 ---
 title: Voici Synaptane
-description: Un second cerveau d’équipe stocké dans Git. Vos assistants IA le consultent et l’alimentent, un agent le range chaque nuit, et tout reste en Markdown dans un dépôt qui vous appartient.
+description: Un second cerveau d’équipe stocké dans Git, le Markdown d’abord et tous vos fichiers. Vos assistants IA le consultent et l’alimentent, un agent le range chaque nuit, et tout reste dans un dépôt qui vous appartient.
 date: 2026-10-10
 author: René Cotton
 lang: fr
@@ -28,19 +28,31 @@ sous licence Apache 2.0.
 
 Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git. Vos assistants IA y
 cherchent et y déposent ce qu’ils apprennent, dans une inbox. Chaque nuit, un agent IA range
-ces notes dans un wiki en Markdown et commite le résultat.
+ces notes dans le wiki et commite le résultat.
 
 ### Git fait foi
 
 Chaque espace est un dépôt Git, sur GitHub, GitLab, Gitea ou tout autre hébergeur. Son dossier
-`content/` est le wiki : du Markdown que vous pouvez lire, parcourir avec grep et cloner sans
-Synaptane. Chaque modification est un commit, signé du nom de la personne qui l’a faite.
+`content/` est le wiki : des pages Markdown et les fichiers qui les accompagnent, que vous
+pouvez lire, parcourir avec grep et cloner sans Synaptane. Chaque modification est un commit, signé du nom de la personne qui l’a faite.
 
 La synchronisation fonctionne dans les deux sens. Si quelqu’un modifie une page directement
 chez l’hébergeur Git, Synaptane récupère la modification. En cas de conflit, c’est une personne
 qui tranche, fichier par fichier : Synaptane ne force jamais un push et ne confie jamais un
 conflit à une IA. Hors comptes, droits, secrets et journaux, la base de données ne contient
 rien qu’on ne puisse reconstruire à partir des dépôts.
+
+### Le Markdown d’abord, et tous vos fichiers
+
+Les pages sont en Markdown : ce sont elles qui ont des liens, des rétroliens, un sommaire et
+une date de vérification, et l’agent de la nuit écrit en Markdown. Mais le savoir d’une équipe
+vit aussi dans des contrats, des bons de livraison scannés, des présentations, des tableurs,
+des schémas et des rapports exportés. Un espace les accueille tous, versionnés dans Git comme
+les pages. Les PDF s’ouvrent dans un lecteur intégré, les fichiers Word, PowerPoint et Excel
+affichent leur texte extrait, les images s’affichent, les pages HTML sont rendues dans un cadre
+isolé. Leur texte est extrait, par OCR pour les scans et les images, pour que la recherche et
+vos assistants trouvent ce qu’ils contiennent. Les fichiers arrivent par l’interface web, en
+pièces jointes d’une note déposée par un assistant, ou par un `git push`.
 
 ### Pensé pour les assistants IA
 
@@ -77,8 +89,8 @@ les vraies corrections passent toujours par l’inbox et le rangement de la nuit
 ### Une recherche qui trouve
 
 La recherche plein texte fonctionne sans réglage, insensible aux accents, avec une
-racinisation légère en français et en anglais. Elle couvre le texte des PDF, des documents
-Office et des images (par OCR). Avec un modèle d’embeddings, elle devient hybride : par les
+racinisation légère en français et en anglais. Elle couvre les pages et le texte de vos
+documents{N}: PDF (scans compris), fichiers Office et images, lus par OCR. Avec un modèle d’embeddings, elle devient hybride : par les
 mots et par le sens. Chaque page affiche aussi les pages proches.
 
 ### Un savoir digne de confiance
@@ -109,7 +121,8 @@ docker compose exec app synaptane demo
 ```
 
 Elle charge le wiki d’une équipe informatique fictive : 50 pages, dont des pages vérifiées et
-une à revoir, et six notes qui attendent dans l’inbox. Pour les ranger, il faut un fournisseur
+une à revoir, quelques documents (un contrat, un bon de livraison scanné, une présentation, un
+tableur) et six notes qui attendent dans l’inbox. Pour les ranger, il faut un fournisseur
 d’IA. Pour une vraie installation, suivez le
 [guide d’installation](/fr/docs/admin/installation/), puis
 [connectez votre assistant IA](/fr/docs/guide/mcp/).

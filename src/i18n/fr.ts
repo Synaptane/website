@@ -5,7 +5,7 @@ export const fr: Dictionary = {
   meta: {
     siteName: 'Synaptane',
     defaultDescription:
-      "Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : un wiki Markdown, une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
+      "Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers (PDF, scans, Office, images), une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
     ogImageAlt: "Synaptane, le second cerveau d’équipe stocké dans Git",
     ogLocale: 'fr_FR',
   },

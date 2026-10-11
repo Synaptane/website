@@ -23,7 +23,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
 });
 ---
 
-<Base title="Demo" description="Browse Synaptane in your browser: a frozen copy of a real instance, with the wiki of a fictional IT team, Acme. Read-only, nothing to install.">
+<Base title="Demo" description="Browse Synaptane in your browser: a frozen copy of a real instance, with the wiki of a fictional IT team, Acme, its pages and its files. Read-only, nothing to install.">
   <PageHeader title="Demo" intro="Browse a real Synaptane instance in your browser, frozen in time: the wiki of Acme's IT team, a fictional company. Nothing to install, no account.">
     <div class="actions">
       <Button href={`${app}/`} variant="primary" size="lg" icon="arrow-right">Open the demo</Button>
@@ -44,7 +44,16 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
   <Section id="what" title="What you can see" intro="The pages of the real interface, generated from a Synaptane instance loaded with the demo data. You move around as in the product: the tree, the links between pages, the tabs.">
     <CardGrid columns={3}>
       <Card title="The wiki" href={`${app}/o/acme/it/p/procedures/restore.md/`}>
-        <p>Fifty Markdown pages in folders: tables, code, links between pages, an outline, owners and verified pages.</p>
+        <p>Fifty Markdown pages in folders, with their documents: tables, code, links between pages, an outline, owners and verified pages.</p>
+      </Card>
+      <Card title="PDF and scans" href={`${app}/o/acme/it/p/infra/documents/brightrack-support-contract.pdf/`}>
+        <p>A support contract in the built-in viewer, and a scanned delivery note whose text was read by OCR.</p>
+      </Card>
+      <Card title="Office documents" href={`${app}/o/acme/it/p/team/documents/2026-q3-infrastructure-review.pptx/`}>
+        <p>Slides, a Word checklist and a spreadsheet: a download link, and the extracted text that search uses.</p>
+      </Card>
+      <Card title="Images and HTML" href={`${app}/o/acme/it/p/infra/servers.md/`}>
+        <p>A rack diagram shown in its page and read by OCR, and a weekly report in HTML, rendered as is.</p>
       </Card>
       <Card title="History and changes" href={`${app}/o/acme/it/history/procedures/restore.md/`}>
         <p>Every change is a Git commit: who changed what, when, and the diff.</p>
@@ -55,8 +64,8 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       <Card title="Wiki health" href={`${app}/o/acme/it/health/`}>
         <p>A broken link, a page to review, pages nobody links to: what to fix, found without AI.</p>
       </Card>
-      <Card title="Search" href={`${app}/search/backup/`}>
-        <p>Full-text search across the wiki and the inbox, with the passages that match.</p>
+      <Card title="Search" href={`${app}/search/kestrel/`}>
+        <p>Full-text search across pages, documents and the inbox, with the passages that match: try <em>kestrel</em>, found in a scan.</p>
       </Card>
       <Card title="AI assistants" href={`${app}/account/assistants/`}>
         <p>The MCP address, and how to connect Claude, ChatGPT or another assistant.</p>

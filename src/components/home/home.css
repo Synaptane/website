@@ -49,6 +49,34 @@
 .home-code .home-after { margin: 0; font-size: 14px; color: var(--ink-3); }
 .home-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
 
+/* Files: how they arrive, under the grid of formats. */
+.home-files-foot {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px dashed var(--field-border);
+  border-radius: var(--radius-lg);
+}
+.home-files-title { margin: 0; font-size: 16.5px; }
+.home-files-ways {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 800px) {
+  .home-files-ways { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+}
+.home-files-ways li { display: flex; gap: var(--space-3); align-items: flex-start; color: var(--ink-2); font-size: 14.5px; line-height: 1.5; }
+.home-files-ways svg { flex: none; margin-top: 2px; color: var(--accent); }
+.home-files-ways strong { display: block; color: var(--ink); font-size: 15px; }
+.home-files-foot .home-small { margin: 0; max-width: none; }
+.home-files-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin: 0; font-size: 14.5px; font-weight: 500; }
+.home-files-links a { text-decoration: none; }
+.home-files-links a:hover { text-decoration: underline; }
+
 /* Comparison: the note under the table. */
 .home-small { margin: var(--space-4) 0 0; font-size: 14px; color: var(--ink-3); max-width: 80ch; }
 

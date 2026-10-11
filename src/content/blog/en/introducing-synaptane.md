@@ -1,6 +1,6 @@
 ---
 title: Introducing Synaptane
-description: A team second brain stored in Git. Your AI assistants search it and feed it, an agent tidies it every night, and everything stays plain Markdown in a repository you own.
+description: A team second brain stored in Git, Markdown first and all your files. Your AI assistants search it and feed it, an agent tidies it every night, and everything stays in a repository you own.
 date: 2026-10-10
 author: René Cotton
 lang: en
@@ -26,20 +26,31 @@ source under the Apache 2.0 license.
 
 ## What Synaptane does
 
-Synaptane is a self-hosted team second brain stored in Git. Your AI assistants search it and
-drop what they learn into an inbox. Every night, an AI agent files those notes into a
-plain-Markdown wiki and commits the result.
+Synaptane is a self-hosted team second brain stored in Git: Markdown first, and all your
+files. Your AI assistants search it and drop what they learn into an inbox. Every night, an AI
+agent files those notes into the wiki and commits the result.
 
 ### Git is the source of truth
 
 Each space is a Git repository, on GitHub, GitLab, Gitea or any other host. Its `content/`
-folder is the wiki: plain Markdown that you can read, grep and clone without Synaptane. Every
-change is a commit, authored by the person who made it.
+folder is the wiki: Markdown pages and the files that go with them, which you can read, grep
+and clone without Synaptane. Every change is a commit, authored by the person who made it.
 
 Sync works both ways. If someone edits a page directly on the Git host, Synaptane fetches the
 change. If the histories conflict, a person decides, file by file: Synaptane never
 force-pushes and never lets an AI resolve a conflict. Apart from accounts, permissions,
 secrets and logs, the database holds nothing that cannot be rebuilt from the repositories.
+
+### Markdown first, and all your files
+
+Pages are Markdown: they have links, backlinks, an outline and a verification date, and the
+nightly agent writes Markdown. But what a team knows also lives in contracts, scanned delivery
+notes, slides, spreadsheets, diagrams and exported reports. A space holds them all, versioned
+in Git like the pages. PDFs open in a built-in viewer, Word, PowerPoint and Excel files show
+their extracted text, images are displayed, HTML pages are rendered in an isolated frame. Their
+text is extracted, by OCR for scans and images, so that search and your assistants find what
+is inside. Files arrive from the web interface, as attachments of a note an assistant drops, or
+with a `git push`.
 
 ### Built for AI assistants
 
@@ -74,7 +85,8 @@ tidy-up.
 ### Search that finds things
 
 Full-text search works out of the box, with accent folding and light stemming in English and
-French. It covers the text of PDF and Office documents, and of images through OCR. With an
+French. It covers the pages and the text of your documents: PDFs (scans included), Office
+files and images, read by OCR. With an
 embedding model, search becomes hybrid: by words and by meaning. Each page also lists related
 pages.
 
@@ -104,8 +116,9 @@ docker compose up -d
 docker compose exec app synaptane demo
 ```
 
-It loads the wiki of a fictional IT team: 50 pages, some verified and one due for review, and
-six notes waiting in the inbox. Tidying them needs an AI provider. For a real installation,
+It loads the wiki of a fictional IT team: 50 pages, some verified and one due for review, a
+few documents (a contract, a scanned delivery note, slides, a spreadsheet), and six notes
+waiting in the inbox. Tidying them needs an AI provider. For a real installation,
 read the [installation guide](/docs/admin/installation/), then
 [connect your AI assistant](/docs/guide/mcp/).
 

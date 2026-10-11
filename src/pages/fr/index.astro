@@ -1,7 +1,7 @@
 ---
 // Page d’accueil (français). Jumelle anglaise : src/pages/index.astro.
 // Les faits de cette page sont vérifiés dans la documentation de synaptane/synaptane (README,
-// docs/concepts.fr.md, docs/guide/mcp.fr.md, docs/admin/*.fr.md) ; le comparatif dans la
+// docs/concepts.fr.md, docs/guide/mcp.fr.md, docs/guide/wiki.fr.md, docs/admin/*.fr.md) ; le comparatif dans la
 // documentation publique et les annonces de chaque produit, en octobre 2026.
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
@@ -12,6 +12,7 @@ import Hero from '../../components/home/Hero.astro';
 import Journey from '../../components/home/Journey.astro';
 import FeatureGrid, { type Feature } from '../../components/home/FeatureGrid.astro';
 import Gallery from '../../components/home/Gallery.astro';
+import FileFormats, { type FileFormat } from '../../components/home/FileFormats.astro';
 import Comparison, { type Row } from '../../components/home/Comparison.astro';
 import HomeIcon from '../../components/home/HomeIcon.astro';
 import '../../components/home/home.css';
@@ -23,7 +24,7 @@ const features: Feature[] = [
   {
     icon: 'git',
     title: 'Git fait foi',
-    text: 'Chaque espace est un dépôt Git, chez GitHub, GitLab, Gitea ou ailleurs. Son dossier content/ est du Markdown brut, lisible, cherchable et clonable sans Synaptane. Chaque modification est un commit.',
+    text: 'Chaque espace est un dépôt Git, chez GitHub, GitLab, Gitea ou ailleurs. Son dossier content/ contient des pages Markdown et vos fichiers d’origine, lisibles, cherchables et clonables sans Synaptane. Chaque modification est un commit.',
     href: '/fr/docs/admin/git/',
     linkLabel: 'Dépôts Git',
   },
@@ -51,7 +52,7 @@ const features: Feature[] = [
   {
     icon: 'search',
     title: 'Une recherche qui trouve',
-    text: 'Recherche plein texte insensible aux accents, avec une racinisation légère, y compris dans les PDF, documents Office et images (OCR). Recherche par le sens en option (pgvector), et pages proches sur chaque page.',
+    text: 'Recherche plein texte insensible aux accents, avec une racinisation légère, dans les pages et dans le texte des PDF, documents Office et images, scans compris (OCR). Recherche par le sens en option (pgvector), et pages proches sur chaque page.',
     href: '/fr/docs/guide/wiki/#chercher',
     linkLabel: 'Chercher',
   },
@@ -75,6 +76,67 @@ const features: Feature[] = [
     text: 'Organisations, espaces et rôles, invitations par e-mail, authentification unique par OIDC, GitHub, GitLab ou Google. Une API REST décrite en OpenAPI, et des webhooks signés.',
     href: '/fr/docs/admin/sso/',
     linkLabel: 'Authentification unique',
+  },
+];
+
+const formats: FileFormat[] = [
+  {
+    icon: 'markdown',
+    name: 'Pages Markdown',
+    types: '.md',
+    badge: 'Le cœur du wiki',
+    text: 'Écrites par votre équipe, vos assistants et le rangement nocturne. Tout le reste s’organise autour d’elles.',
+    wiki: 'Pages rendues, avec liens, rétroliens, sommaire, vérification et pages proches',
+    search: 'Texte intégral',
+    assistants: 'Lecture et écriture ; le rangement écrit en Markdown',
+  },
+  {
+    icon: 'file-text',
+    name: 'PDF',
+    types: '.pdf, scans compris',
+    wiki: 'Lecteur intégré, dans la page',
+    search: 'Son texte, ou l’OCR des pages scannées',
+    assistants: 'Lisent le texte extrait',
+  },
+  {
+    icon: 'slides',
+    name: 'Word, PowerPoint, Excel',
+    types: '.docx .pptx .xlsx .odt .odp .ods',
+    wiki: 'Lien de téléchargement, texte extrait affiché dessous',
+    search: 'Texte extrait',
+    assistants: 'Lisent le texte extrait',
+  },
+  {
+    icon: 'image',
+    name: 'Images',
+    types: 'PNG, JPEG, GIF, WebP, AVIF, BMP, SVG',
+    wiki: 'Affichées, seules ou dans les pages qui les incluent',
+    search: 'Texte de l’image, par OCR (sauf SVG et AVIF)',
+    assistants: 'Lisent le texte reconnu',
+  },
+  {
+    icon: 'code',
+    name: 'Pages HTML',
+    types: '.html .htm',
+    wiki: 'Rendues dans un cadre isolé, source à un clic',
+    search: 'Par mots',
+    assistants: 'Lecture et écriture',
+  },
+  {
+    icon: 'braces',
+    name: 'Fichiers texte',
+    types: 'CSV, JSON, YAML, code, journaux…',
+    wiki: 'Coloration syntaxique, modifiables comme une page',
+    search: 'Par mots',
+    assistants: 'Lecture et écriture',
+  },
+  {
+    icon: 'archive',
+    name: 'Tout le reste',
+    types: 'archives, vidéos…',
+    wiki: 'Conservé, versionné dans Git, téléchargeable',
+    search: 'Par nom de fichier',
+    assistants: 'Listé',
   },
 ];
 
@@ -103,14 +165,14 @@ const rows: Row[] = [
     ],
   },
   {
-    label: 'Contenu en fichiers ordinaires',
+    label: 'Votre contenu, en fichiers à vous',
     hint: 'Lisible sans l’outil',
     cells: [
-      { level: 'yes', text: 'Markdown dans votre dépôt Git, un commit par modification' },
+      { level: 'yes', text: 'Pages Markdown et vos fichiers d’origine (PDF, Office, images…) dans votre dépôt Git, un commit par modification' },
       { level: 'partial', text: 'Par export (Markdown, HTML, PDF)' },
       { level: 'partial', text: 'Par export (PDF, Word, HTML)' },
       { level: 'partial', text: 'Par export (Markdown)' },
-      { level: 'yes', text: 'Fichiers Markdown sur votre disque' },
+      { level: 'yes', text: 'Fichiers Markdown et pièces jointes sur votre disque' },
       { level: 'yes', text: 'Markdown, synchronisation Git en option' },
     ],
   },
@@ -165,14 +227,14 @@ const rows: Row[] = [
 
 <Base
   title="La mémoire de votre équipe, dans Git"
-  description="Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes dans un wiki en Markdown."
+  description="Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers, tous cherchables. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes."
 >
   <Hero
     status="Alpha : première version publique"
     statusHref="/fr/releases/"
     title="La mémoire de votre équipe, dans Git."
     titleMuted="Vos assistants IA l’alimentent, une IA la range chaque nuit."
-    lead="Synaptane est un wiki en Markdown que vous hébergez. Vos assistants IA y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et commite le résultat dans Git."
+    lead="Synaptane est un wiki que vous hébergez : le Markdown d’abord, et tous vos fichiers, PDF et scans compris, tous cherchables. Vos assistants IA y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et commite le résultat dans Git."
     screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, un tableau, un badge « vérifiée », les pages qui y renvoient et les pages proches"
     caption="Une page du wiki de démonstration d’Acme, une équipe informatique fictive."
   >
@@ -198,14 +260,42 @@ const rows: Row[] = [
     id="features"
     eyebrow="Fonctionnalités"
     title="Un wiki que vos assistants lisent, enrichissent et tiennent en ordre"
-    intro="Synaptane est d’abord un wiki en Markdown. Tout le reste est construit autour, et autour des assistants que votre équipe utilise déjà."
+    intro="Des pages Markdown d’abord, avec tous vos fichiers à côté. Tout le reste est construit autour, et autour des assistants que votre équipe utilise déjà."
   >
     <FeatureGrid items={features} />
   </Section>
 
   <Section
-    id="get-started"
+    id="files"
     tone="alt"
+    eyebrow="Fichiers"
+    title="Tous vos fichiers, tous cherchables"
+    intro="Le Markdown est le cœur du wiki, mais un espace accueille n’importe quel fichier, versionné dans Git comme une page. Synaptane affiche chacun au mieux et lit son texte, pour que vous et vos assistants le retrouviez."
+  >
+    <FileFormats items={formats} labels={{ wiki: 'Dans le wiki', search: 'Recherche', assistants: 'Assistants IA' }}>
+      <div class="home-files-foot">
+        <h3 class="home-files-title">Trois façons d’ajouter un fichier</h3>
+        <ul class="home-files-ways">
+          <li><HomeIcon name="upload" size={18} /><span><strong>L’interface web</strong>Ajoutez un fichier dans n’importe quel dossier, jusqu’à 25 Mo.</span></li>
+          <li><HomeIcon name="inbox" size={18} /><span><strong>Vos assistants</strong>Les pièces jointes d’une note déposée par MCP ou par l’API, classées par le rangement nocturne.</span></li>
+          <li><HomeIcon name="git" size={18} /><span><strong>Un git push</strong>Un fichier du dossier content/ est un fichier du wiki.</span></li>
+        </ul>
+        <p class="home-small">
+          Le texte devient cherchable quelques secondes à quelques minutes après l’arrivée du fichier.
+          Sur les espaces où la recherche par le sens est activée, elle porte sur tout ce texte, pages
+          et documents. Les anciens formats .doc, .ppt et .xls sont conservés et téléchargeables, mais
+          leur texte n’est pas extrait.
+        </p>
+        <p class="home-files-links">
+          <a href="/fr/docs/guide/wiki/#fichiers-autres-que-markdown">Fichiers autres que Markdown<span aria-hidden="true"> →</span></a>
+          <a href="/fr/demo/app/o/acme/it/p/infra/documents/">Les voir dans la démo<span aria-hidden="true"> →</span></a>
+        </p>
+      </div>
+    </FileFormats>
+  </Section>
+
+  <Section
+    id="get-started"
     eyebrow="Démarrer"
     title="Opérationnel en trois étapes"
     intro="Sous Linux, ou WSL2 sous Windows, avec Docker. Vous obtenez une instance locale avec le wiki de démonstration d’Acme, une équipe informatique fictive."
@@ -236,6 +326,7 @@ const rows: Row[] = [
 
   <Section
     id="screenshots"
+    tone="alt"
     eyebrow="Captures d’écran"
     title="Dans l’application"
     intro="Captures prises sur le jeu de démonstration, interface en anglais. Acme et ses membres sont fictifs."
@@ -244,6 +335,9 @@ const rows: Row[] = [
       openLabel="(image en taille réelle)"
       items={[
         { shot: 'search', title: 'Recherche Ctrl+K', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'La palette de recherche Ctrl+K, avec des résultats venant de plusieurs pages' },
+        { shot: 'pdf', title: 'Lecteur PDF :', text: 'un contrat s’ouvre dans sa page, et son texte est indexé.', alt: 'Un contrat de support en PDF affiché dans le lecteur intégré, à côté de l’arborescence de l’espace' },
+        { shot: 'office', title: 'Documents Office :', text: 'un lien de téléchargement, et le texte extrait qui sert à la recherche.', alt: 'Un fichier PowerPoint dans le wiki : un lien de téléchargement et le texte extrait de ses diapositives' },
+        { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF, au-dessus du texte reconnu par OCR' },
         { shot: 'inbox', title: 'Inbox :', text: 'les notes et les modifications directes qui attendent le rangement nocturne.', alt: 'L’inbox d’un espace : notes et pages modifiées, et le formulaire de dépôt' },
         { shot: 'history', title: 'Historique :', text: 'chaque modification est un commit Git, avec son diff.', alt: 'Le diff d’une modification de page dans l’historique' },
         { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace, avec les liens cassés et les pages à revoir' },
@@ -255,10 +349,9 @@ const rows: Row[] = [
 
   <Section
     id="compare"
-    tone="alt"
     eyebrow="Comparatif"
     title="Synaptane face aux autres outils"
-    intro="Chacun de ces outils fait bien ce qu’il fait. Ce tableau ne retient que ce autour de quoi Synaptane est construit : votre serveur, des fichiers ordinaires, les assistants, et une IA qui tient le wiki en ordre."
+    intro="Chacun de ces outils fait bien ce qu’il fait. Ce tableau ne retient que ce autour de quoi Synaptane est construit : votre serveur, des fichiers qui vous appartiennent, les assistants, et une IA qui tient le wiki en ordre."
   >
     <Comparison
       caption="Synaptane comparé à Notion AI, Confluence avec Rovo, Outline, Obsidian et Wiki.js"
@@ -276,15 +369,16 @@ const rows: Row[] = [
 
   <Section
     id="architecture"
+    tone="alt"
     eyebrow="Architecture"
     title="Simple à exploiter, facile à quitter"
-    intro="Une application, un worker, PostgreSQL et vos dépôts Git. Si vous arrêtez Synaptane, votre wiki reste un dossier de fichiers Markdown."
+    intro="Une application, un worker, PostgreSQL et vos dépôts Git. Si vous arrêtez Synaptane, votre wiki reste un dossier de pages Markdown et de vos fichiers d’origine."
     class="home-arch"
   >
     <div class="home-split">
       <ul class="home-arch-list">
         <li><strong>Une application FastAPI</strong> sert les trois interfaces : MCP pour les assistants, l’interface web et l’API REST.</li>
-        <li><strong>Un worker</strong> s’occupe du rangement nocturne, des routines, de la synchronisation Git, de l’indexation et des webhooks.</li>
+        <li><strong>Un worker</strong> s’occupe du rangement nocturne, des routines, de la synchronisation Git, de l’indexation (avec l’extraction du texte et l’OCR) et des webhooks.</li>
         <li><strong>PostgreSQL avec pgvector</strong> conserve les comptes, les droits et l’index de recherche. Le reste se reconstruit à partir des dépôts.</li>
         <li><strong>Le fournisseur d’IA est facultatif :</strong> seuls le rangement, les routines et la recherche par le sens en ont besoin.</li>
       </ul>
@@ -298,7 +392,7 @@ const rows: Row[] = [
     </div>
   </Section>
 
-  <Section id="open-source" tone="alt" eyebrow="Logiciel libre" title="Libre, et franc sur sa maturité">
+  <Section id="open-source" eyebrow="Logiciel libre" title="Libre, et franc sur sa maturité">
     <div class="home-oss">
       <div>
         <p>
@@ -346,7 +440,7 @@ const rows: Row[] = [
   <section class="container home-cta-band" aria-labelledby="cta-title">
     <div class="home-cta">
       <h2 id="cta-title">Donnez à vos assistants une mémoire qui appartient à votre équipe.</h2>
-      <p>Commencez par la démo sur votre machine, ou lisez d’abord la documentation.</p>
+      <p>Vos pages et vos documents, cherchables, dans un dépôt Git qui reste le vôtre. Commencez par la démo sur votre machine, ou lisez d’abord la documentation.</p>
       <div class="home-links">
         <Button href="/fr/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Commencer</Button>
         <Button href={SITE.github} size="lg" iconBefore="github">GitHub</Button>

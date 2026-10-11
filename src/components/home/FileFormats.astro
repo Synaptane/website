@@ -1,0 +1,171 @@
+---
+/**
+ * "Your files, all searchable": what Synaptane does with each kind of file, one card per
+ * format (what you see in the wiki, what search finds, what AI assistants get). Markdown, the
+ * heart of the wiki, comes first, on the whole width; the other formats follow in three columns. Facts from the README of
+ * synaptane/synaptane ("Your files, all searchable") and docs/guide/wiki.md ("Files other than
+ * Markdown"): keep them in sync.
+ *
+ * The slot goes under the grid (how files arrive, limits).
+ */
+import HomeIcon, { type HomeIconName } from './HomeIcon.astro';
+
+export interface FileFormat {
+  icon: HomeIconName;
+  name: string;
+  /** Extensions or examples, shown in small monospace type. */
+  types: string;
+  wiki: string;
+  search: string;
+  assistants: string;
+  /** Badge of the leading format (Markdown). */
+  badge?: string;
+  /** One sentence under the name (leading format). */
+  text?: string;
+}
+
+interface Props {
+  items: FileFormat[];
+  labels: { wiki: string; search: string; assistants: string };
+}
+
+const { items, labels } = Astro.props;
+---
+
+<ul class="formats">
+  {
+    items.map((f) => (
+      <li class:list={['format', { first: f.badge }]}>
+        <div class="head">
+          <span class="icon">
+            <HomeIcon name={f.icon} size={18} />
+          </span>
+          <div class="names">
+            <h3>
+              {f.name}
+              {f.badge && <span class="badge">{f.badge}</span>}
+            </h3>
+            <p class="types">{f.types}</p>
+            {f.text && <p class="text">{f.text}</p>}
+          </div>
+        </div>
+        <dl>
+          <div>
+            <dt>{labels.wiki}</dt>
+            <dd>{f.wiki}</dd>
+          </div>
+          <div>
+            <dt>{labels.search}</dt>
+            <dd>{f.search}</dd>
+          </div>
+          <div>
+            <dt>{labels.assistants}</dt>
+            <dd>{f.assistants}</dd>
+          </div>
+        </dl>
+      </li>
+    ))
+  }
+</ul>
+<div class="after"><slot /></div>
+
+<style>
+  .formats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .format {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+  }
+  /* Markdown: the whole width, tinted with the accent. */
+  .first {
+    grid-column: 1 / -1;
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    background: linear-gradient(var(--accent-soft), var(--accent-soft)), var(--bg);
+  }
+  @media (min-width: 640px) {
+    .formats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 800px) {
+    .first {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr);
+      gap: var(--space-6);
+      align-items: start;
+    }
+    .first dl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3) var(--space-5); }
+    .first dl > div + div {
+      border-top: 0;
+      padding-top: 0;
+      border-left: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+      padding-left: var(--space-5);
+    }
+  }
+  @media (min-width: 1000px) {
+    .formats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .head { display: flex; align-items: flex-start; gap: var(--space-3); }
+  .icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .first .icon { background: var(--accent); color: var(--on-accent); }
+  .names { min-width: 0; }
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px var(--space-2);
+    margin: 0;
+    font-size: 16.5px;
+    line-height: 1.3;
+  }
+  .badge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .types {
+    margin: 4px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--ink-3);
+    overflow-wrap: anywhere;
+  }
+  .text { margin: var(--space-3) 0 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+  dl { display: grid; gap: var(--space-3); margin: 0; }
+  dl > div + div { border-top: 1px solid var(--border); padding-top: var(--space-3); }
+  dt {
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  dd { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+  .after { margin-top: var(--space-6); }
+</style>
