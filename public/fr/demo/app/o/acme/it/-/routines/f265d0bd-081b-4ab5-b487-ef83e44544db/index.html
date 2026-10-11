@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html lang="fr" data-user-key="demo">
+<head>
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routines · IT team · Synaptane</title>
+<link rel="icon" href="/demo/app/static/icon.svg" type="image/svg+xml">
+<script src="/demo/app/static/demo.js"></script><script src="/demo/app/static/preferences.js"></script>
+<link rel="stylesheet" href="/demo/app/static/app.css">
+<link rel="stylesheet" href="/demo/app/static/demo.css"></head>
+<body class="workspace demo-static"><div class="demo-banner" role="region" aria-label="Démo figée" data-flash="Démo en lecture seule : cette action n'est pas disponible ici."><p class="demo-banner-text"><strong>Démo figée</strong><span class="demo-banner-long"> : rien n'est enregistré.</span> <a href="/fr/docs/admin/installation/">Installez Synaptane pour l'essayer pour de vrai.</a></p><p class="demo-banner-flash" role="status" aria-live="polite"></p><div class="demo-banner-tools"><div class="segmented demo-theme" role="group" aria-label="Apparence"><button type="button" data-theme-option="light" aria-pressed="false" title="Clair" aria-label="Clair" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></button><button type="button" data-theme-option="dark" aria-pressed="false" title="Sombre" aria-label="Sombre" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button><button type="button" data-theme-option="system" aria-pressed="false" title="Système" aria-label="Système" disabled=""><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg></button></div><a class="demo-banner-lang" href="/demo/app/o/acme/it/-/routines/f265d0bd-081b-4ab5-b487-ef83e44544db/" hreflang="en" lang="en" title="English version">English</a></div></div>
+<svg hidden="" aria-hidden="true" focusable="false"><symbol id="i-folder" viewbox="0 0 24 24"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></symbol><symbol id="i-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol><symbol id="i-ft-md" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8 18v-6l2 2.5 2-2.5v6"></path><path d="M15.5 12v6M14 16.5l1.5 1.5 1.5-1.5"></path></symbol><symbol id="i-ft-html" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10 12.5 7.75 15 10 17.5M14 12.5l2.25 2.5L14 17.5"></path></symbol><symbol id="i-ft-pdf" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7" y="13" width="10" height="5" rx="1" fill="currentColor" stroke="none"></rect></symbol><symbol id="i-ft-image" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><circle cx="9.5" cy="12.5" r="1.2"></circle><path d="m7.5 18.5 3-3 2 2 2-2 2 2"></path></symbol><symbol id="i-ft-doc" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 12h7M8.5 15h7M8.5 18h4.5"></path></symbol><symbol id="i-ft-sheet" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="8" y="11" width="8" height="7.5" rx=".5"></rect><path d="M8 14.75h8M12 11v7.5"></path></symbol><symbol id="i-ft-slides" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><rect x="7.5" y="11.5" width="9" height="5.5" rx=".5"></rect><path d="M12 17v2"></path></symbol><symbol id="i-ft-code" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="m8.5 12.5 2.5 2.5-2.5 2.5M13 18h3"></path></symbol><symbol id="i-ft-text" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8.5 13h7M8.5 16.5h5"></path></symbol><symbol id="i-ft-archive" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M11 9.5h2M11 12h2M11 14.5h2"></path><rect x="10.5" y="16" width="3" height="3" rx=".5"></rect></symbol><symbol id="i-ft-media" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M10.5 12v6l4.5-3z"></path></symbol><symbol id="i-ft-file" viewbox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></symbol></svg>
+<a class="skip-link" href="#content">Aller au contenu</a>
+<div class="sidebar-scrim" data-sidebar-scrim="" aria-hidden="true"></div>
+<aside class="workspace-sidebar" id="workspace-sidebar" aria-label="Navigation principale">
+<div class="sidebar-brand">
+<a class="brand" href="/fr/demo/app/"><span class="brand-mark" aria-hidden="true"><svg width="26" height="26" viewbox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M23 9.5C21.6 6.6 9 6.2 9 11.6c0 2.2 1.3 3.1 3 3.6"></path><path d="M20 16.8c1.7.5 3 1.4 3 3.6 0 5.4-12.6 5-14 2.1"></path><circle cx="23" cy="9.5" r="2.4" fill="currentColor" stroke="none"></circle><circle cx="9" cy="22.5" r="2.4" fill="currentColor" stroke="none"></circle><circle class="mark-spark" cx="16" cy="16" r="1.8" stroke="none"></circle></svg></span>Synaptane</a>
+<button type="button" class="icon-button" data-sidebar-close="" aria-label="Masquer la navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"></path></svg></button>
+</div>
+<a class="button button-primary sidebar-deposit" data-test="deposit-link" href="/fr/demo/app/unavailable/"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"></path></svg>Déposer une information</a>
+<div class="sidebar-tree">
+<div class="tree-heading">Organisations</div>
+<div class="knowledge-tree">
+<div class="tree-node tree-organization">
+<a class="tree-org-link" href="/fr/demo/app/o/acme/"><span class="tree-label">Acme</span></a>
+<div class="tree-children">
+<div class="sidebar-space">
+<div class="sidebar-space-row">
+<a class="sidebar-space-name" href="/fr/demo/app/o/acme/it/"><span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg></span><span class="tree-label">IT team</span></a>
+<a class="sidebar-space-gear" href="/fr/demo/app/unavailable/" aria-label="Paramètres de IT team" title="Paramètres"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></a>
+</div>
+<a class="sidebar-inbox" href="/fr/demo/app/o/acme/it/inbox/">
+<span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"></path></svg></span><span class="tree-label">Inbox</span>
+<span class="sidebar-count" aria-hidden="true">6</span>
+<span class="sr-only">6 éléments en attente</span>
+</a>
+<nav class="space-tree" aria-label="Arborescence">
+<ul class="space-tree-list">
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/clients.html" aria-label="Déplier clients"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/clients/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>clients</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/decisions.html" aria-label="Déplier decisions"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/decisions/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>decisions</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/infra.html" aria-label="Déplier infra"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/infra/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>infra</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/network.html" aria-label="Déplier network"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/network/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>network</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/procedures.html" aria-label="Déplier procedures"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/procedures/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>procedures</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/projects.html" aria-label="Déplier projects"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/projects/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>projects</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/team.html" aria-label="Déplier team"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/team/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>team</span></a>
+</div>
+</li>
+<li>
+<div class="space-tree-row">
+<button type="button" class="tree-toggle" aria-expanded="false" data-tree="/fr/demo/app/o/acme/it/-/tree/tools.html" aria-label="Déplier tools"></button>
+<a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/tools/"><svg class="icon-ref" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-folder"></use></svg><span>tools</span></a>
+</div>
+</li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/faq.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>faq.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/glossary.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>glossary.md</span></a></div></li>
+<li><div class="space-tree-row"><span class="tree-spacer"></span><a class="space-tree-entry" href="/fr/demo/app/o/acme/it/p/README.md/"><svg class="icon-ref ft ft-md" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-ft-md"></use></svg><span>README.md</span></a></div></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sidebar-footer">
+<div class="sidebar-account">
+<a class="account-label" href="/fr/demo/app/unavailable/"><span class="avatar" aria-hidden="true">D</span><span><strong>Demo</strong><small>@demo</small></span></a>
+<form data-demo-off=""><button class="icon-button" type="submit" aria-label="Se déconnecter" title="Se déconnecter" disabled="" aria-disabled="true"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg></button></form>
+</div>
+</div>
+</aside>
+<div class="workspace-sheet">
+<header class="workspace-topbar">
+<button type="button" class="icon-button" id="sidebar-toggle" aria-controls="workspace-sidebar" aria-expanded="true" aria-label="Afficher ou masquer la navigation"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg></button>
+<nav class="topbar-crumbs" aria-label="Fil d’Ariane" data-more="Afficher le chemin complet"><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><a href="/fr/demo/app/o/acme/">Acme</a><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><a href="/fr/demo/app/o/acme/it/">IT team</a><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><span>Paramètres</span><svg width="12" height="12" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"></path></svg><span aria-current="page">Routines</span></nav>
+<a class="topbar-search" href="/fr/demo/app/search/" aria-keyshortcuts="Control+K Meta+K /" title="Rechercher (Ctrl+K ou /)"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="topbar-search-label">Rechercher</span><kbd data-shortcut-label="">Ctrl K</kbd></a>
+</header>
+
+<main id="content" tabindex="-1">
+<header class="page-header">
+<div>
+<p class="eyebrow">Espace · <span class="ident">Acme</span></p>
+<h1>IT team</h1>
+</div>
+</header>
+<nav class="tabs" aria-label="Sections de l’espace">
+<a href="/fr/demo/app/o/acme/it/inbox/">Inbox</a><a href="/fr/demo/app/o/acme/it/tidy/">Rangement</a><a href="/fr/demo/app/o/acme/it/activity/">Activité</a><a href="/fr/demo/app/o/acme/it/health/">Santé</a><a href="/fr/demo/app/unavailable/" aria-current="page">Paramètres</a>
+</nav>
+<div class="settings-layout">
+<nav class="settings-nav" aria-label="Paramètres de l'espace">
+<a href="/fr/demo/app/unavailable/">Général</a><a href="/fr/demo/app/o/acme/it/-/vocation/">Vocation</a><a href="/fr/demo/app/unavailable/">Dépôt Git</a><a href="/fr/demo/app/unavailable/">Membres</a><a href="/fr/demo/app/unavailable/">Rangement</a><a href="/fr/demo/app/unavailable/">Recherche sémantique</a><a href="/fr/demo/app/o/acme/it/-/routines/" aria-current="page">Routines</a>
+<p class="settings-role"><span class="badge">Super-admin</span></p>
+</nav>
+<div class="settings-main">
+<h2 class="settings-title">Routines</h2>
+<p class="routine-back"><a href="/fr/demo/app/o/acme/it/-/routines/"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 6-6 6 6 6"></path></svg>Toutes les routines</a></p>
+<div class="section-heading routine-title">
+<div>
+<h3>Consistency check</h3>
+<p class="muted routine-meta">
+<span>Chaque lundi à 06:00 (Europe/Paris)</span>
+<span>Prochain passage : <time datetime="2026-10-12T06:00:00+02:00" data-local="full">2026-10-12 06:00 UTC</time></span>
+</p>
+</div>
+<span class="badge">Activée</span>
+</div>
+<div class="actions routine-actions">
+<a class="button button-small" href="/fr/demo/app/unavailable/">Modifier</a>
+<form data-demo-off=""><button class="button button-small button-quiet" type="submit" disabled="" aria-disabled="true">Désactiver</button></form>
+<form data-confirm="Supprimer la routine « Consistency check » ? Ses passages restent comptés dans le budget du mois, et sa page de rapport reste dans le wiki." data-demo-off=""><button class="button button-small button-danger" type="submit" disabled="" aria-disabled="true">Supprimer</button></form>
+</div>
+<div class="notice notice-warning"><p>Aucun fournisseur d'IA n'est configuré pour l'organisation : les routines ne peuvent pas tourner.</p></div>
+<div class="card routine-settings">
+<dl class="metadata">
+<div><dt>Périmètre</dt><dd>Tout l'espace</dd></div>
+<div><dt>Sorties</dt><dd><ul class="routine-outputs" aria-label="Sorties">
+<li class="badge badge-quiet">Page <a href="/fr/demo/app/o/acme/it/p/reports/consistency.md/"><code>reports/consistency.md</code></a></li>
+<li class="badge badge-quiet">Inbox</li>
+</ul></dd></div>
+</dl>
+<details class="routine-instructions"><summary>Consignes</summary><pre>Read the pages to review first (list given as input: pages changed since the last run, then linked pages), and read the pages related to them when useful. Look for:
+- contradictions between pages: figures, dates, owners, addresses or procedures that differ for the same thing;
+- information that is probably outdated: past dates presented as upcoming, "in progress", "soon", "planned for", outdated versions of software or tools;
+- duplicate topics: two pages that cover the same thing and would gain from being merged.
+Also rely on the wiki health check given as input (broken links, orphan pages, old pages, pages due for review). A page due for review (verification expired) is read first: say in the report what still seems right or outdated, and name its owner; it is up to them to mark it as verified.
+
+Report (write_report): a level-1 title, today's date, then one section per type of problem; for each problem, the pages concerned (as links) and a short excerpt. End with the wiki health points most worth fixing. If all is well, say so in one sentence.
+
+For each problem that requires a fix in the wiki, deposit an item in the inbox (add_to_inbox): what is wrong, the pages and excerpts concerned, and the fix suggested. The nightly tidy-up will process it. No item for a mere doubt (mention it in the report), nor for a problem already deposited by this routine and not filed yet.</pre></details>
+</div>
+<h3 class="routine-journal-title">Passages</h3>
+<div class="stack tidy-journal" data-tidy-journal="" data-more="Détails">
+<p class="empty">Aucun passage pour l'instant.</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>

@@ -101,7 +101,7 @@ const formats: FileFormat[] = [
   {
     icon: 'slides',
     name: 'Word, PowerPoint, Excel',
-    types: '.docx .pptx .xlsx .odt .odp .ods',
+    types: '.docx .pptx .xlsx .odt .odp .ods .doc .ppt .xls',
     wiki: 'Lien de téléchargement, texte extrait affiché dessous',
     search: 'Texte extrait',
     assistants: 'Lisent le texte extrait',
@@ -283,8 +283,9 @@ const rows: Row[] = [
         <p class="home-small">
           Le texte devient cherchable quelques secondes à quelques minutes après l’arrivée du fichier.
           Sur les espaces où la recherche par le sens est activée, elle porte sur tout ce texte, pages
-          et documents. Les anciens formats .doc, .ppt et .xls sont conservés et téléchargeables, mais
-          leur texte n’est pas extrait.
+          et documents. Les anciens formats .doc, .ppt et .xls sont lus aussi, avec quelques limites :
+          dans un .ppt, seuls le titre et le texte que PowerPoint garde dans son plan ; un fichier
+          protégé par un mot de passe n’a pas de texte.
         </p>
         <p class="home-files-links">
           <a href="/fr/docs/guide/wiki/#fichiers-autres-que-markdown">Fichiers autres que Markdown<span aria-hidden="true"> →</span></a>

@@ -39,10 +39,11 @@ PUBLIC_URL = "https://brain.acme.example"  # replaces the instance address (fict
 UNAVAILABLE = "/unavailable"
 
 # Searches frozen in the demo (the dataset is in English, in both interface languages). The last
-# three find files other than Markdown: the scanned delivery note (OCR), the slides, the sheet.
+# four find files other than Markdown: the scanned delivery note (OCR), the slides, the sheet,
+# and the 2019 inventory in the old .xls format (catdoc).
 QUERIES = [
     "backup", "vpn", "onboarding", "nas", "firewall", "restore", "wifi", "password",
-    "kestrel", "mttr", "docking",
+    "kestrel", "mttr", "docking", "netware",
 ]
 
 SPACE_BASE = f"/o/{ORG}/{SPACE}"
@@ -589,6 +590,11 @@ def main() -> int:
         # The scanned delivery note and the rack image of the data set are searchable through
         # OCR: without it, their extracted text and the "kestrel" search would be missing.
         log("tesseract not found: install tesseract-ocr (eng, fra), see README.md")
+        return 1
+    if any(shutil.which(tool) is None for tool in ("catdoc", "xls2csv", "catppt")):
+        # The 2019 inventory of the data set is an old .xls file, read by catdoc: without it,
+        # its extracted text and the "netware" search would be missing.
+        log("catdoc not found: install catdoc, see README.md")
         return 1
     app = args.app.resolve()
     APP_STATIC = app / "src" / "synaptane" / "web" / "static"

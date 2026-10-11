@@ -57,6 +57,7 @@ PAGES = [
     PDF,
     DOCS + "2026-09-delivery-note.pdf/",
     DOCS + "hardware-inventory.xlsx/",
+    DOCS + "archive/hardware-inventory-2019.xls/",
     DOCS + "rack-b-elevation.png/",
     HTML_FILE,
     HTML_FILE + "@source-1/",
@@ -66,6 +67,7 @@ PAGES = [
     "/demo/app/search/kestrel/",
     "/fr/demo/app/search/mttr/",
     "/demo/app/search/docking/",
+    "/fr/demo/app/search/netware/",
 ]
 
 SHOTS = [

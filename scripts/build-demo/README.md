@@ -14,8 +14,10 @@ changed.
 Needs `uv`, `git`, a clone of [synaptane/synaptane](https://github.com/synaptane/synaptane)
 next to this repository (`../synaptane-public`, or `SYNAPTANE_APP=…`), `tesseract` with the
 English and French data (packages `tesseract-ocr`, `tesseract-ocr-eng`, `tesseract-ocr-fra`:
-the scanned PDF and the image of the data set are read by OCR; the build stops without it) and
-a PostgreSQL with pgvector, such as the application's development one:
+the scanned PDF and the image of the data set are read by OCR; the build stops without it),
+`catdoc` (package `catdoc`, with `xls2csv` and `catppt`: the 2019 inventory of the data set is an
+old `.xls` file; the build stops without it too) and a PostgreSQL with pgvector, such as the
+application's development one:
 
 ```sh
 (cd ../synaptane-public && docker compose -f compose.dev.yaml up -d)   # 127.0.0.1:5433
@@ -52,10 +54,11 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
    links from a few seeds, within an allow list (`Rules.classify`): home, organization, space,
    every wiki page and folder (and the "missing page" view of the broken link), every page
    history, the diffs of the fictional commits and of the pages they touch, raw files (the
-   PDF, image, HTML and Office files of `infra/documents/` and `team/documents/`), inbox and
+   PDF, image, HTML and Office files of `infra/documents/`, its `archive/`, and `team/documents/`), inbox and
    notes (and the CSV attachment), tidying, activity (and its filters), health (and its periods),
-   routines (list and log), purpose, the prepared searches (`QUERIES`: the last three, `kestrel`,
-   `mttr` and `docking`, find the scan by OCR, the slides and the spreadsheet), "View source" of
+   routines (list and log), purpose, the prepared searches (`QUERIES`: the last four, `kestrel`,
+   `mttr`, `docking` and `netware`, find the scan by OCR, the slides, the spreadsheet and the old
+   `.xls` inventory), "View source" of
    the HTML file, and "AI assistants" (the demo account has no token). Tree folders and "See also" panels, loaded by the page script,
    are frozen as HTML fragments.
 3. **Rewrite** (`Rewriter`): internal links point to the frozen files
