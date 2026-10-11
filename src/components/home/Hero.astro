@@ -101,13 +101,14 @@ const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = 
     color: var(--ink-2);
   }
   h1 {
-    max-width: 19ch;
+    /* Wide enough for longer languages (French): lines are balanced rather than cut short. */
+    max-width: 30ch;
     margin-bottom: var(--space-5);
     font-size: clamp(38px, 6.4vw, 66px);
     line-height: 1.03;
     letter-spacing: -0.035em;
   }
-  .title, .title-muted { display: block; }
+  .title, .title-muted { display: block; text-wrap: balance; }
   .title-muted { color: var(--ink-3); }
   .lead { max-width: 60ch; margin: 0; font-size: clamp(17px, 2vw, 19.5px); line-height: 1.55; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 0; }

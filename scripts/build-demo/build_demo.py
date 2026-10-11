@@ -332,6 +332,9 @@ class Rewriter:
             field_.decompose()
         for dialog in soup.select("dialog#search-palette"):
             dialog.decompose()
+        # Confirmations left by the generator's own actions ("Routine enabled…").
+        for flash in soup.select("div.notice[data-flash]"):
+            flash.decompose()
         for attr in ("data-palette-open", "data-assistant-test", "data-test-pending", "data-tidy-state"):
             for tag in soup.select(f"[{attr}]"):
                 del tag[attr]

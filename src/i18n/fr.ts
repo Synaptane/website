@@ -1,12 +1,12 @@
 import type { Dictionary } from './en';
 
-/** Chaînes d'interface des pages du site, en français (mêmes clés que en.ts). */
+/** Chaînes d’interface des pages du site, en français (mêmes clés que en.ts). */
 export const fr: Dictionary = {
   meta: {
     siteName: 'Synaptane',
     defaultDescription:
-      "Synaptane est un second cerveau d'équipe auto-hébergé, stocké dans Git : un wiki Markdown, une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
-    ogImageAlt: "Synaptane, le second cerveau d'équipe stocké dans Git",
+      "Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : un wiki Markdown, une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
+    ogImageAlt: "Synaptane, le second cerveau d’équipe stocké dans Git",
     ogLocale: 'fr_FR',
   },
   a11y: {
@@ -39,7 +39,7 @@ export const fr: Dictionary = {
     auto: 'Système',
   },
   footer: {
-    tagline: "Un second cerveau d'équipe stocké dans Git.",
+    tagline: "Un second cerveau d’équipe stocké dans Git.",
     license: 'Synaptane est un logiciel libre sous licence Apache 2.0.',
     madeBy: 'Conçu par',
     author: 'René Cotton',
@@ -56,19 +56,19 @@ export const fr: Dictionary = {
     dark: 'thème sombre',
   },
   blog: {
-    readMore: "Lire l'article",
+    readMore: "Lire l’article",
     by: 'Par',
     published: 'Publié le',
     updated: 'Mis à jour le',
-    empty: "Aucun article pour l'instant.",
+    empty: "Aucun article pour l’instant.",
     backToList: 'Tous les articles',
-    translationMissing: "Cet article n'existe pas en anglais.",
+    translationMissing: "Cet article n’existe pas en anglais.",
   },
   todo: 'À faire',
   notFound: {
     title: 'Page introuvable',
-    text: "Cette page n'existe pas, ou elle a été déplacée.",
-    home: "Retour à l'accueil",
+    text: "Cette page n’existe pas, ou elle a été déplacée.",
+    home: "Retour à l’accueil",
     docs: 'Lire la documentation',
   },
 };

@@ -1,5 +1,5 @@
 ---
-// Page d'accueil (français). Jumelle anglaise : src/pages/index.astro.
+// Page d’accueil (français). Jumelle anglaise : src/pages/index.astro.
 // Les faits de cette page sont vérifiés dans la documentation de synaptane/synaptane (README,
 // docs/concepts.fr.md, docs/guide/mcp.fr.md, docs/admin/*.fr.md) ; le comparatif dans la
 // documentation publique et les annonces de chaque produit, en octobre 2026.
@@ -81,7 +81,7 @@ const features: Feature[] = [
 const installCode = `# 1. Récupérer la version publiée
 git clone --branch ${SITE.version} https://github.com/synaptane/synaptane.git && cd synaptane
 
-# 2. Écrire un .env minimal (la dernière ligne ne sert qu'à la démo)
+# 2. Écrire un .env minimal (la dernière ligne ne sert qu’à la démo)
 printf 'PUBLIC_URL=http://localhost:8000\\nPOSTGRES_PASSWORD=%s\\nSYNAPTANE_VERSION=${imageVersion}\\n' \\
   "$(openssl rand -hex 24)" > .env
 echo 'COMPOSE_FILE=compose.yaml:examples/compose.demo.yaml' >> .env
@@ -165,7 +165,7 @@ const rows: Row[] = [
 
 <Base
   title="La mémoire de votre équipe, dans Git"
-  description="Synaptane est un second cerveau d'équipe auto-hébergé, stocké dans Git. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes dans un wiki en Markdown."
+  description="Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes dans un wiki en Markdown."
 >
   <Hero
     status="Alpha : première version publique"
