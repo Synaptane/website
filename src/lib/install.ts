@@ -5,7 +5,7 @@
  */
 import { SITE } from '../site';
 
-/** Image tag of the latest version (v1.0.0-rc.1 -> 1.0.0-rc.1). */
+/** Image tag of the latest version (v1.7.0 -> 1.7.0). */
 export const imageVersion = SITE.version.replace(/^v/, '');
 
 const comments = {

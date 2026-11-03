@@ -121,8 +121,8 @@
 <a href="/fr/demo/app/o/acme/it/inbox/">Inbox</a><a href="/fr/demo/app/o/acme/it/tidy/">Rangement</a><a href="/fr/demo/app/o/acme/it/activity/">Activité</a><a href="/fr/demo/app/o/acme/it/health/" aria-current="page">Santé</a><a href="/fr/demo/app/unavailable/">Paramètres</a>
 </nav>
 <h2 class="settings-title">Santé du wiki</h2>
-<p class="muted">Contrôle sans IA, au dernier commit : liens cassés, pages sans lien entrant, pages vides ou sans titre, pages à revoir, pages non modifiées depuis longtemps.</p>
-<p>50 pages examinées · <strong>2 points à vérifier</strong> · <code>a062db2d7a</code></p>
+<p class="muted">Contrôle sans IA, au dernier commit : liens cassés, pages sans lien entrant, pages vides ou sans titre, tableaux qui divergent, pages à revoir, pages non modifiées depuis longtemps.</p>
+<p>50 pages examinées · <strong>2 points à vérifier</strong> · <code>a37a38f6e1</code></p>
 <section class="card section-gap-small" aria-labelledby="health-broken">
 <h3 id="health-broken">Liens cassés <span class="badge badge-quiet">1</span></h3>
 <div class="table-scroll"><table class="health-table">
@@ -137,6 +137,15 @@
 <section class="card" aria-labelledby="health-form">
 <h3 id="health-form">Pages vides ou sans titre <span class="badge badge-quiet">0</span></h3>
 <p class="muted">Toutes les pages ont un titre et du contenu.</p>
+</section>
+<section class="card" aria-labelledby="health-drifts">
+<h3 id="health-drifts">Tableaux qui divergent <span class="badge badge-quiet">0</span></h3>
+<p class="muted">La même ligne a une valeur différente dans deux tableaux de deux pages : l'une est sans doute périmée, à moins que les deux soient justes (un historique, par exemple). Vérifiez, puis corrigez la page périmée.</p>
+<p class="muted">Aucune valeur qui diverge.</p>
+</section>
+<section class="card" id="health-reported" aria-labelledby="health-reports">
+<h3 id="health-reports">Signalée comme obsolète <span class="badge badge-quiet">0</span></h3>
+<p class="muted">Aucune page signalée.</p>
 </section>
 <section class="card" id="health-review" aria-labelledby="health-due">
 <h3 id="health-due">Pages à revoir <span class="badge badge-quiet">1</span></h3>
