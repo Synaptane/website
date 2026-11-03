@@ -121,8 +121,8 @@
 <a href="/demo/app/o/acme/it/inbox/">Inbox</a><a href="/demo/app/o/acme/it/tidy/">Tidy-up</a><a href="/demo/app/o/acme/it/activity/">Activity</a><a href="/demo/app/o/acme/it/health/" aria-current="page">Health</a><a href="/demo/app/unavailable/">Settings</a>
 </nav>
 <h2 class="settings-title">Wiki health</h2>
-<p class="muted">Check without AI, at the latest commit: broken links, pages with no incoming link, empty or untitled pages, pages to review, pages not modified for a long time.</p>
-<p>50 pages checked · <strong>2 items to check</strong> · <code>a062db2d7a</code></p>
+<p class="muted">Check without AI, at the latest commit: broken links, pages with no incoming link, empty or untitled pages, tables that disagree, pages to review, pages not modified for a long time.</p>
+<p>50 pages checked · <strong>2 items to check</strong> · <code>a37a38f6e1</code></p>
 <section class="card section-gap-small" aria-labelledby="health-broken">
 <h3 id="health-broken">Broken links <span class="badge badge-quiet">1</span></h3>
 <div class="table-scroll"><table class="health-table">
@@ -137,6 +137,15 @@
 <section class="card" aria-labelledby="health-form">
 <h3 id="health-form">Empty or untitled pages <span class="badge badge-quiet">0</span></h3>
 <p class="muted">Every page has a title and some content.</p>
+</section>
+<section class="card" aria-labelledby="health-drifts">
+<h3 id="health-drifts">Tables that disagree <span class="badge badge-quiet">0</span></h3>
+<p class="muted">The same row has a different value in two tables of two pages: one of them is probably outdated, unless both are right (a history, for example). Check, then fix the outdated page.</p>
+<p class="muted">No values that disagree.</p>
+</section>
+<section class="card" id="health-reported" aria-labelledby="health-reports">
+<h3 id="health-reports">Reported as outdated <span class="badge badge-quiet">0</span></h3>
+<p class="muted">No page reported.</p>
 </section>
 <section class="card" id="health-review" aria-labelledby="health-due">
 <h3 id="health-due">Pages to review <span class="badge badge-quiet">1</span></h3>

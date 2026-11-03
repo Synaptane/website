@@ -34,7 +34,7 @@ const features: Feature[] = [
   {
     icon: 'plug',
     title: 'Pensé pour les assistants IA',
-    text: 'Un serveur MCP de 20 outils et 3 prompts, en OAuth 2.1 ou par jeton personnel. Testé avec Claude.ai, Claude Desktop, Claude Code et ChatGPT. Une connexion peut être limitée à la lecture ou à certains espaces.',
+    text: 'Un serveur MCP de 29 outils et 3 prompts, en OAuth 2.1 ou par jeton personnel, avec des vues dans la conversation (MCP Apps) pour relire, ranger et annuler sans la quitter. Testé avec Claude.ai, Claude Desktop, Claude Code et ChatGPT. Une connexion peut être limitée à la lecture, à l’inbox ou à certains espaces.',
     href: '/fr/docs/guide/mcp/',
     linkLabel: 'Brancher un assistant',
   },
@@ -395,9 +395,10 @@ const rows: Row[] = [
           Certificate of Origin.
         </p>
         <p>
-          Synaptane est en <strong>préversion</strong> ({SITE.version}, la première version publique),
-          maintenu par une seule personne, selon ses disponibilités. L’API REST, les outils MCP et la
-          configuration peuvent encore changer : sauvegardez avant chaque mise à jour.
+          Synaptane est <strong>stable</strong> depuis la v1.0.0 (dernière version : {SITE.version}),
+          maintenu par une seule personne, selon ses disponibilités. Les versions suivent le versionnage
+          sémantique : en 1.x, l’API REST, les outils MCP et la configuration ne changent que de façon
+          compatible. Sauvegardez avant chaque mise à jour.
         </p>
       </div>
       <div>

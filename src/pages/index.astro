@@ -34,7 +34,7 @@ const features: Feature[] = [
   {
     icon: 'plug',
     title: 'Built for AI assistants',
-    text: 'An MCP server with 20 tools and 3 prompts, over OAuth 2.1 or personal tokens. Tested with Claude.ai, Claude Desktop, Claude Code and ChatGPT. A connection can be read-only or limited to some spaces.',
+    text: 'An MCP server with 29 tools and 3 prompts, over OAuth 2.1 or personal tokens, and views in the conversation (MCP Apps) to review, file and undo without leaving it. Tested with Claude.ai, Claude Desktop, Claude Code and ChatGPT. A connection can be read-only, limited to the inbox or to some spaces.',
     href: '/docs/guide/mcp/',
     linkLabel: 'Connect an assistant',
   },
@@ -394,9 +394,10 @@ const rows: Row[] = [
           Certificate of Origin.
         </p>
         <p>
-          Synaptane is a <strong>preview</strong> ({SITE.version}, the first public release), maintained
-          by one person on a best-effort basis. The REST API, the MCP tools and the configuration may
-          still change: back up before each upgrade.
+          Synaptane is <strong>stable</strong> since v1.0.0 (latest: {SITE.version}), maintained by one
+          person on a best-effort basis. Versions follow Semantic Versioning: within 1.x, the REST API,
+          the MCP tools and the configuration only change in a compatible way. Back up before each
+          upgrade.
         </p>
       </div>
       <div>
