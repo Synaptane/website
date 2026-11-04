@@ -82,6 +82,8 @@ class Instance:
         env |= {
             "SYNAPTANE_CONFIG": str(self.config),
             "SYNAPTANE_ALLOW_LOCAL_REPOS": "true",
+            # The demo account is a super admin: no second factor to set up.
+            "SYNAPTANE_SUPERADMIN_2FA": "false",
             "SYNAPTANE_DEMO_PASSWORD": self.password,
             "TZ": "Europe/Paris",
         }
