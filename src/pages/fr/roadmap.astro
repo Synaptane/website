@@ -22,17 +22,12 @@ const groups: RoadmapGroup[] = [
   {
     id: 'exploitation',
     title: 'Exploitation',
-    intro: 'Moins de travail pour qui fait tourner le serveur.',
+    intro: "L’adresse /metrics pour Prometheus et les images pour serveurs ARM sont arrivées avec la 1.9. Ensuite, moins de travail pour qui fait tourner le serveur.",
     items: [
       {
         status: 'next',
-        title: 'Supervision',
-        text: "Un point d’accès <code>/metrics</code> pour Prometheus et les outils du même genre, à côté des <code>/healthz</code> et <code>/readyz</code> existants, et une page de santé de l’instance avec des alertes système.",
-      },
-      {
-        status: 'next',
-        title: 'Image arm64',
-        text: "L’image publiée pour les serveurs ARM, et plus seulement x86-64.",
+        title: 'Page de santé de l’instance',
+        text: "L’état de l’instance et ses alertes système sur une seule page, pour les administrateurs.",
       },
       {
         status: 'later',

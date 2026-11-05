@@ -22,17 +22,12 @@ const groups: RoadmapGroup[] = [
   {
     id: 'operations',
     title: 'Operations',
-    intro: 'Less work for the person who runs the server.',
+    intro: 'The /metrics endpoint for Prometheus and images for ARM servers arrived in 1.9. Next, less work for the person who runs the server.',
     items: [
       {
         status: 'next',
-        title: 'Monitoring',
-        text: 'A <code>/metrics</code> endpoint for Prometheus and similar tools, next to the existing <code>/healthz</code> and <code>/readyz</code>, and an instance health page with system alerts.',
-      },
-      {
-        status: 'next',
-        title: 'arm64 image',
-        text: 'The published image for ARM servers, not only x86-64.',
+        title: 'Instance health page',
+        text: 'The state of the instance and its system alerts on one page, for administrators.',
       },
       {
         status: 'later',
