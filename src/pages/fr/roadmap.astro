@@ -22,17 +22,12 @@ const groups: RoadmapGroup[] = [
   {
     id: 'exploitation',
     title: 'Exploitation',
-    intro: 'Moins de travail pour qui fait tourner le serveur.',
+    intro: "L’adresse /metrics pour Prometheus et les images pour serveurs ARM sont arrivées avec la 1.9. Ensuite, moins de travail pour qui fait tourner le serveur.",
     items: [
       {
         status: 'next',
-        title: 'Supervision',
-        text: "Un point d’accès <code>/metrics</code> pour Prometheus et les outils du même genre, à côté des <code>/healthz</code> et <code>/readyz</code> existants, et une page de santé de l’instance avec des alertes système.",
-      },
-      {
-        status: 'next',
-        title: 'Image arm64',
-        text: "L’image publiée pour les serveurs ARM, et plus seulement x86-64.",
+        title: 'Page de santé de l’instance',
+        text: "L’état de l’instance et ses alertes système sur une seule page, pour les administrateurs.",
       },
       {
         status: 'later',
@@ -66,7 +61,7 @@ const groups: RoadmapGroup[] = [
   {
     id: 'equipes',
     title: 'Équipes',
-    intro: 'Une première heure plus fluide pour une nouvelle équipe.',
+    intro: 'Depuis la 1.10, un nouvel espace affiche ses premiers pas jusqu’à son premier rangement. Ensuite, une première heure plus fluide pour une nouvelle équipe.',
     items: [
       {
         status: 'later',
@@ -77,11 +72,6 @@ const groups: RoadmapGroup[] = [
         status: 'later',
         title: 'Rôle par défaut, puis groupes',
         text: "Un rôle par défaut pour les membres d’une organisation, puis des groupes pour ouvrir plusieurs espaces d’un coup.",
-      },
-      {
-        status: 'later',
-        title: 'Premiers pas guidés',
-        text: "Une liste d’étapes qui accompagne un nouvel espace jusqu’à son premier rangement.",
       },
     ],
   },
@@ -104,8 +94,8 @@ const groups: RoadmapGroup[] = [
     items: [
       {
         status: 'exploring',
-        title: 'Imports',
-        text: "Depuis Obsidian, Notion, Confluence ou une archive zip de fichiers Markdown, pièces jointes comprises.",
+        title: 'Imports depuis Notion et Confluence',
+        text: "Un coffre Obsidian ou un zip de fichiers Markdown s’importe depuis la 1.10. Les exports de Notion et de Confluence viendraient ensuite.",
       },
       {
         status: 'exploring',
@@ -114,8 +104,8 @@ const groups: RoadmapGroup[] = [
       },
       {
         status: 'exploring',
-        title: 'Éditeur avec aperçu, et diagrammes',
-        text: 'Un aperçu pendant la saisie, et des diagrammes Mermaid dans les pages.',
+        title: 'Aperçu pendant la saisie',
+        text: 'Voir la page telle qu’elle se lira pendant qu’on l’écrit. Les diagrammes Mermaid sont dessinés à la lecture depuis la 1.10.',
       },
       {
         status: 'exploring',
