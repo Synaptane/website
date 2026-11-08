@@ -8,18 +8,6 @@ import { SITE } from '../site';
 
 const groups: RoadmapGroup[] = [
   {
-    id: 'account-security',
-    title: 'Account security',
-    intro: 'Two-factor authentication and sessions you can see and close arrived in 1.8.0. Next, a record of who changed what.',
-    items: [
-      {
-        status: 'later',
-        title: 'Audit log in the interface',
-        text: 'Who changed a role, a token or a setting, and when, readable by administrators.',
-      },
-    ],
-  },
-  {
     id: 'operations',
     title: 'Operations',
     intro: 'The /metrics endpoint for Prometheus and images for ARM servers arrived in 1.9, the health page of the instance in 1.11. Next, less work for the person who runs the server.',
@@ -34,13 +22,8 @@ const groups: RoadmapGroup[] = [
   {
     id: 'ai-and-mcp',
     title: 'AI and MCP',
-    intro: 'More choice of models, and results in the open.',
+    intro: 'Since 1.12, the costs of OpenAI, Gemini, Mistral and DeepSeek models are estimated automatically, as those of Claude. Next, results in the open.',
     items: [
-      {
-        status: 'next',
-        title: 'More providers with automatic pricing',
-        text: 'Costs are estimated automatically for Claude models only; for other models, you enter the price per million tokens. More providers will come with their prices.',
-      },
       {
         status: 'later',
         title: 'Publish the bench’s results',
@@ -56,7 +39,7 @@ const groups: RoadmapGroup[] = [
   {
     id: 'teams',
     title: 'Teams',
-    intro: 'Since 1.10, a new space shows its first steps until its first tidy-up. Next, a smoother first hour for a new team.',
+    intro: 'Since 1.10, a new space shows its first steps until its first tidy-up; 1.12 brought a default role for the members, restricted spaces and the audit log. Next, a smoother first hour for a new team.',
     items: [
       {
         status: 'later',
@@ -65,8 +48,8 @@ const groups: RoadmapGroup[] = [
       },
       {
         status: 'later',
-        title: 'Default role, then groups',
-        text: 'A default role for the members of an organization, then groups to give access to several spaces at once.',
+        title: 'Groups',
+        text: 'Groups of members, to give access to several spaces at once, beyond the default role of the organization.',
       },
     ],
   },
