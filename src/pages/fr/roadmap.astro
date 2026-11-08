@@ -8,18 +8,6 @@ import { SITE } from '../../site';
 
 const groups: RoadmapGroup[] = [
   {
-    id: 'exploitation',
-    title: 'Exploitation',
-    intro: "L’adresse /metrics pour Prometheus et les images pour serveurs ARM sont arrivées avec la 1.9, la page de santé de l’instance avec la 1.11. Ensuite, moins de travail pour qui fait tourner le serveur.",
-    items: [
-      {
-        status: 'later',
-        title: 'Des sauvegardes encore plus simples',
-        text: "Les sauvegardes sont déjà vérifiées, et peuvent être chiffrées et copiées hors du serveur. Leur mise en place doit demander moins d’étapes.",
-      },
-    ],
-  },
-  {
     id: 'ia-et-mcp',
     title: 'IA et MCP',
     intro: 'Depuis la 1.12, le coût des modèles d’OpenAI, de Gemini, de Mistral et de DeepSeek est estimé automatiquement, comme celui de Claude. Ensuite, des résultats publiés.',
@@ -33,23 +21,6 @@ const groups: RoadmapGroup[] = [
         status: 'later',
         title: 'Les CLI des abonnements sous un compte à part',
         text: 'Faire tourner Claude Code et Codex sous leur propre compte système, séparé du worker.',
-      },
-    ],
-  },
-  {
-    id: 'equipes',
-    title: 'Équipes',
-    intro: 'Depuis la 1.10, un nouvel espace affiche ses premiers pas jusqu’à son premier rangement ; la 1.12 a apporté un rôle par défaut pour les membres, les espaces restreints et le journal d’audit. Ensuite, une première heure plus fluide pour une nouvelle équipe.',
-    items: [
-      {
-        status: 'later',
-        title: 'Créer le dépôt depuis Synaptane',
-        text: "Créer le dépôt Git d’un nouvel espace sur GitHub ou GitLab sans quitter Synaptane.",
-      },
-      {
-        status: 'later',
-        title: 'Groupes',
-        text: "Des groupes de membres, pour ouvrir plusieurs espaces d’un coup, au-delà du rôle par défaut de l’organisation.",
       },
     ],
   },
@@ -79,11 +50,6 @@ const groups: RoadmapGroup[] = [
         status: 'exploring',
         title: 'Slack et Microsoft Teams',
         text: "Chercher et garder des notes depuis la messagerie de l’équipe, sans passer par un assistant.",
-      },
-      {
-        status: 'exploring',
-        title: 'Aperçu pendant la saisie',
-        text: 'Voir la page telle qu’elle se lira pendant qu’on l’écrit. Les diagrammes Mermaid sont dessinés à la lecture depuis la 1.10.',
       },
       {
         status: 'exploring',
