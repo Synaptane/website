@@ -8,18 +8,6 @@ import { SITE } from '../site';
 
 const groups: RoadmapGroup[] = [
   {
-    id: 'operations',
-    title: 'Operations',
-    intro: 'The /metrics endpoint for Prometheus and images for ARM servers arrived in 1.9, the health page of the instance in 1.11. Next, less work for the person who runs the server.',
-    items: [
-      {
-        status: 'later',
-        title: 'Even simpler backups',
-        text: 'Backups are already verified, can be encrypted and copied off-site. Setting them up should take fewer steps.',
-      },
-    ],
-  },
-  {
     id: 'ai-and-mcp',
     title: 'AI and MCP',
     intro: 'Since 1.12, the costs of OpenAI, Gemini, Mistral and DeepSeek models are estimated automatically, as those of Claude. Next, results in the open.',
@@ -33,23 +21,6 @@ const groups: RoadmapGroup[] = [
         status: 'later',
         title: 'Subscription CLIs under a separate account',
         text: 'Run Claude Code and Codex under their own system account, apart from the worker.',
-      },
-    ],
-  },
-  {
-    id: 'teams',
-    title: 'Teams',
-    intro: 'Since 1.10, a new space shows its first steps until its first tidy-up; 1.12 brought a default role for the members, restricted spaces and the audit log. Next, a smoother first hour for a new team.',
-    items: [
-      {
-        status: 'later',
-        title: 'Create the repository from Synaptane',
-        text: 'Create the Git repository of a new space on GitHub or GitLab without leaving Synaptane.',
-      },
-      {
-        status: 'later',
-        title: 'Groups',
-        text: 'Groups of members, to give access to several spaces at once, beyond the default role of the organization.',
       },
     ],
   },
@@ -79,11 +50,6 @@ const groups: RoadmapGroup[] = [
         status: 'exploring',
         title: 'Slack and Microsoft Teams',
         text: 'Search and save notes from team chat, without going through an assistant.',
-      },
-      {
-        status: 'exploring',
-        title: 'Preview while editing',
-        text: 'See the page as it will read while you write it. Mermaid diagrams are drawn when reading since 1.10.',
       },
       {
         status: 'exploring',
