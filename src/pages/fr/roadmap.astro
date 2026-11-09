@@ -8,14 +8,14 @@ import { SITE } from '../../site';
 
 const groups: RoadmapGroup[] = [
   {
-    id: 'ia-et-mcp',
-    title: 'IA et MCP',
-    intro: 'Depuis la 1.15, Claude Code et Codex tournent dans un conteneur à part, loin des données et des secrets de l’instance. Ensuite, des résultats publiés.',
+    id: 'ia-et-rangement',
+    title: 'IA et rangement',
+    intro: 'Rendre le rangement mesurable, et comparable d’un modèle à l’autre.',
     items: [
       {
         status: 'later',
         title: 'Publier les résultats du banc d’évaluation',
-        text: 'Les scénarios du banc qui mesure le rangement sont publics, et depuis la 1.14 il produit des résultats publiables (essais répétés, intervalles de confiance, coûts). Ensuite, les premiers résultats, pour comparer modèles et consignes au grand jour.',
+        text: 'Les scénarios du banc qui mesure le rangement sont publics, et depuis la 1.14 il produit des résultats publiables (essais répétés, intervalles de confiance, coûts). Reste à publier les premiers résultats, pour comparer modèles et consignes au grand jour.',
       },
     ],
   },
@@ -46,10 +46,10 @@ const groups: RoadmapGroup[] = [
 ];
 ---
 
-<Base title="Feuille de route" description="La feuille de route de Synaptane : ce qui vient prochainement, ce qui viendra plus tard, et ce qui est à l’étude.">
+<Base title="Feuille de route" description="La feuille de route de Synaptane : ce qui est prévu, et ce qui est à l’étude.">
   <PageHeader
     title="Feuille de route"
-    intro="Ce qui attend Synaptane, et les pistes à l’étude. Pas de dates : Synaptane est maintenu par une seule personne, et les priorités suivent les besoins des utilisateurs."
+    intro="Ce qui est prévu pour Synaptane, et les pistes à l’étude. Pas de dates : Synaptane est maintenu par une seule personne, et les priorités suivent les besoins des utilisateurs."
   >
     <div class="actions">
       <Button href={SITE.discussions} variant="primary" icon="arrow-right">Proposer une idée</Button>
@@ -62,7 +62,7 @@ const groups: RoadmapGroup[] = [
       groups={groups}
       legend={{
         next: 'Prévu pour les prochaines versions.',
-        later: 'Prévu, après ce qui est marqué « Prochainement ».',
+        later: 'Prévu pour une version ultérieure.',
         exploring: 'Envisagé. Peut changer, ou ne pas se faire.',
       }}
     />

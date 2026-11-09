@@ -8,14 +8,14 @@ import { SITE } from '../site';
 
 const groups: RoadmapGroup[] = [
   {
-    id: 'ai-and-mcp',
-    title: 'AI and MCP',
-    intro: 'Since 1.15, Claude Code and Codex run in a container of their own, away from the data and the secrets of the instance. Next, results in the open.',
+    id: 'ai-and-tidy-up',
+    title: 'AI and tidy-up',
+    intro: 'Make the tidy-up measurable, and comparable from one model to another.',
     items: [
       {
         status: 'later',
         title: 'Publish the bench’s results',
-        text: 'The scenarios of the bench that measures the tidy-up are public, and since 1.14 it produces publishable results (repeated trials, confidence intervals, costs). Next, the first results, to compare models and prompts in the open.',
+        text: 'The scenarios of the bench that measures the tidy-up are public, and since 1.14 it produces publishable results (repeated trials, confidence intervals, costs). What remains is to publish the first results, to compare models and prompts in the open.',
       },
     ],
   },
@@ -46,10 +46,10 @@ const groups: RoadmapGroup[] = [
 ];
 ---
 
-<Base title="Roadmap" description="The Synaptane roadmap: what comes next, what comes later, and what is being explored.">
+<Base title="Roadmap" description="The Synaptane roadmap: what is planned, and what is being explored.">
   <PageHeader
     title="Roadmap"
-    intro="What comes next for Synaptane, and what is being explored. There are no dates: Synaptane is maintained by one person, and priorities follow what users need."
+    intro="What is planned for Synaptane, and what is being explored. There are no dates: Synaptane is maintained by one person, and priorities follow what users need."
   >
     <div class="actions">
       <Button href={SITE.discussions} variant="primary" icon="arrow-right">Propose an idea</Button>
@@ -62,7 +62,7 @@ const groups: RoadmapGroup[] = [
       groups={groups}
       legend={{
         next: 'Planned for the coming versions.',
-        later: 'Planned, after the items marked Next.',
+        later: 'Planned for a later version.',
         exploring: 'Being considered. It may change, or not happen.',
       }}
     />
