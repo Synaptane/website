@@ -18,6 +18,8 @@ export const en = {
     home: 'Synaptane home',
     menu: 'Menu',
     externalLink: '(opens GitHub)',
+    /** Name of the scrollable area around a docs table; {columns}: its column headers. */
+    table: 'Table: {columns}',
   },
   nav: {
     docs: 'Docs',

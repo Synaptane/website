@@ -37,8 +37,10 @@ src/
                         (light/dark), PageHeader, Todo, Icon, ThemeControl, LanguageSwitcher,
                         SiteHeader, SiteFooter, Lightbox (screenshot viewer); content/
                         (ReleaseNotes, Roadmap, AuthorCard, NewsletterNote)
-  components/starlight/ Starlight overrides: Header (+ site links), ThemeSelect, LanguageSelect,
-                        MobileMenuFooter, EditLink (edits the source in synaptane/synaptane)
+  components/starlight/ Starlight overrides: Header (laid out like SiteHeader, + site links),
+                        ThemeSelect, LanguageSelect, MobileMenuFooter, EditLink (edits the
+                        source in synaptane/synaptane), MarkdownContent (wraps each table in a
+                        focusable area that scrolls sideways on narrow screens)
   styles/tokens.css     the application's tokens and @font-face (shared by site and docs)
   styles/site.css       base styles of the site pages
   styles/starlight.css  Starlight variables mapped onto the tokens
