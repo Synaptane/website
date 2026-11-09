@@ -36,11 +36,8 @@ export default defineConfig({
       customCss: ['./src/styles/tokens.css', './src/styles/starlight.css'],
       head: [
         { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' } },
-        { tag: 'meta', attrs: { property: 'og:image', content: 'https://synaptane.com/og.png' } },
-        { tag: 'meta', attrs: { property: 'og:image:width', content: '1280' } },
-        { tag: 'meta', attrs: { property: 'og:image:height', content: '640' } },
-        { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://synaptane.com/og.png' } },
-        // og:image:alt and twitter:image:alt, in the page's language: src/components/starlight/Head.astro
+        // Social preview image (og.png / og-fr.png), og:locale and structured data, in the page's
+        // language: src/components/starlight/Head.astro
       ],
       components: {
         Header: './src/components/starlight/Header.astro',
