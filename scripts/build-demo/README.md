@@ -83,7 +83,8 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
    `mttr`, `docking` and `netware`, find the scan by OCR, the slides, the spreadsheet and the old
    `.xls` inventory), "View source" of
    the HTML file, and "AI assistants" (the demo account has no token). Tree folders and "See also" panels, loaded by the page script,
-   are frozen as HTML fragments.
+   are frozen as HTML fragments (`-/tree/`, `-/related/`: no head, hence no `noindex`; the
+   site's `public/robots.txt` keeps them out of crawling).
 4. **Rewrite** (`Rewriter`): internal links point to the frozen files
    (`/o/acme/it/p/x.md` → `/demo/app/o/acme/it/p/x.md/`, `?kind=page` → `/@kind-page/`,
    `/search?q=vpn` → `/search/vpn/`); a link to anything else leads to the "Not available in

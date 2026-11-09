@@ -128,3 +128,44 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 .muted { color: var(--ink-3); }
 .lead { font-size: 19px; color: var(--ink-2); max-width: 60ch; }
 main:focus { outline: none; }
+
+/* ---------- Print ----------
+   Printed or saved as PDF, a site page is a document on white paper, whatever the screen theme:
+   the Paper colors (dark theme included), no header menu, footer or buttons, and the address of
+   the links of the text after them. The docs have Starlight's print styles. */
+@media print {
+  @page { margin: 16mm 14mm; }
+  /* (:root three times: above the theme blocks of tokens.css, whatever the order of the CSS.) */
+  :root:root:root {
+    --bg: #fff; --bg-2: #F6F6F4; --surface: #fff; --border: #DADAD4;
+    --ink: #18191B; --ink-2: #3F4247; --ink-3: #5A5E66; --hover: #F1F1ED;
+    --accent: #1F6F6A; --accent-hover: #185955; --on-accent: #fff; --accent-soft: rgb(31 111 106 / .12);
+    --primary: #18191B; --primary-hover: #2E3034; --on-primary: #fff;
+    --warn-bg: rgb(148 96 10 / .08); --warn-ink: #7A4F08; --ok: #2B7349; --ok-bg: rgb(43 115 73 / .1);
+    --danger: #B42318; --danger-bg: rgb(180 35 24 / .08); --shadow: none;
+    --field-border: #868990;
+    color-scheme: light;
+  }
+  html, body { background: #fff; color: var(--ink); }
+  /* Header: the logo only, in its light version; no menu, links, buttons or theme switch. */
+  .site-header { position: static; background: none; backdrop-filter: none; }
+  .site-header :is(.nav-desktop, .tools, .cta, .menu),
+  .site-footer, .skip-link, .lightbox, .button, button, .theme-control,
+  [data-print-hide] { display: none !important; }
+  .site-header .logo-light, .screenshot.has-dark .shot-light { display: block !important; }
+  .site-header .logo-dark, .screenshot.has-dark .shot-dark { display: none !important; }
+  /* Code in its light colors. */
+  .code-block .astro-code span { color: var(--shiki-light) !important; }
+  /* The address of the links of the text (not of cards or images): the reader cannot click. */
+  main :is(p, li, td, dd, figcaption, blockquote) > a[href^="http"]::after {
+    content: " (" attr(href) ")";
+  }
+  main :is(p, li, td, dd, figcaption, blockquote) > a[href^="/"]::after {
+    content: " (synaptane.com" attr(href) ")";
+  }
+  main :is(p, li, td, dd, figcaption, blockquote) > a[href]::after {
+    font-size: 0.85em; color: var(--ink-3); overflow-wrap: anywhere;
+  }
+  h1, h2, h3, h4 { break-after: avoid; }
+  figure, img, pre, table, tr { break-inside: avoid; }
+}

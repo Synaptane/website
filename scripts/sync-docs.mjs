@@ -16,6 +16,11 @@
 //   node scripts/sync-docs.mjs --source ../x --ref main  # a ref of a local clone (left untouched)
 //   node scripts/sync-docs.mjs --check                # writes nothing, exits 1 if out of date
 //
+// --check compares the committed files with a sync at the ref recorded in docs-sync.json (the
+// ref they were synced from, e.g. v1.15.0), taken from the local clone (../synaptane-public or
+// --source) when there is one, else from GitHub: a local clone that has moved on since the
+// release does not make the check fail. Add --ref <ref> to check against another ref.
+//
 // Options: --repo <owner/name> (default synaptane/synaptane), --link-ref <ref> (ref used in the
 // GitHub links to files outside docs/; defaults to the synced ref, or to the branch of a local
 // source). Environment: SYNC_DOCS_TOKEN, to clone the repository while it is private.
@@ -78,10 +83,14 @@ const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio
 // ---------- Source ----------
 let source;
 let tempDir;
-let ref = args.ref;
-if (!args.ref) {
+// --check without --ref: the ref of the last sync (docs-sync.json), not the branch of the local
+// clone, which would only differ by its name in the generated headers and GitHub links.
+const syncedRef = existsSync(MANIFEST) ? JSON.parse(readFileSync(MANIFEST, 'utf8')).ref : undefined;
+let ref = args.ref ?? (args.check ? syncedRef : undefined);
+const localSource = resolve(ROOT, args.source ?? '../synaptane-public');
+if (!ref) {
   // Local clone, as it is (working tree included).
-  source = resolve(ROOT, args.source ?? '../synaptane-public');
+  source = localSource;
   if (!existsSync(join(source, 'docs'))) fail(`No docs/ folder in ${source}. Use --source <path> or --ref <ref>.`);
   ref = safe(() => git(source, 'rev-parse', '--abbrev-ref', 'HEAD')) || 'main';
   if (ref === 'HEAD') ref = 'main';
@@ -89,11 +98,13 @@ if (!args.ref) {
   // A ref: clone it into a temporary folder, from GitHub or from --source (left untouched).
   tempDir = mkdtempSync(join(tmpdir(), 'synaptane-docs-'));
   source = join(tempDir, 'repo');
-  const url = args.source ? `file://${resolve(ROOT, args.source)}` : `https://github.com/${args.repo}.git`;
+  // (--check without --ref also uses the local clone when there is one: no network needed.)
+  const local = args.source || (!args.ref && existsSync(join(localSource, '.git')));
+  const url = local ? `file://${localSource}` : `https://github.com/${args.repo}.git`;
   // A private repository needs a token with read access: SYNC_DOCS_TOKEN (sent as an HTTP
   // header, never written in the URL or in the logs).
   const token = process.env.SYNC_DOCS_TOKEN;
-  const auth = token && !args.source
+  const auth = token && !local
     ? ['-c', `http.extraHeader=Authorization: Basic ${Buffer.from(`x-access-token:${token}`).toString('base64')}`]
     : [];
   console.log(`Cloning ${url} at ${ref}…`);
@@ -216,11 +227,11 @@ async function main() {
     const changed = [...out].filter(([f, c]) => !sameContent(join(ROOT, f), c)).map(([f]) => f);
     const manifestChanged = !sameContent(MANIFEST, manifestText);
     if (changed.length || stale.length || manifestChanged) {
-      console.error(`Docs out of date (${changed.length} changed, ${stale.length} removed). Run npm run sync-docs.`);
+      console.error(`Docs out of date compared with ${args.repo}@${ref} (${changed.length} changed, ${stale.length} removed). Run npm run sync-docs.`);
       for (const f of [...changed, ...stale]) console.error(`  ${f}`);
       process.exit(1);
     }
-    console.log('Docs up to date.');
+    console.log(`Docs up to date with ${args.repo}@${ref} (${commit.slice(0, 12)}).`);
     return;
   }
 
