@@ -4,7 +4,9 @@
 :root {
   /* Layout of the site pages (the app's spacing scale: 4, 8, 12, 16, 24, 32, 48, 64…). */
   --page-max: 1120px;
-  --text-max: 68ch;
+  /* In em, not ch: Geist's digits are wide, so 68ch gave ~95 characters per line. 37em of
+     reading text is ~70 characters. */
+  --text-max: 37em;
   --gutter: 16px;
   --space-1: 4px;
   --space-2: 8px;
