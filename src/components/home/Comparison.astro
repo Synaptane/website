@@ -204,7 +204,7 @@ const others = columns.slice(1).map((name, i) => ({ name, col: i + 3 }));
     tbody tr { border-bottom: 1px solid var(--border); }
     tbody tr:last-child { border-bottom: 0; }
     thead tr { border-bottom: 1px solid var(--border); }
-    thead th { white-space: normal; width: auto; }
+    thead th, thead .ours { white-space: normal; width: auto; }
     .level { top: 11px; }
     tbody .criterion {
       display: block;
