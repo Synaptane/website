@@ -20,11 +20,11 @@ const release = releaseSentence(await releaseStatus(), lang);
   <div class="container grid">
     <div class="about">
       <p class="tagline">{t.footer.tagline}</p>
-      <p class="muted"><a href={p('/releases/')}>{release}</a></p>
+      <p class="muted"><a class="line" href={p('/releases/')}>{release}</a></p>
       <p class="muted">
         {t.footer.madeBy} <a href={p('/about/')}>{t.footer.author}</a>.
       </p>
-      <p class="muted"><a href={SITE.discussions}>{t.footer.contact}</a></p>
+      <p class="muted"><a class="line" href={SITE.discussions}>{t.footer.contact}</a></p>
     </div>
     <nav aria-label={t.a11y.footerNav}>
       <ul>
@@ -70,9 +70,13 @@ const release = releaseSentence(await releaseStatus(), lang);
   /* Every link has the same height (the GitHub icon included): the two columns stay aligned,
      and each link is a touch target of at least 40px on phones. */
   ul { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-rows: 32px; align-content: start; }
+  /* One rule for the links of the footer: a link that is a whole line (the menus, the release, the
+     contact) looks like the menus, underlined on hover only; a link inside a sentence (the author,
+     the license) is underlined, as in the text of the pages. */
   nav a { color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; height: 100%; }
-  nav a:hover { color: var(--ink); text-decoration: underline; }
+  nav a:hover, .about a.line:hover { color: var(--ink); text-decoration: underline; }
   .about a, .legal a { color: var(--accent); text-decoration: underline; }
+  .about a.line { color: var(--ink-2); text-decoration: none; }
   /* The first line of the left column lines up with the first link of the right columns. */
   .about { padding-top: 5px; }
   @media (max-width: 719px) {

@@ -1,11 +1,15 @@
 ---
 // Page 404 en français. GitHub Pages ne sert qu’un seul /404.html (src/pages/404.astro, bilingue) :
 // pour une adresse sous /fr/, celui-ci charge cette page à la place, qui remet dans la barre
-// d’adresse l’adresse demandée.
+// d’adresse l’adresse demandée. Avec JavaScript, src/lib/not-found.ts propose la page que
+// l’adresse visait sans doute et cherche dans la documentation (Pagefind) pour une adresse /fr/docs/….
 // Exclue du sitemap par @astrojs/sitemap (page de code d’état).
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import { fr } from '../../i18n/fr';
+import { knownPages, knownPagesJson } from '../../lib/known-pages';
+
+const pages = knownPagesJson(await knownPages());
 ---
 
 <Base title={fr.notFound.title} description={fr.notFound.text} alternate={null} noindex>
@@ -23,18 +27,64 @@ import { fr } from '../../i18n/fr';
     <section>
       <h1>{fr.notFound.title}</h1>
       <p class="lead">{fr.notFound.text}</p>
+      <p class="suggest" data-suggest hidden>Vous cherchiez peut-être <a href="/fr/docs/"></a>.</p>
+      <form
+        class="search"
+        role="search"
+        data-doc-search
+        data-found="Dans la documentation :"
+        data-none="Aucune page de la documentation ne contient ces mots."
+        data-error="La recherche n’est pas disponible pour le moment."
+        data-print-hide
+        hidden
+      >
+        <label for="search-fr">Chercher dans la documentation</label>
+        <div class="field">
+          <input id="search-fr" type="search" name="q" autocomplete="off" spellcheck="false" />
+          <button type="submit">Chercher</button>
+        </div>
+        <p class="status" data-status aria-live="polite"></p>
+        <ul class="results" data-results></ul>
+      </form>
       <div class="actions">
         <Button href="/fr/" variant="primary">{fr.notFound.home}</Button>
         <Button href="/fr/docs/">{fr.notFound.docs}</Button>
       </div>
+      <p class="more">
+        Ou voyez la <a href="/fr/demo/">démo</a>, les <a href="/fr/releases/">versions</a> ou la <a href="/fr/roadmap/">feuille de route</a>.
+      </p>
     </section>
   </div>
+  <script type="application/json" data-known-pages set:html={pages} />
 </Base>
+
+<script>
+  import { setUpNotFound } from '../../lib/not-found';
+  setUpNotFound();
+</script>
 
 <style>
   .not-found { padding-block: var(--space-8); display: grid; gap: var(--space-7); }
   .code { margin: 0; font: 600 14px/1 var(--font-mono); color: var(--ink-3); letter-spacing: 0.1em; }
   h1 { font-size: clamp(28px, 5vw, 40px); }
   .lead { margin-top: var(--space-3); }
+  .suggest { font-size: 17px; font-weight: 500; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+  .more { margin-top: var(--space-4); color: var(--ink-3); }
+  .search { max-width: 34rem; margin-top: var(--space-5); }
+  .search label { display: block; margin-bottom: var(--space-2); font-weight: 500; }
+  .field { display: flex; gap: var(--space-2); }
+  .field input {
+    flex: 1; min-width: 0; height: 38px; padding: 0 12px;
+    border: 1px solid var(--field-border); border-radius: var(--radius); background: var(--surface);
+  }
+  .field button {
+    flex: none; height: 38px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); color: var(--ink); font-weight: 500; font-size: 14.5px;
+  }
+  .field button:hover { background: var(--hover); }
+  .status { margin: var(--space-3) 0 var(--space-2); color: var(--ink-3); }
+  .status:empty { display: none; }
+  .results { margin: 0; }
+  .results li { margin-bottom: var(--space-1); }
 </style>

@@ -50,13 +50,16 @@ src/
                         + links.fr.json (French equivalents of its links)
   lib/                  changelog.ts (CHANGELOG parser), screenshots.ts (screenshots of the app
                         in src/assets/app/, by name, language and theme), structured-data.ts
-                        (schema.org JSON-LD)
+                        (schema.org JSON-LD), install.ts (install commands), not-found.ts and
+                        known-pages.ts (suggestions and docs search of the 404 pages)
+  route-data.ts         Starlight route middleware: the <title> of the docs pages
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
 public/                 served as is: CNAME, favicon, og.png and og-fr.png (GENERATED), robots.txt,
                         fonts/ (OFL), images/, docs/assets/ (GENERATED), demo/app/ and
                         fr/demo/app/ (GENERATED)
-scripts/                sync-docs.mjs, check-links.mjs (Node, no dependency);
+scripts/                sync-docs.mjs, check-links.mjs (Node, no dependency); csp.mjs (Astro
+                        integration: Content-Security-Policy and referrer policy of every page);
                         build-demo/ (static demo generator, Python, see its README);
                         og-image.py (social preview images og.png and og-fr.png, from the tokens,
                         the logo and the demo: uv run --no-project --with playwright python scripts/og-image.py)
@@ -84,18 +87,23 @@ slash (`trailingSlash: 'always'`); build links with `localizePath('/docs/', lang
 
 | Page | Files | Notes |
 | --- | --- | --- |
-| Home | `src/pages/index.astro`, `src/pages/fr/index.astro` | Replace the `<Todo>` blocks. |
+| Home | `src/pages/index.astro`, `src/pages/fr/index.astro` | The install commands shown on the home and demo pages are in `src/lib/install.ts`. |
 | Demo | `src/pages/demo/index.astro`, `src/pages/fr/demo/index.astro` | Presents the demo and links to it. |
-| Static demo | `public/demo/app/` → `/demo/app/`, `public/fr/demo/app/` → `/fr/demo/app/` | **Generated** by `scripts/build-demo/`, committed; do not edit. `check-links` and `check-demo` cover them. Not indexed (Pagefind, `noindex`). |
+| Static demo | `public/demo/app/` → `/demo/app/`, `public/fr/demo/app/` → `/fr/demo/app/` | **Generated** by `scripts/build-demo/`, committed; do not edit. `check-links` and `check-demo` cover them. Not indexed (Pagefind, `noindex`; its HTML fragments, `-/tree/` and `-/related/`, are kept out of crawling by `public/robots.txt`). |
 | Releases | `src/pages/releases/index.astro` (+ `fr/`) | Generated from the main repository's `CHANGELOG.md` (`npm run sync-docs`): one section per version. Do not write release notes here. |
 | Roadmap, About, Legal | `src/pages/{roadmap,about,legal}.astro` (+ `fr/`) | |
-| 404 | `src/pages/404.astro`, `src/pages/fr/404.astro` | GitHub Pages serves a single bilingual `404.html`; under `/fr/` it loads the French one, which restores the address. |
+| 404 | `src/pages/404.astro`, `src/pages/fr/404.astro` | GitHub Pages serves a single bilingual `404.html`; under `/fr/` it loads the French one, which restores the address. With JavaScript, `src/lib/not-found.ts` suggests the page the address probably meant (a link copied from the repository, `/docs/x.md`; a missing `/docs/`; a typo) and searches the docs (Pagefind) for a `/docs/…` address. |
 | Docs | **not here**: `docs/` of synaptane/synaptane | See below. |
 
-Before the launch, `grep -rn "<Todo" src/` must return nothing.
+Content still to write goes in a `<Todo>` block (`src/components/Todo.astro`), clearly visible on the
+page. None may be published: `grep -rn "<Todo" src/pages` must return nothing.
 
 Rules for the site pages: no client framework and no external script; interactive bits are
-small inline scripts (theme, copy button). Images in `src/assets/` go through
+small inline scripts (theme, copy button). Every page gets a Content-Security-Policy at build time
+(`scripts/csp.mjs`): the site's own files, and the inline scripts of the page by their hash,
+computed then; an inline event handler (`onclick="…"`) or a script from another domain is blocked.
+Printed, a site page is on white paper, without menus, footer or buttons, with the address of the
+links of the text (`@media print` in `src/styles/site.css`). Images in `src/assets/` go through
 `astro:assets` (`Screenshot` accepts imported images or paths under `public/`). Colors, radii and
 fonts come from the tokens (`var(--ink)`, `var(--accent)`, `var(--radius)`…); check both
 themes. Tone: clear and direct, no marketing jargon; « vous » in French.
@@ -183,6 +191,11 @@ npm run sync-docs -- --ref v1.0.0-rc.1              # clone synaptane/synaptane 
 npm run sync-docs -- --check                        # exit 1 if the committed docs are out of date
 ```
 
+`--check` compares the committed files with a sync at the ref recorded in `docs-sync.json` (the
+release they come from), taken from `../synaptane-public` (or `--source`) when it exists, else
+from GitHub: a local clone that has moved on since the release does not make it fail. Add
+`--ref <ref>` to check against another ref.
+
 In CI, the **Sync docs** workflow does the same for a given ref (manual run, or
 `repository_dispatch` of type `sync-docs` with `client_payload.ref`, which a release of the main
 repository can send) and opens a pull request when the docs changed. The repository setting
@@ -224,7 +237,10 @@ same checks without deploying). Actions are pinned by commit hash; Dependabot up
 the npm dependencies every week.
 
 Repository settings: *Settings → Pages → Source: GitHub Actions*, custom domain
-`synaptane.com`, *Enforce HTTPS*. DNS records: [docs/DNS.md](docs/DNS.md).
+`synaptane.com`, *Enforce HTTPS*. DNS records: [docs/DNS.md](docs/DNS.md). GitHub Pages sets the
+HTTP headers itself: every file is cached 10 minutes, hashed ones included, and no security header
+can be added (no HSTS); the CSP and the referrer policy are in a `<meta>` of each page. Details
+and what would change it: [docs/DNS.md](docs/DNS.md#http-headers-and-cache-the-limits-of-github-pages).
 
 ## License
 

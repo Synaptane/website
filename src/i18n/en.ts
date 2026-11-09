@@ -22,6 +22,8 @@ export const en = {
     externalLink: '(opens GitHub)',
     /** Name of the scrollable area around a docs table; {columns}: its column headers. */
     table: 'Table: {columns}',
+    /** Name of the site's navigation in the docs header, apart from the docs' own (sidebar). */
+    siteNav: 'Site',
   },
   nav: {
     docs: 'Docs',
@@ -58,7 +60,7 @@ export const en = {
     auto: 'System',
   },
   footer: {
-    tagline: 'A team second brain stored in Git.',
+    tagline: 'A self-hosted team second brain stored in Git.',
     license: 'Synaptane is open source under the Apache License 2.0.',
     madeBy: 'Made by',
     author: 'René Cotton',
@@ -80,6 +82,8 @@ export const en = {
     copied: 'Copied',
     copyLabel: 'Copy the code to the clipboard',
     copiedStatus: 'Code copied to the clipboard',
+    /** Name of a docs code block that scrolls sideways; {language}: its language (yaml, ini…). */
+    region: 'Code: {language}',
   },
   screenshot: {
     light: 'light theme',
@@ -91,6 +95,14 @@ export const en = {
     text: 'This page does not exist, or it has moved.',
     home: 'Back to the home page',
     docs: 'Read the documentation',
+  },
+  /** Bottom of each docs page: where to ask when stuck (GitHub Discussions) or report a bug. */
+  docsHelp: {
+    stuck: 'Stuck?',
+    ask: 'Ask on GitHub Discussions',
+    languages: '(in English or French)',
+    or: 'or',
+    bug: 'report a bug',
   },
 };
 

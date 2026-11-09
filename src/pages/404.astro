@@ -3,10 +3,15 @@
 // either language. The English text comes first; the French one has lang="fr". Under /fr/, a
 // small script loads the French 404 page instead (src/pages/fr/404.astro: French header, footer
 // and text), which shows the requested address again; without JavaScript, both languages stay.
+// With JavaScript, src/lib/not-found.ts suggests the page the address probably meant (a link
+// copied from the repository, a typo…) and searches the docs (Pagefind) for a /docs/… address.
 import Base from '../layouts/Base.astro';
 import Button from '../components/Button.astro';
 import { en } from '../i18n/en';
 import { fr } from '../i18n/fr';
+import { knownPages, knownPagesJson } from '../lib/known-pages';
+
+const pages = knownPagesJson(await knownPages());
 ---
 
 <Base title={`${en.notFound.title} · ${fr.notFound.title}`} description={en.notFound.text} alternate={null} noindex>
@@ -25,21 +30,53 @@ import { fr } from '../i18n/fr';
     <section lang="en">
       <h1>{en.notFound.title}</h1>
       <p class="lead">{en.notFound.text}</p>
+      <p class="suggest" data-suggest hidden>Were you looking for <a href="/docs/"></a>?</p>
+      <form
+        class="search"
+        role="search"
+        data-doc-search
+        data-found="In the documentation:"
+        data-none="No page of the documentation matches these words."
+        data-error="The search is not available right now."
+        data-print-hide
+        hidden
+      >
+        <label for="search-en">Search the documentation</label>
+        <div class="field">
+          <input id="search-en" type="search" name="q" autocomplete="off" spellcheck="false" />
+          <button type="submit">Search</button>
+        </div>
+        <p class="status" data-status aria-live="polite"></p>
+        <ul class="results" data-results></ul>
+      </form>
       <div class="actions">
         <Button href="/" variant="primary">{en.notFound.home}</Button>
         <Button href="/docs/">{en.notFound.docs}</Button>
       </div>
+      <p class="more">
+        Or see the <a href="/demo/">demo</a>, the <a href="/releases/">releases</a> or the <a href="/roadmap/">roadmap</a>.
+      </p>
     </section>
     <section lang="fr">
       <h2>{fr.notFound.title}</h2>
       <p class="lead">{fr.notFound.text}</p>
+      <p class="suggest" data-suggest hidden>Vous cherchiez peut-être <a href="/fr/docs/"></a>.</p>
       <div class="actions">
         <Button href="/fr/">{fr.notFound.home}</Button>
         <Button href="/fr/docs/">{fr.notFound.docs}</Button>
       </div>
+      <p class="more">
+        Ou voyez la <a href="/fr/demo/">démo</a>, les <a href="/fr/releases/">versions</a> ou la <a href="/fr/roadmap/">feuille de route</a>.
+      </p>
     </section>
   </div>
+  <script type="application/json" data-known-pages set:html={pages} />
 </Base>
+
+<script>
+  import { setUpNotFound } from '../lib/not-found';
+  setUpNotFound();
+</script>
 
 <style>
   .not-found { padding-block: var(--space-8); display: grid; gap: var(--space-7); }
@@ -47,5 +84,23 @@ import { fr } from '../i18n/fr';
   h1, h2 { font-size: clamp(28px, 5vw, 40px); }
   section + section { padding-top: var(--space-6); border-top: 1px solid var(--border); }
   .lead { margin-top: var(--space-3); }
+  .suggest { font-size: 17px; font-weight: 500; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+  .more { margin-top: var(--space-4); color: var(--ink-3); }
+  .search { max-width: 34rem; margin-top: var(--space-5); }
+  .search label { display: block; margin-bottom: var(--space-2); font-weight: 500; }
+  .field { display: flex; gap: var(--space-2); }
+  .field input {
+    flex: 1; min-width: 0; height: 38px; padding: 0 12px;
+    border: 1px solid var(--field-border); border-radius: var(--radius); background: var(--surface);
+  }
+  .field button {
+    flex: none; height: 38px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); color: var(--ink); font-weight: 500; font-size: 14.5px;
+  }
+  .field button:hover { background: var(--hover); }
+  .status { margin: var(--space-3) 0 var(--space-2); color: var(--ink-3); }
+  .status:empty { display: none; }
+  .results { margin: 0; }
+  .results li { margin-bottom: var(--space-1); }
 </style>

@@ -130,6 +130,11 @@ const wikiPhone = shot('wiki', lang, 'mobile');
     line-height: 1.03;
     letter-spacing: -0.035em;
   }
+  /* Phones: a smaller floor, so that the French title stays at four or five lines at 360px and
+     the buttons stay in the first screen. */
+  @media (max-width: 599px) {
+    h1 { font-size: clamp(31px, 8.6vw, 38px); letter-spacing: -0.03em; }
+  }
   .title, .title-muted { display: block; text-wrap: balance; }
   .title-muted { color: var(--ink-3); }
   .lead { max-width: 60ch; margin: 0; font-size: clamp(17px, 2vw, 19.5px); line-height: 1.55; }
@@ -157,7 +162,8 @@ const wikiPhone = shot('wiki', lang, 'mobile');
   }
   .hero-shot { position: relative; margin-top: clamp(40px, 6vw, 64px); padding-bottom: var(--space-6); }
   .shot-caption { margin: var(--space-3) 0 0; font-size: 13.5px; color: var(--ink-3); text-align: center; }
+  /* Phones: the buttons are stacked at full width, like every group of buttons of the site pages. */
   @media (max-width: 479px) {
-    .actions > :global(*) { flex: 1 1 auto; }
+    .actions { flex-direction: column; align-items: stretch; }
   }
 </style>

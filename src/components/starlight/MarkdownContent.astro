@@ -5,7 +5,8 @@
  * starlight.css, "Tables"); `tabindex="0"` lets a keyboard user scroll it too, and `role` and
  * `aria-label` (built from the column headers) name it for screen readers.
  * The docs are generated Markdown (src/content/docs/), so the wrapping is done here, on the
- * rendered HTML, at build time: no JavaScript in the browser.
+ * rendered HTML, at build time: no JavaScript in the browser. The code blocks that scroll
+ * sideways are named by a small script, below, as Expressive Code makes them regions in the browser.
  */
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import { getLang, useTranslations } from '../../i18n';
@@ -39,3 +40,17 @@ const wrapped = html.replace(/<table>([\s\S]*?)<\/table>/g, (table, inner: strin
 ---
 
 <Default><Fragment set:html={wrapped} /></Default>
+
+<script is:inline define:vars={{ codeLabel: t.code.region }}>
+  // Expressive Code makes a code block that scrolls sideways focusable, as a region
+  // (role="region", tabindex="0"), without a name: give it the name of its frame (« Terminal
+  // window », or its title), or « Code: yaml »… It sets and removes the role as the width changes.
+  const name = (pre) => {
+    if (pre.getAttribute('role') !== 'region') return pre.removeAttribute('aria-label');
+    const caption = pre.closest('figure')?.querySelector('figcaption')?.textContent?.trim();
+    pre.setAttribute('aria-label', caption || codeLabel.replace('{language}', pre.dataset.language || ''));
+  };
+  new MutationObserver((records) => records.forEach((r) => r.target.matches('.expressive-code pre') && name(r.target)))
+    .observe(document.body, { subtree: true, attributeFilter: ['role'] });
+  document.querySelectorAll('.expressive-code pre[role="region"]').forEach(name);
+</script>
