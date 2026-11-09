@@ -230,6 +230,23 @@ def main() -> int:
             problems.append(f"navigation: unexpected end {steps[-2:]}")
         print("navigation:", " → ".join(steps))
 
+        # The way out: the banner leads back to the demo's page on the site, on a phone too,
+        # where the banner keeps to two lines. (Not followed: the site's own files are not the
+        # demo's requests.)
+        page.set_viewport_size({"width": 360, "height": 740})
+        for url, about in (("/demo/app/o/acme/it/inbox/", "/demo/"), ("/fr/demo/app/o/acme/it/inbox/", "/fr/demo/")):
+            visit(url)
+            back = page.locator(".demo-banner-back")
+            if not back.is_visible() or back.get_attribute("href") != about:
+                problems.append(f"{url}: no visible link back to {about} in the banner")
+            lines = page.evaluate(
+                "(() => { const p = document.querySelector('.demo-banner-text');"
+                " return Math.round(p.scrollHeight / parseFloat(getComputedStyle(p).lineHeight)); })()"
+            )
+            if lines > 2:
+                problems.append(f"{url}: the phone banner takes {lines} lines")
+        page.set_viewport_size({"width": 1440, "height": 900})
+
         # The replayed tidy-up run: its log says it was replayed, leads to the pages it changed,
         # then to the diff of one of them.
         visit("/demo/app/o/acme/it/tidy/")
