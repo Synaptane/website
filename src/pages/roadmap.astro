@@ -10,17 +10,12 @@ const groups: RoadmapGroup[] = [
   {
     id: 'ai-and-mcp',
     title: 'AI and MCP',
-    intro: 'Since 1.12, the costs of OpenAI, Gemini, Mistral and DeepSeek models are estimated automatically, as those of Claude. Next, results in the open.',
+    intro: 'Since 1.15, Claude Code and Codex run in a container of their own, away from the data and the secrets of the instance. Next, results in the open.',
     items: [
       {
         status: 'later',
         title: 'Publish the bench’s results',
         text: 'The scenarios of the bench that measures the tidy-up are public, and since 1.14 it produces publishable results (repeated trials, confidence intervals, costs). Next, the first results, to compare models and prompts in the open.',
-      },
-      {
-        status: 'later',
-        title: 'Subscription CLIs under a separate account',
-        text: 'Run Claude Code and Codex under their own system account, apart from the worker.',
       },
     ],
   },
@@ -43,18 +38,8 @@ const groups: RoadmapGroup[] = [
     items: [
       {
         status: 'exploring',
-        title: 'Imports from Notion and Confluence',
-        text: 'An Obsidian vault or a zip of Markdown files can be imported since 1.10. Notion and Confluence exports would come next.',
-      },
-      {
-        status: 'exploring',
         title: 'Slack and Microsoft Teams',
         text: 'Search and save notes from team chat, without going through an assistant.',
-      },
-      {
-        status: 'exploring',
-        title: 'Capture by email',
-        text: 'Forward an email to a space, and it lands in the inbox.',
       },
     ],
   },
