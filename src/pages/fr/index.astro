@@ -173,7 +173,7 @@ const rows: Row[] = [
     titleMuted="Vos assistants IA l’alimentent, elle se range chaque nuit."
     lead="Un wiki auto-hébergé pour vos pages et vos fichiers, PDF et scans compris. Vos assistants y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et enregistre le tout dans Git."
     points={['Libre (Apache 2.0)', 'Auto-hébergé avec Docker', 'Fonctionne sans fournisseur d’IA']}
-    screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, un tableau récapitulatif des sauvegardes, un badge « vérifiée », les pages qui y renvoient et les pages proches"
+    screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, la page Backups avec son badge « vérifiée », les pages qui y renvoient et des pages proches qu’elle ne cite pas encore"
     caption="Une page du wiki de démonstration d’Acme, une équipe informatique fictive."
   >
     <Fragment slot="actions">
@@ -224,14 +224,14 @@ const rows: Row[] = [
     tone="alt"
     eyebrow="En pratique"
     title="Dans l’application"
-    intro="Captures (interface en anglais) et exemples tirés du wiki de démonstration d’Acme, une équipe informatique fictive : les exemples s’ouvrent dans votre navigateur."
+    intro="Captures et exemples tirés du wiki de démonstration d’Acme, une équipe informatique fictive : les exemples s’ouvrent dans votre navigateur."
   >
     <Gallery
       openLabel="(image en taille réelle)"
       items={[
-        { shot: 'search', title: 'Recherche Ctrl+K', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'La palette de recherche Ctrl+K, avec des résultats venant de plusieurs pages' },
-        { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF, au-dessus du texte reconnu par OCR' },
-        { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace, avec les liens cassés et les pages à revoir' },
+        { shot: 'search', title: 'Recherche', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'Les résultats de la recherche « backup » : les pages trouvées, avec leur espace, leur chemin, le badge « vérifiée » et des extraits' },
+        { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF dans le lecteur intégré, au-dessus du texte reconnu par OCR' },
+        { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace : les pages examinées, un lien cassé et sa page, aucune page orpheline' },
       ]}
     />
     <h3 class="home-cases-title" id="use-cases">Ce que les équipes y rangent</h3>

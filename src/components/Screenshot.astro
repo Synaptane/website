@@ -7,68 +7,101 @@
  * paths under public/ (e.g. the docs screenshots synced into /docs/assets/).
  *
  *   ---
- *   import wikiLight from '../assets/screenshots/wiki-light.png';
+ *   import { shot } from '../lib/screenshots';
+ *   const wiki = shot('wiki', lang);
  *   ---
- *   <Screenshot light={wikiLight} dark={wikiDark} alt="A wiki page…" caption="…" />
- *   <Screenshot light="/docs/assets/screenshot-wiki-light.png"
- *               dark="/docs/assets/screenshot-wiki-dark.png" width={2000} height={1250} alt="…" />
+ *   <Screenshot light={wiki.light} dark={wiki.dark} alt="A wiki page…" caption="…" />
+ *   <Screenshot light="/docs/assets/architecture.svg"
+ *               dark="/docs/assets/architecture-dark.svg" width={1040} height={452} alt="…" />
+ *
+ * `mobile` replaces the image on phones (a <picture> source, under 640 px): the same page taken
+ * on a phone, readable where the desktop screenshot would be too small. With `zoom`, a click
+ * opens the full-size image (`full` / `fullDark`, by default the light / dark image itself) in
+ * the viewer; the page shows its own caption in the slot "caption" or with `caption`.
  */
 import type { ImageMetadata } from 'astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 interface Props {
   light: ImageMetadata | string;
   /** Dark version; without it the light one is shown in both themes. */
   dark?: ImageMetadata | string;
+  /** The versions shown on phones (under 640 px), for imported images. */
+  mobile?: { light: ImageMetadata; dark?: ImageMetadata };
   alt: string;
   caption?: string;
   /** Intrinsic size, required for paths under public/ (avoids layout shifts). */
   width?: number;
   height?: number;
-  /** Load immediately (the first screenshot of a page, above the fold). */
+  /** Load first (the first screenshot of a page, above the fold). */
   eager?: boolean;
   /** Displayed width hint for responsive images (CSS `sizes`). */
   sizes?: string;
+  /** Displayed width hint of the `mobile` versions. */
+  mobileSizes?: string;
   class?: string;
   /** Lightbox group: a click opens the full-size image in the viewer, with the other
    *  screenshots of the same group (see Lightbox.astro). */
   zoom?: string;
   /** Text shown under the enlarged image (defaults to the caption, then the alt text). */
   zoomCaption?: string;
-  /** Full-size files when they differ from `light` / `dark` (e.g. the originals under /docs/assets/). */
-  full?: string;
-  fullDark?: string;
+  /** Hidden text added to the link to the full-size image (e.g. "(full-size image)"). */
+  zoomLabel?: string;
+  /** Full-size images when they differ from `light` / `dark` (a whole window for a crop). */
+  full?: ImageMetadata | string;
+  fullDark?: ImageMetadata | string;
 }
 
 const {
   light,
   dark,
+  mobile,
   alt,
   caption,
   width,
   height,
   eager = false,
   sizes = '(min-width: 1180px) 1120px, 100vw',
+  mobileSizes = 'calc(100vw - 32px)',
   class: className,
   zoom,
   zoomCaption,
+  zoomLabel,
   full,
   fullDark,
 } = Astro.props;
-const urlOf = (src: ImageMetadata | string) => (typeof src === 'string' ? src : src.src);
-const fullLight = full ?? urlOf(light);
-const fullDarkUrl = fullDark ?? (dark ? urlOf(dark) : undefined);
+
+/** The URL of a full-size image: an imported one is served at its own size, in WebP. */
+const fullUrl = async (src: ImageMetadata | string) =>
+  typeof src === 'string' ? src : (await getImage({ src, width: src.width, format: 'webp' })).src;
+const fullLight = await fullUrl(full ?? light);
+const fullDarkUrl = fullDark ? await fullUrl(fullDark) : dark ? await fullUrl(dark) : undefined;
 const FrameTag = zoom ? 'a' : 'div';
 const frameProps = zoom
   ? { href: fullLight, 'data-lightbox': zoom, 'data-dark': fullDarkUrl, 'data-caption': zoomCaption ?? caption ?? alt }
   : {};
-const loading = eager ? 'eager' : 'lazy';
-const versions = [
-  { src: light, theme: 'light' },
-  ...(dark ? [{ src: dark, theme: 'dark' }] : []),
-];
+// With two versions, both are lazy: the browser then only fetches the one that is displayed
+// (the other one is display: none). Above the fold, the visible one still comes first.
+const loading = eager && !dark ? 'eager' : 'lazy';
+const priority = eager ? 'high' : undefined;
 /** Widths generated for an imported image (never wider than the original). */
 const widthsFor = (image: ImageMetadata) => [...new Set([640, 1120, 1680, image.width].filter((w) => w <= image.width))];
+const versions = await Promise.all(
+  [
+    { src: light, phone: mobile?.light, theme: 'light' },
+    ...(dark ? [{ src: dark, phone: mobile?.dark ?? mobile?.light, theme: 'dark' }] : []),
+  ].map(async (v) => ({
+    ...v,
+    // A phone version: the <picture> sources, made here (the <Image> component has no media).
+    picture:
+      v.phone && typeof v.src !== 'string'
+        ? {
+            desktop: await getImage({ src: v.src, widths: widthsFor(v.src), sizes, format: 'webp' }),
+            phone: await getImage({ src: v.phone, widths: widthsFor(v.phone), sizes: mobileSizes, format: 'webp' }),
+          }
+        : undefined,
+  })),
+);
 ---
 
 <figure class:list={['screenshot', { 'has-dark': !!dark }, className]}>
@@ -76,14 +109,43 @@ const widthsFor = (image: ImageMetadata) => [...new Set([640, 1120, 1680, image.
     {
       versions.map((v) =>
         typeof v.src === 'string' ? (
-          <img class={`shot shot-${v.theme}`} src={v.src} alt={alt} width={width} height={height} loading={loading} decoding="async" />
+          <img class={`shot shot-${v.theme}`} src={v.src} alt={alt} width={width} height={height} loading={loading} fetchpriority={priority} decoding="async" />
+        ) : v.picture && v.phone ? (
+          <picture class={`shot shot-${v.theme}`}>
+            <source
+              media="(max-width: 639px)"
+              type="image/webp"
+              srcset={v.picture.phone.srcSet.attribute}
+              sizes={mobileSizes}
+              width={v.phone.width}
+              height={v.phone.height}
+            />
+            <img
+              src={v.picture.desktop.src}
+              srcset={v.picture.desktop.srcSet.attribute}
+              sizes={sizes}
+              width={v.src.width}
+              height={v.src.height}
+              alt={alt}
+              loading={loading}
+              fetchpriority={priority}
+              decoding="async"
+            />
+          </picture>
         ) : (
-          <Image class={`shot shot-${v.theme}`} src={v.src} alt={alt} loading={loading} sizes={sizes} widths={widthsFor(v.src)} />
+          <Image class={`shot shot-${v.theme}`} src={v.src} alt={alt} loading={loading} fetchpriority={priority} sizes={sizes} widths={widthsFor(v.src)} />
         ),
       )
     }
+    {zoomLabel && <span class="sr-only">{zoomLabel}</span>}
   </FrameTag>
-  {caption && <figcaption>{caption}</figcaption>}
+  {
+    Astro.slots.has('caption') ? (
+      <figcaption><slot name="caption" /></figcaption>
+    ) : (
+      caption && <figcaption>{caption}</figcaption>
+    )
+  }
 </figure>
 
 <style>
@@ -95,12 +157,12 @@ const widthsFor = (image: ImageMetadata) => [...new Set([640, 1120, 1680, image.
     background: var(--surface);
     box-shadow: var(--shadow);
   }
-  .frame { display: block; }
+  .frame { display: block; position: relative; } /* also holds the hidden label (sr-only) */
   .zoomable { cursor: zoom-in; transition: box-shadow 0.2s, transform 0.2s; }
   .zoomable:hover { transform: translateY(-2px); }
   .zoomable:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   @media (prefers-reduced-motion: reduce) { .zoomable, .zoomable:hover { transition: none; transform: none; } }
-  .shot { display: block; width: 100%; height: auto; }
+  .shot, .shot img { display: block; width: 100%; height: auto; }
   .has-dark .shot-dark { display: none; }
   :global(:root[data-theme='dark']) .has-dark .shot-light { display: none; }
   :global(:root[data-theme='dark']) .has-dark .shot-dark { display: block; }

@@ -173,7 +173,7 @@ const rows: Row[] = [
     titleMuted="Fed by your AI assistants, tidied up every night."
     lead="A self-hosted wiki for your pages and files, PDFs and scans included. Your assistants search it and save what they learn over MCP; each night, an AI agent files their notes into the right pages and commits the result."
     points={['Open source (Apache-2.0)', 'Self-hosted with Docker', 'Works without an AI provider']}
-    screenshotAlt="A Synaptane wiki page: the space tree, a backup summary table, a verified badge, pages linking here and related pages"
+    screenshotAlt="A Synaptane wiki page: the space tree, the Backups page with its verified badge, the pages linking to it and related pages it does not link to yet"
     caption="A page of the demo wiki of Acme, a fictional IT team."
   >
     <Fragment slot="actions">
@@ -229,9 +229,9 @@ const rows: Row[] = [
     <Gallery
       openLabel="(full-size image)"
       items={[
-        { shot: 'search', title: 'Ctrl+K search', text: 'across all your spaces, by words or by meaning.', alt: 'The Ctrl+K search palette with results from several pages' },
-        { shot: 'ocr', title: 'Scans:', text: 'a scanned delivery note, and its text read by OCR.', alt: 'A scanned PDF delivery note above the text recognized by OCR' },
-        { shot: 'health', title: 'Wiki health:', text: 'broken links, orphan pages, pages to review.', alt: 'The health tab of a space, listing broken links and pages to review' },
+        { shot: 'search', title: 'Search', text: 'across all your spaces, by words or by meaning.', alt: 'Search results for “backup”: the matching pages with their space, path, verified badge and excerpts' },
+        { shot: 'ocr', title: 'Scans:', text: 'a scanned delivery note, and its text read by OCR.', alt: 'A scanned PDF delivery note in the built-in viewer, above the text recognized by OCR' },
+        { shot: 'health', title: 'Wiki health:', text: 'broken links, orphan pages, pages to review.', alt: 'The health tab of a space: pages checked, a broken link and its page, no orphan page' },
       ]}
     />
     <h3 class="home-cases-title" id="use-cases">What teams keep in it</h3>
