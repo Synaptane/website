@@ -1,0 +1,41 @@
+---
+/**
+ * Starlight override of the docs page body: Starlight's own, with each Markdown table wrapped in
+ * a scrollable area. On a narrow screen a wide table scrolls sideways in that area (styles:
+ * starlight.css, "Tables"); `tabindex="0"` lets a keyboard user scroll it too, and `role` and
+ * `aria-label` (built from the column headers) name it for screen readers.
+ * The docs are generated Markdown (src/content/docs/), so the wrapping is done here, on the
+ * rendered HTML, at build time: no JavaScript in the browser.
+ */
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+import { getLang, useTranslations } from '../../i18n';
+
+const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
+const html = await Astro.slots.render('default');
+
+/** Text of an HTML fragment, ready for an attribute (it is already escaped, but for quotes). */
+const attrText = (fragment: string) =>
+  fragment.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().replace(/"/g, '&quot;');
+
+// Markdown tables have no nested table: each <table>…</table> is matched as a whole.
+const wrapped = html.replace(/<table>([\s\S]*?)<\/table>/g, (table, inner: string) => {
+  const head = inner.match(/<thead>([\s\S]*?)<\/thead>/)?.[1] ?? '';
+  const columns = [...head.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)]
+    .map((m) => attrText(m[1] ?? ''))
+    .filter(Boolean)
+    .join(', ');
+  const label = columns ? t.a11y.table.replace('{columns}', columns) : t.a11y.table.replace(/\W*\{columns\}/, '');
+  // In the first column (names: paths, variables, tools), break points after the / and _ of
+  // the code, so that a narrow column cuts `…/spaces/{space}/files` between its parts, not in
+  // the middle of a word. Not in the other columns, where the code runs within sentences.
+  const body = table.replace(/(<tr>\s*<td[^>]*>)([\s\S]*?<\/td>)/g, (_row, start: string, cell: string) =>
+    start +
+    cell.replace(/(<code[^>]*>)([^<]*)<\/code>/g, (_m, open: string, text: string) =>
+      `${open}${text.replace(/([^/_]{2,}[/_])(?=[^/_]{2,})/g, '$1<wbr>')}</code>`,
+    ),
+  );
+  return `<div class="table-scroll" tabindex="0" role="region" aria-label="${label}">${body}</div>`;
+});
+---
+
+<Default><Fragment set:html={wrapped} /></Default>

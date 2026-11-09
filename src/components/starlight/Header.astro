@@ -1,33 +1,36 @@
 ---
 /**
- * Starlight override of the docs header: Starlight's own header (logo, search, GitHub, theme,
- * language) plus the links back to the site pages (Demo, Roadmap, About), at every width:
+ * Starlight override of the docs header, laid out like the header of the site pages
+ * (SiteHeader.astro) so that going from one to the other does not move anything: the logo, then
+ * the site's navigation (Docs, Demo, Roadmap, About), and on the right GitHub, language, theme
+ * and the "Try it" call to action. The docs add their search, just before GitHub.
+ * The navigation, at every width:
  * - below 50rem, in Starlight's mobile menu (MobileMenuFooter.astro);
- * - from 50rem to 64rem, folded into a small "Menu" drop-down (a <details>), as they do not fit
+ * - from 50rem to 64rem, folded into a small "Menu" drop-down (a <details>), as it does not fit
  *   next to the search in French;
- * - from 64rem, as links in the header.
- * The grid styles are Starlight's (components/Header.astro), kept as they are.
+ * - from 64rem, as links after the logo.
+ * The search button shrinks to its magnifier when its room gets too narrow for its label.
+ * Height, side margins and logo size match the site's header: starlight.css.
  */
 import Search from '@astrojs/starlight/components/Search.astro';
 import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
 import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
 import Icon from '../Icon.astro';
-import { getLang, useTranslations } from '../../i18n';
+import { getLang, localizePath, useTranslations } from '../../i18n';
 import LanguageSelect from './LanguageSelect.astro';
 import SiteLinks from './SiteLinks.astro';
 import ThemeSelect from './ThemeSelect.astro';
 
-const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
+const lang = getLang(Astro.locals.starlightRoute.lang);
+const t = useTranslations(lang);
+const tryHref = `${localizePath('/', lang)}#get-started`;
 ---
 
 <div class="header">
   <div class="title-wrapper sl-flex">
     <SiteTitle />
   </div>
-  <div class="sl-flex print:hidden">
-    <Search />
-  </div>
-  <div class="sl-hidden md:sl-flex print:hidden right-group">
+  <div class="sl-hidden md:sl-flex print:hidden site-nav">
     <SiteLinks class="header-site-links" />
     <details class="header-site-menu">
       <summary>
@@ -38,12 +41,18 @@ const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
         <SiteLinks />
       </div>
     </details>
+  </div>
+  <div class="sl-flex print:hidden search">
+    <Search />
+  </div>
+  <div class="sl-hidden md:sl-flex print:hidden right-group">
     <div class="sl-flex social-icons">
       <SocialIcons />
     </div>
     <LanguageSelect />
     <ThemeSelect />
   </div>
+  <a class="cta print:hidden" href={tryHref} title={t.nav.tryItTitle}>{t.nav.tryIt}</a>
 </div>
 
 <script>
@@ -63,37 +72,93 @@ const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
 </script>
 
 <style>
+  /* The site header's rhythm: 24px between the groups, 8px between the tools (8px everywhere
+     on narrow screens). */
   .header {
     display: flex;
-    gap: var(--sl-nav-gap);
-    justify-content: space-between;
     align-items: center;
+    gap: 24px;
     height: 100%;
   }
   .title-wrapper {
+    flex: none;
     overflow: clip;
     padding: 0.25rem;
     margin: -0.25rem;
     min-width: 0;
   }
+  .site-nav { flex: none; align-items: center; }
   .right-group,
   .social-icons {
-    gap: 0.75rem;
+    flex: none;
+    gap: 8px;
     align-items: center;
   }
-  .social-icons::after {
-    content: '';
-    height: 2rem;
-    border-inline-end: 1px solid var(--sl-color-gray-5);
+
+  /* The search takes the free room and sits at its right end, next to the tools; with less
+     than 10rem, the button keeps only its magnifier (its name stays in aria-label). */
+  .search {
+    flex: 1 1 0;
+    min-width: 34px;
+    justify-content: flex-end;
+    container-type: inline-size;
   }
-  /* The site links need room: in the header from 64rem, in a drop-down below. */
-  .right-group :global(.header-site-links) { display: none; }
+  .search :global(site-search) { display: contents; }
+  @media (min-width: 50rem) {
+    .search :global(button[data-open-modal]) { height: 34px; }
+    @container (max-width: 10rem) {
+      .search :global(button[data-open-modal]) {
+        width: 34px;
+        padding: 0;
+        justify-content: center;
+      }
+      .search :global(button[data-open-modal] > :not(svg)) { display: none !important; }
+    }
+  }
+
+  /* GitHub: the site header's icon button. */
+  .social-icons :global(a) {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    margin: 0;
+    border-radius: var(--radius);
+  }
+  .social-icons :global(a:hover) { background: var(--hover); }
+
+  /* The call to action: the site header's (SiteHeader.astro). */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .cta:hover { background: var(--primary-hover); color: var(--on-primary); text-decoration: none; }
+
+  /* The site links need room: after the logo from 64rem, in a drop-down below. */
+  .site-nav :global(.header-site-links) { display: none; }
   @media (min-width: 64rem) {
-    .right-group :global(.header-site-links) { display: block; }
+    .site-nav :global(.header-site-links) { display: block; }
     .header-site-menu { display: none; }
   }
   @media (max-width: 63.99rem) {
-    .right-group { gap: 0.5rem; }
+    .header { gap: 16px; }
+  }
+  @media (max-width: 49.99rem) {
+    .header { gap: 8px; }
+    .cta { height: 36px; }
   }
   .header-site-menu { position: relative; }
   .header-site-menu summary {
@@ -101,11 +166,11 @@ const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    height: 32px;
+    height: 34px;
     padding: 0 10px;
     border-radius: var(--radius);
     color: var(--ink-2);
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 500;
     white-space: nowrap;
     cursor: pointer;
@@ -115,7 +180,7 @@ const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
   .header-site-menu[open] summary { background: var(--hover); color: var(--ink); }
   .site-menu-panel {
     position: absolute;
-    inset-inline-end: 0;
+    inset-inline-start: 0;
     top: calc(100% + 8px);
     z-index: 10;
     min-width: 12rem;
@@ -127,28 +192,4 @@ const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
   }
   .site-menu-panel :global(ul) { flex-direction: column; flex-wrap: nowrap; }
   .site-menu-panel :global(a) { display: flex; height: 40px; font-size: 15px; }
-  @media (min-width: 50rem) {
-    :global(:root[data-has-sidebar]) {
-      --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
-    }
-    :global(:root:not([data-has-toc])) {
-      --__toc-width: 0rem;
-    }
-    .header {
-      --__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
-      --__main-column-fr: calc(
-        (
-            100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) -
-              (2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
-              var(--sl-content-width)
-          ) / 2
-      );
-      display: grid;
-      grid-template-columns:
-        minmax(calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))), auto)
-        1fr
-        auto;
-      align-content: center;
-    }
-  }
 </style>

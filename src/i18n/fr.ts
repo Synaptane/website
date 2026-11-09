@@ -16,6 +16,7 @@ export const fr: Dictionary = {
     home: "Accueil de Synaptane",
     menu: 'Menu',
     externalLink: '(ouvre GitHub)',
+    table: 'Tableau\u00a0: {columns}',
   },
   nav: {
     docs: 'Documentation',

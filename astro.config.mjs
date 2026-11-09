@@ -50,6 +50,7 @@ export default defineConfig({
         EditLink: './src/components/starlight/EditLink.astro',
         Footer: './src/components/starlight/Footer.astro',
         Head: './src/components/starlight/Head.astro',
+        MarkdownContent: './src/components/starlight/MarkdownContent.astro',
       },
       // The bilingual 404 page is src/pages/404.astro (GitHub Pages serves one 404.html).
       disable404Route: true,
