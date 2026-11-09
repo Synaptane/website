@@ -164,9 +164,17 @@
 <form class="vocation-form" data-demo-off="">
 
 <input type="hidden" name="base_sha" value="6dba51780b1997721914c6288c14472df821a150">
-<div class="field">
+<div class="field editor-field" data-preview-params='{"kind": "vocation"}' data-preview-fields="" data-preview-name="" data-preview-space="" data-preview-max="262144" data-preview-empty="(empty text)" data-preview-failed="The preview could not be loaded: try again." data-preview-too-long="This text is too long to preview." data-preview-expired="Your session has expired: sign in again in another tab, your text is kept.">
+<div class="editor-head">
 <label for="vocation-text">Text (Markdown)</label>
-<textarea id="vocation-text" name="text" class="editor vocation-editor" rows="22" spellcheck="true" placeholder="Start from a template above, or write: what the space is for, what goes in it, how…" aria-describedby="vocation-help" disabled="" aria-disabled="true"># Space purpose
+<div class="segmented segmented-labels editor-modes" role="group" aria-label="Editor view" data-test="editor-modes" hidden="">
+<button type="button" data-preview-mode="write" aria-pressed="true" aria-controls="vocation-text" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"></path><path d="m13.5 6.5 4 4"></path></svg>Write</button>
+<button type="button" data-preview-mode="preview" aria-pressed="false" aria-controls="vocation-text-preview" data-test="editor-preview" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview</button>
+<button type="button" class="editor-split-mode" data-preview-mode="split" aria-pressed="false" aria-controls="vocation-text vocation-text-preview" data-test="editor-split" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M12 4v16"></path></svg>Side by side</button>
+</div>
+</div>
+<div class="editor-panes">
+<textarea id="vocation-text" name="text" class="editor vocation-editor" rows="22" spellcheck="true" placeholder="Start from a template above, or write: what the space is for, what goes in it, how…" aria-describedby="vocation-text-help" disabled="" aria-disabled="true"># Space purpose
 
 ## What this space is for, and who uses it
 
@@ -226,17 +234,25 @@ Each folder has a `README.md` that lists its pages: keep it up to date.
 - On-call: the person reachable outside business hours, one week out of four.
 - P1 to P4: ticket and incident priorities (see `tools/tickets.md`).
 </textarea>
-<p class="muted" id="vocation-help">20,000 characters at most. An empty text removes the file from the repository.</p>
+<div id="vocation-text-preview" class="editor-preview" data-preview-pane="" hidden="">
+<div class="editor-preview-scroll" tabindex="0" role="region" aria-labelledby="vocation-text-preview-label">
+<p class="section-label editor-preview-label" id="vocation-text-preview-label">Preview — not saved yet</p>
+<p class="editor-preview-status" data-preview-status="" role="status" aria-live="polite"></p>
+<div class="doc-body"><div class="markdown hl" data-preview-output=""></div></div>
+</div>
+</div>
+</div>
+<p class="muted" id="vocation-text-help">20,000 characters at most. An empty text removes the file from the repository.</p>
 </div>
 <div class="actions">
 <button class="button button-primary" type="submit" name="action" value="save" disabled="" aria-disabled="true">Save</button>
-<button class="button" type="submit" name="action" value="preview" formnovalidate="" disabled="" aria-disabled="true">Preview</button>
+<button class="button" type="submit" name="action" value="preview" formnovalidate="" data-preview-fallback="" disabled="" aria-disabled="true">Preview</button>
 </div>
 </form>
 <div class="vocation-history">
 <p class="section-label">Latest changes</p>
 <ul class="history-list">
-<li><span>Acme IT wiki: demo data</span><span class="muted"><time datetime="2026-10-25T09:00:00+02:00" data-local="full">2026-10-25 09:00 UTC</time> · Acme IT team</span></li>
+<li><span>Acme IT wiki: demo data</span><span class="muted"><time datetime="2026-10-26T09:00:00+02:00" data-local="full">2026-10-26 09:00 UTC</time> · Acme IT team</span></li>
 </ul>
 </div>
 </section>
@@ -249,14 +265,30 @@ Each folder has a `README.md` that lists its pages: keep it up to date.
 <form class="vocation-form" data-demo-off="">
 
 <input type="hidden" name="base_sha" value="">
-<div class="field">
+<div class="field editor-field" data-preview-params='{"kind": "tidy-rules"}' data-preview-fields="" data-preview-name="" data-preview-space="" data-preview-max="262144" data-preview-empty="(empty text)" data-preview-failed="The preview could not be loaded: try again." data-preview-too-long="This text is too long to preview." data-preview-expired="Your session has expired: sign in again in another tab, your text is kept.">
+<div class="editor-head">
 <label for="tidy-rules-text">Text (Markdown)</label>
-<textarea id="tidy-rules-text" name="text" class="editor vocation-editor" rows="12" spellcheck="true" placeholder="- One page per supplier in suppliers/." aria-describedby="tidy-rules-help" disabled="" aria-disabled="true"></textarea>
-<p class="muted" id="tidy-rules-help">20,000 characters at most. An empty text removes the file from the repository.</p>
+<div class="segmented segmented-labels editor-modes" role="group" aria-label="Editor view" data-test="editor-modes" hidden="">
+<button type="button" data-preview-mode="write" aria-pressed="true" aria-controls="tidy-rules-text" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"></path><path d="m13.5 6.5 4 4"></path></svg>Write</button>
+<button type="button" data-preview-mode="preview" aria-pressed="false" aria-controls="tidy-rules-text-preview" data-test="editor-preview" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview</button>
+<button type="button" class="editor-split-mode" data-preview-mode="split" aria-pressed="false" aria-controls="tidy-rules-text tidy-rules-text-preview" data-test="editor-split" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M12 4v16"></path></svg>Side by side</button>
+</div>
+</div>
+<div class="editor-panes">
+<textarea id="tidy-rules-text" name="text" class="editor vocation-editor" rows="12" spellcheck="true" placeholder="- One page per supplier in suppliers/." aria-describedby="tidy-rules-text-help" disabled="" aria-disabled="true"></textarea>
+<div id="tidy-rules-text-preview" class="editor-preview" data-preview-pane="" hidden="">
+<div class="editor-preview-scroll" tabindex="0" role="region" aria-labelledby="tidy-rules-text-preview-label">
+<p class="section-label editor-preview-label" id="tidy-rules-text-preview-label">Preview — not saved yet</p>
+<p class="editor-preview-status" data-preview-status="" role="status" aria-live="polite"></p>
+<div class="doc-body"><div class="markdown hl" data-preview-output=""></div></div>
+</div>
+</div>
+</div>
+<p class="muted" id="tidy-rules-text-help">20,000 characters at most. An empty text removes the file from the repository.</p>
 </div>
 <div class="actions">
 <button class="button button-primary" type="submit" name="action" value="save" disabled="" aria-disabled="true">Save</button>
-<button class="button" type="submit" name="action" value="preview" formnovalidate="" disabled="" aria-disabled="true">Preview</button>
+<button class="button" type="submit" name="action" value="preview" formnovalidate="" data-preview-fallback="" disabled="" aria-disabled="true">Preview</button>
 </div>
 </form>
 </section>

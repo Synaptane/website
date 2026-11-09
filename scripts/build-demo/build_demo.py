@@ -386,6 +386,11 @@ class Rewriter:
         return serialize(soup).replace(self.base, PUBLIC_URL)
 
     def freeze_forms(self, soup: BeautifulSoup) -> None:
+        # The live preview of the editors (Synaptane 1.13+) asks the server to render the text:
+        # without its `data-preview` address, the application's script leaves the editor alone,
+        # its Write / Preview buttons stay hidden, as without JavaScript.
+        for editor in soup.find_all(attrs={"data-preview": True}):
+            del editor["data-preview"]
         for form in soup.find_all("form"):
             action = form.get("action", "")
             if (form.get("method") or "get").lower() == "get" and urlsplit(action).path == "/search":
