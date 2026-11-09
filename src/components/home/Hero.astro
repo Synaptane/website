@@ -7,9 +7,10 @@ import Screenshot from '../Screenshot.astro';
 import wikiLight from '../../assets/app/wiki-light.png';
 import wikiDark from '../../assets/app/wiki-dark.png';
 import { SITE } from '../../site';
+import { isPrerelease, releaseStatus } from '../../lib/release';
 
 interface Props {
-  /** Small line above the headline (status, version). */
+  /** Small line above the headline (status, version): releaseLabel() of src/lib/release.ts. */
   status: string;
   /** Link of the status line. */
   statusHref: string;
@@ -24,12 +25,16 @@ interface Props {
 }
 
 const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = Astro.props;
+// Colour of the dot: green for a released stable version, amber for a pre-release, grey while
+// the version is still to come.
+const release = await releaseStatus();
+const tone = isPrerelease(release) ? 'preview' : release.date ? 'stable' : 'upcoming';
 ---
 
 <section class="hero">
   <div class="container hero-text">
     <a class="status" href={statusHref}>
-      <span class="status-dot" aria-hidden="true"></span>
+      <span class={`status-dot status-dot-${tone}`} aria-hidden="true"></span>
       <span>{status}</span>
       <span class="status-version">{SITE.version}</span>
     </a>
@@ -95,7 +100,9 @@ const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = 
     text-decoration: none;
   }
   .status:hover { color: var(--ink); border-color: var(--field-border); }
-  .status-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--warn-ink); }
+  .status-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--ink-3); }
+  .status-dot-stable { background: var(--ok); }
+  .status-dot-preview { background: var(--warn-ink); }
   .status-version {
     padding: 1px 8px;
     border-radius: 999px;
