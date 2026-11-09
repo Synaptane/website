@@ -11,7 +11,7 @@ interface Props {
   title?: string;
   intro?: string;
   tone?: 'default' | 'alt';
-  /** Narrow reading column instead of the full page width. */
+  /** Narrow reading column (760px), on the left edge of the page like the other sections. */
   narrow?: boolean;
   /** Heading level of the title (h2 by default). */
   level?: 2 | 3;
@@ -28,7 +28,7 @@ const headingId = id && title ? `${id}-title` : undefined;
   class:list={['section', `section-${tone}`, className]}
   aria-labelledby={headingId}
 >
-  <div class:list={['container', { 'container-narrow': narrow }]}>
+  <div class:list={['container', { 'section-narrow': narrow }]}>
     {
       (eyebrow || title || intro) && (
         <div class="section-head">
@@ -55,6 +55,8 @@ const headingId = id && title ? `${id}-title` : undefined;
     color: var(--accent);
   }
   .intro { font-size: 18px; color: var(--ink-2); margin: 0; }
+  /* Narrow: the text stops at 760px but starts where the titles of the other sections start. */
+  .section-narrow > :global(*) { max-width: 760px; }
   @media (max-width: 719px) {
     .section { padding-block: var(--space-7); }
   }
