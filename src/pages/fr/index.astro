@@ -232,7 +232,7 @@ const rows: Row[] = [
     caption="Une page du wiki de démonstration d’Acme, une équipe informatique fictive."
   >
     <Fragment slot="actions">
-      <Button href="/fr/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Commencer</Button>
+      <Button href="#get-started" variant="primary" size="lg" icon="arrow-down">Essayer en local</Button>
       <Button href="/fr/demo/" size="lg">Voir la démo</Button>
       <Button href={SITE.github} size="lg" variant="quiet" iconBefore="github">GitHub</Button>
     </Fragment>
@@ -307,13 +307,14 @@ const rows: Row[] = [
           Le guide détaille les deux modes de proxy, les mises à jour et les sauvegardes chiffrées hors site.
         </p>
         <div class="home-links">
-          <Button href="/fr/docs/admin/installation/" variant="primary" icon="arrow-right">Guide d’installation</Button>
+          <Button href="/fr/docs/admin/installation/" variant="primary" icon="arrow-right">Installer sur un serveur</Button>
           <Button href="/fr/docs/guide/mcp/">Brancher un assistant</Button>
         </div>
       </div>
       <div class="home-code">
         <CodeBlock title="Terminal" lang="sh" code={installCode} />
         <p class="home-after">Le rangement nécessite un fournisseur d’IA ; le wiki, la recherche, l’inbox et MCP s’en passent.</p>
+        <p class="home-after">Ces commandes en détail, et sans Docker : <a href="/fr/docs/admin/installation/#données-de-démonstration">Données de démonstration</a> dans le guide d’installation.</p>
       </div>
     </div>
   </Section>
@@ -442,9 +443,10 @@ const rows: Row[] = [
   <section class="container home-cta-band" aria-labelledby="cta-title">
     <div class="home-cta">
       <h2 id="cta-title">Donnez à vos assistants une mémoire qui appartient à votre équipe.</h2>
-      <p>Vos pages et vos documents, cherchables, dans un dépôt Git qui reste le vôtre. Commencez par la démo sur votre machine, ou lisez d’abord la documentation.</p>
+      <p>Vos pages et vos documents, cherchables, dans un dépôt Git qui reste le vôtre. Lancez Synaptane sur votre machine en quelques minutes, ou essayez d’abord la démo dans votre navigateur.</p>
       <div class="home-links">
-        <Button href="/fr/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Commencer</Button>
+        <Button href="#get-started" variant="primary" size="lg" icon="arrow-right">Essayer en local</Button>
+        <Button href="/fr/demo/" size="lg">Voir la démo</Button>
         <Button href={SITE.github} size="lg" iconBefore="github">GitHub</Button>
       </div>
     </div>
