@@ -1,15 +1,48 @@
 ---
 /**
- * Starlight override of the docs <head>: Starlight's own, plus the alternative text of the
- * social preview image (og:image and twitter:image are set in astro.config.mjs), in the
- * language of the page.
+ * Starlight override of the docs <head>: Starlight's own, adjusted to the language of the page
+ * (social preview image og.png or og-fr.png and its alternative text, og:locale en_US / fr_FR
+ * with og:locale:alternate, og:title with the site name, like the site pages: Base.astro), plus
+ * the preload of the theme's font and the structured data of the page (TechArticle,
+ * BreadcrumbList: src/lib/structured-data.ts).
  */
 import Default from '@astrojs/starlight/components/Head.astro';
-import { getLang, useTranslations } from '../../i18n';
+import FontPreload from '../FontPreload.astro';
+import { getLang, otherLang, useTranslations } from '../../i18n';
+import { docsGraph, jsonLd } from '../../lib/structured-data';
+import { SITE } from '../../site';
 
-const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
+const route = Astro.locals.starlightRoute;
+const lang = getLang(route.lang);
+const t = useTranslations(lang);
+const other = otherLang(lang);
+const site = Astro.site ?? new URL(SITE.url);
+const image = new URL(t.meta.ogImage, site).href;
+const url = new URL(Astro.url.pathname, site).href;
+const title = route.entry.data.title;
+const fullTitle = title.includes('Synaptane') ? title : `${title} | Synaptane`; // as Starlight's <title>
+const hasTranslation = route.head.some(
+  (h) => h.tag === 'link' && h.attrs?.rel === 'alternate' && h.attrs?.hreflang === other,
+);
+
+// Starlight's entries that depend on the language are replaced; the others are kept.
+const replaced = new Set(['og:locale', 'og:title', 'og:image', 'og:image:width', 'og:image:height', 'twitter:image']);
+route.head = [
+  ...route.head.filter((h) => !(h.tag === 'meta' && replaced.has(String(h.attrs?.property ?? h.attrs?.name)))),
+  { tag: 'meta', attrs: { property: 'og:title', content: fullTitle } },
+  { tag: 'meta', attrs: { property: 'og:locale', content: t.meta.ogLocale } },
+  ...(hasTranslation ? [{ tag: 'meta' as const, attrs: { property: 'og:locale:alternate', content: useTranslations(other).meta.ogLocale } }] : []),
+  { tag: 'meta', attrs: { property: 'og:image', content: image } },
+  { tag: 'meta', attrs: { property: 'og:image:type', content: 'image/png' } },
+  { tag: 'meta', attrs: { property: 'og:image:width', content: '1280' } },
+  { tag: 'meta', attrs: { property: 'og:image:height', content: '640' } },
+  { tag: 'meta', attrs: { property: 'og:image:alt', content: t.meta.ogImageAlt } },
+  { tag: 'meta', attrs: { name: 'twitter:image', content: image } },
+  { tag: 'meta', attrs: { name: 'twitter:image:alt', content: t.meta.ogImageAlt } },
+];
+const structuredData = jsonLd(docsGraph({ lang, url, title, description: route.entry.data.description }));
 ---
 
 <Default><slot /></Default>
-<meta property="og:image:alt" content={t.meta.ogImageAlt} />
-<meta name="twitter:image:alt" content={t.meta.ogImageAlt} />
+<FontPreload />
+<script type="application/ld+json" set:html={structuredData} />

@@ -1,0 +1,24 @@
+---
+/**
+ * Preloads the main font of the theme the page is about to show (Instrument Sans in Paper,
+ * Geist in Slate; see src/styles/tokens.css), so that it is often there for the first paint.
+ * The theme is only known in the browser (stored choice, else the system's), hence a script,
+ * placed early in <head>; same key and rule as the theme script of Base.astro and Starlight.
+ * The other fonts are not preloaded: they have adjusted fallbacks (tokens.css).
+ */
+---
+
+<script is:inline>
+  (() => {
+    let t = '';
+    try { t = localStorage.getItem('starlight-theme') || ''; } catch {}
+    const dark = t === 'dark' || (t !== 'light' && !matchMedia('(prefers-color-scheme: light)').matches);
+    const l = document.createElement('link');
+    l.rel = 'preload';
+    l.as = 'font';
+    l.type = 'font/woff2';
+    l.crossOrigin = '';
+    l.href = dark ? '/fonts/Geist-latin.woff2' : '/fonts/InstrumentSans-latin.woff2';
+    document.head.append(l);
+  })();
+</script>

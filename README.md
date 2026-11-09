@@ -35,22 +35,26 @@ src/
   layouts/Base.astro    layout of every site page: SEO head, hreflang, header, footer
   components/           Button, Section, Card, CardGrid, CodeBlock (copy button), Screenshot
                         (light/dark), PageHeader, Todo, Icon, ThemeControl, LanguageSwitcher,
-                        SiteHeader, SiteFooter, Lightbox (screenshot viewer); content/
+                        SiteHeader, SiteFooter, Lightbox (screenshot viewer), FontPreload; content/
                         (ReleaseNotes, Roadmap, AuthorCard, NewsletterNote)
   components/starlight/ Starlight overrides: Header (+ site links), ThemeSelect, LanguageSelect,
-                        MobileMenuFooter, EditLink (edits the source in synaptane/synaptane)
-  styles/tokens.css     the application's tokens and @font-face (shared by site and docs)
+                        MobileMenuFooter, EditLink (edits the source in synaptane/synaptane),
+                        Head (social preview, og:locale, structured data)
+  styles/tokens.css     the application's tokens and @font-face, + adjusted fallback fonts (site and docs)
   styles/site.css       base styles of the site pages
   styles/starlight.css  Starlight variables mapped onto the tokens
   pages/                site pages in English; pages/fr/ the same pages in French
   content/releases/     GENERATED copy of the main repository's CHANGELOG.md (release notes)
-  lib/                  changelog.ts (CHANGELOG parser)
+  lib/                  changelog.ts (CHANGELOG parser), structured-data.ts (schema.org JSON-LD)
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
-public/                 served as is: CNAME, favicon, og.png, robots.txt, fonts/ (OFL), images/,
-                        docs/assets/ (GENERATED), demo/app/ and fr/demo/app/ (GENERATED)
+public/                 served as is: CNAME, favicon, og.png and og-fr.png (GENERATED), robots.txt,
+                        fonts/ (OFL), images/, docs/assets/ (GENERATED), demo/app/ and
+                        fr/demo/app/ (GENERATED)
 scripts/                sync-docs.mjs, check-links.mjs (Node, no dependency);
-                        build-demo/ (static demo generator, Python, see its README)
+                        build-demo/ (static demo generator, Python, see its README);
+                        og-image.py (social preview images og.png and og-fr.png, from the tokens,
+                        the logo and the demo: uv run --no-project --with playwright python scripts/og-image.py)
 docs/DNS.md             DNS records and GitHub Pages settings for synaptane.com
 ```
 
