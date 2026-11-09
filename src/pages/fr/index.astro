@@ -62,7 +62,7 @@ const features: Feature[] = [
   },
   {
     icon: 'shield',
-    title: 'Des pages dignes de confiance',
+    title: 'Des pages vérifiées, avec un propriétaire',
     text: 'Propriétaires, dates de vérification et un onglet Santé pour les liens cassés et les pages à revoir. Les secrets probables sont refusés avant tout commit.',
     href: '/fr/docs/guide/wiki/#vérifier-une-page',
     linkLabel: 'Pages vérifiées',
@@ -122,7 +122,7 @@ const rows: Row[] = [
       { level: 'yes', text: 'Serveur MCP Rovo (en ligne)' },
       { level: 'yes', text: 'Intégré depuis février 2026' },
       { level: 'partial', text: 'Extensions de la communauté' },
-      { level: 'no', text: 'Pas de serveur officiel' },
+      { level: 'yes', text: 'Intégré depuis la 3.0 (novembre 2026)' },
     ],
   },
   {
@@ -148,6 +148,20 @@ const rows: Row[] = [
       { level: 'yes', text: 'OIDC, SAML, LDAP et d’autres' },
     ],
   },
+  // Là où Synaptane est en retrait : une page se modifie à une personne à la fois
+  // (docs/guide/wiki.fr.md, « Écrire (contributeurs) » : si la page a changé entre-temps, l’enregistrement est refusé).
+  {
+    label: 'Édition à plusieurs en temps réel',
+    hint: 'Plusieurs personnes dans la même page',
+    cells: [
+      { level: 'no', text: 'Non : un enregistrement en conflit est refusé, votre texte est conservé' },
+      { level: 'yes', text: 'Oui' },
+      { level: 'yes', text: 'Oui' },
+      { level: 'yes', text: 'Oui' },
+      { level: 'partial', text: 'Extensions de la communauté' },
+      { level: 'yes', text: 'Depuis la 3.0 (novembre 2026)' },
+    ],
+  },
   {
     label: 'Licence libre',
     cells: [
@@ -171,7 +185,7 @@ const rows: Row[] = [
     statusHref="/fr/releases/"
     title="La mémoire de votre équipe, dans Git."
     titleMuted="Vos assistants IA l’alimentent, elle se range chaque nuit."
-    lead="Un wiki auto-hébergé pour vos pages et vos fichiers, PDF et scans compris. Vos assistants y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et enregistre le tout dans Git."
+    lead="Un wiki auto-hébergé pour les équipes qui travaillent avec des assistants IA : vos pages et vos fichiers, PDF et scans compris. Claude, ChatGPT et les autres assistants s’y connectent par MCP pour y chercher et y déposer ce qu’ils apprennent ; chaque nuit, un agent IA range leurs notes dans les bonnes pages."
     points={['Libre (Apache 2.0)', 'Auto-hébergé avec Docker', 'Fonctionne sans fournisseur d’IA']}
     screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, la page Backups avec son badge « vérifiée », les pages qui y renvoient et des pages proches qu’elle ne cite pas encore"
     caption="Une page du wiki de démonstration d’Acme, une équipe informatique fictive."
@@ -203,7 +217,8 @@ const rows: Row[] = [
     <FileFormats id="files" items={formats} label="Types de fichiers">
       <h3>Tout se retrouve, même dans vos scans</h3>
       <p>
-        Déposez un PDF, un scan ou une présentation à côté de vos pages : Synaptane l’affiche dans la
+        Les pages sont en Markdown, avec un aperçu pendant la saisie, des diagrammes Mermaid et la
+        syntaxe d’Obsidian (encadrés, images intégrées). Déposez à côté un PDF, un scan ou une présentation : Synaptane l’affiche dans la
         page, en lit le texte (OCR compris) et le rend retrouvable, par mots ou par le sens, pour vous
         comme pour vos assistants.
       </p>
@@ -224,12 +239,12 @@ const rows: Row[] = [
     tone="alt"
     eyebrow="En pratique"
     title="Dans l’application"
-    intro="Captures et exemples tirés du wiki de démonstration d’Acme, une équipe informatique fictive : les exemples s’ouvrent dans votre navigateur."
+    intro="Captures et exemples tirés du wiki de démonstration d’Acme, une équipe informatique fictive : les exemples s’ouvrent dans votre navigateur."
   >
     <Gallery
       openLabel="(image en taille réelle)"
       items={[
-        { shot: 'search', title: 'Recherche', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'Les résultats de la recherche « backup » : les pages trouvées, avec leur espace, leur chemin, le badge « vérifiée » et des extraits' },
+        { shot: 'search', title: 'Recherche :', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'Les résultats de la recherche « backup » : les pages trouvées, avec leur espace, leur chemin, le badge « vérifiée » et des extraits' },
         { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF dans le lecteur intégré, au-dessus du texte reconnu par OCR' },
         { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace : les pages examinées, un lien cassé et sa page, aucune page orpheline' },
       ]}
@@ -261,7 +276,7 @@ const rows: Row[] = [
     id="compare"
     eyebrow="Comparatif"
     title="Synaptane face aux autres outils"
-    intro="Chacun de ces outils fait bien ce qu’il fait. Ce tableau ne retient que ce autour de quoi Synaptane est construit : votre serveur, des fichiers qui vous appartiennent, les assistants, et une IA qui tient le wiki en ordre."
+    intro="Chacun de ces outils fait bien ce qu’il fait. Ce tableau retient ce autour de quoi Synaptane est construit : votre serveur, des fichiers qui vous appartiennent, les assistants, et une IA qui tient le wiki en ordre."
   >
     <Comparison
       caption="Synaptane comparé à Notion AI, Confluence avec Rovo, Outline, Obsidian et Wiki.js"
@@ -272,7 +287,7 @@ const rows: Row[] = [
       rows={rows}
     />
     <p class="home-small">
-      État en octobre 2026, d’après la documentation publique et les annonces de chaque produit. Ces
+      État en octobre 2026 (novembre pour Wiki.js 3.0), d’après la documentation publique et les annonces de chaque produit. Ces
       produits évoluent vite : si une information n’est plus à jour, <a href={SITE.discussions}>signalez-le dans les Discussions GitHub</a>.
     </p>
     <p class="home-note home-compare-import">
@@ -289,7 +304,7 @@ const rows: Row[] = [
     tone="alt"
     eyebrow="Architecture et logiciel libre"
     title="Simple à exploiter, facile à quitter"
-    intro="Une application, un worker, PostgreSQL et vos dépôts Git. Si vous arrêtez Synaptane, votre wiki reste un dossier de pages Markdown et de vos fichiers d’origine."
+    intro="Une application, un processus de fond (worker), PostgreSQL et vos dépôts Git, plus un conteneur isolé pour les abonnements d’IA. Si vous quittez Synaptane, votre wiki reste un dossier de pages Markdown et de vos fichiers d’origine."
     class="home-arch"
   >
       <Screenshot
@@ -299,19 +314,18 @@ const rows: Row[] = [
         height={452}
         zoom="home"
         zoomCaption="Architecture de Synaptane : l’application, le worker, PostgreSQL, les dépôts Git et le fournisseur d’IA facultatif."
-        alt="Architecture : les assistants IA (MCP, OAuth 2.1), les navigateurs (interface web) et les scripts (API REST) passent par l’application FastAPI ; un worker gère le rangement nocturne, les routines, la synchronisation Git, l’indexation et les webhooks ; tous deux partagent PostgreSQL avec pgvector et les copies de travail Git locales ; le worker synchronise un dépôt Git par espace et appelle un fournisseur d’IA facultatif."
+        alt="Schéma d’architecture de Synaptane, décrit dans la liste qui suit."
       />
       <ul class="home-arch-list">
         <li><strong>Une application FastAPI</strong> sert les trois interfaces : MCP pour les assistants, l’interface web et l’API REST.</li>
+        <li><strong>Le worker</strong> fait le rangement et les routines avec le fournisseur d’IA facultatif, synchronise un dépôt Git par espace, indexe les fichiers (avec l’OCR) et envoie les webhooks. Avec un abonnement Claude ou ChatGPT, l’IA tourne dans un <a href="/fr/docs/admin/ai/#le-conteneur-des-agents">conteneur des agents</a> isolé, sans les données ni les secrets de l’instance.</li>
         <li><strong>PostgreSQL</strong> conserve les comptes, les droits, les paramètres et l’index sémantique (pgvector). Le reste se reconstruit à partir des dépôts.</li>
-        <li><strong>Un worker</strong> s’occupe du rangement nocturne, des routines, de la synchronisation Git, de l’indexation (avec l’extraction du texte et l’OCR) et des webhooks.</li>
         <li><strong>Sauvegarde et surveillance :</strong> une <a href="/fr/docs/admin/backup/">sauvegarde vérifiée chaque nuit</a>, sans rien configurer ; chiffrée hors site en une commande ; une page Santé, des alertes, <code>/metrics</code>.</li>
       </ul>
       <div class="home-oss" id="open-source">
         <p>
           <strong>Logiciel libre.</strong> Synaptane est publié sous licence Apache 2.0. Le code, la
-          documentation et ce site sont sur GitHub, et les contributions sont bienvenues : les commits
-          sont signés selon le Developer Certificate of Origin.
+          documentation et ce site sont sur GitHub, et les contributions sont bienvenues.
         </p>
         <ul class="home-link-list">
           <li>
@@ -373,9 +387,11 @@ const rows: Row[] = [
         <div>
           <p>
             Le logiciel est gratuit. Vous payez votre serveur et, si vous utilisez les fonctions d’IA,
-            votre fournisseur : Anthropic, OpenAI, Mistral, Ollama ou toute API compatible OpenAI. Un
-            budget mensuel par organisation plafonne la dépense (le formulaire propose 20 € pour une
-            clé facturée à l’usage) ; une fois atteint, les passages s’arrêtent jusqu’au mois suivant.
+            votre fournisseur : Anthropic, OpenAI, Mistral, Ollama ou toute API compatible OpenAI, ou
+            un <a href="/fr/docs/admin/ai/#utiliser-un-abonnement-claude-ou-chatgpt">abonnement Claude ou ChatGPT</a>
+            par leurs CLI officiels (vérifiez les conditions de votre fournisseur). Avec une clé facturée
+            à l’usage, un budget mensuel par organisation plafonne la dépense (le formulaire propose
+            20 €) ; une fois atteint, les passages s’arrêtent jusqu’au mois suivant.
           </p>
           <a href="/fr/docs/admin/ai/#coût-et-budget">Coût et budget<span aria-hidden="true"> →</span></a>
         </div>
@@ -430,13 +446,13 @@ const rows: Row[] = [
       <div>
         <ol class="home-steps">
           <li><strong>Récupérer la version publiée</strong>Clonez la version étiquetée : elle contient le fichier Compose, la configuration nginx et les scripts du serveur.</li>
-          <li><strong>Écrire un <code>.env</code> minimal</strong>Une adresse locale, un mot de passe de base de données aléatoire et la version de l’image. La dernière ligne permet à la démo d’utiliser un dépôt Git local : à réserver à une instance jetable.</li>
+          <li><strong>Écrire un <code>.env</code> minimal</strong>Une adresse locale, un mot de passe de base de données aléatoire et la version de l’image, plus une ligne pour la démo.</li>
           <li><strong>Démarrer et charger la démo</strong>Ouvrez ensuite <code>http://localhost:8000/o/acme/it</code> et connectez-vous avec le mot de passe affiché par la commande.</li>
         </ol>
         <p class="home-note">
-          <strong>Pour un vrai serveur,</strong> omettez la ligne de démo, créez le premier compte avec
-          <code>synaptane admin create</code>, servez l’instance en HTTPS et lancez <code>synaptane doctor</code>.
-          Le guide détaille les deux modes de proxy, les mises à jour et les sauvegardes chiffrées hors site.
+          <strong>Pour la production,</strong> le guide d’installation couvre HTTPS, le premier compte
+          et les sauvegardes. Claude.ai et ChatGPT demandent une adresse HTTPS publique ; sur cette
+          instance locale, branchez Claude Code avec un jeton personnel.
         </p>
         <div class="home-links">
           <Button href="/fr/docs/admin/installation/" variant="primary" icon="arrow-right">Installer sur un serveur</Button>
