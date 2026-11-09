@@ -70,10 +70,13 @@ LANGS = {
         "prefix": "/demo/app",
         "install": "/docs/admin/installation/",
         "about": "/demo/",
+        # The way out of the demo, to its page on the site (what to try, how to install).
+        # (wide screens, phones): on phones, the banner holds two lines next to the way back.
+        "back": ("Back to the tour", "Tour"),
         "banner_label": "Static demo",
         "banner_title": "Static demo",
-        "banner_text": " — nothing you do here is saved.",
-        "banner_link": "Install Synaptane to try it for real.",
+        "banner_text": (" — nothing you do here is saved.", " — nothing is saved."),
+        "banner_link": ("Install Synaptane to try it for real.", "Install Synaptane."),
         "legal": ("/legal/", "Legal notice"),
         "flash": "Read-only demo: this action is not available here.",
         "other": ("fr", "Français", "Version française"),
@@ -107,10 +110,11 @@ LANGS = {
         "prefix": "/fr/demo/app",
         "install": "/fr/docs/admin/installation/",
         "about": "/fr/demo/",
+        "back": ("Retour à la visite", "Visite"),
         "banner_label": "Démo figée",
         "banner_title": "Démo figée",
-        "banner_text": " : rien n’est enregistré.",
-        "banner_link": "Installez Synaptane pour l’essayer pour de vrai.",
+        "banner_text": (" : rien n’est enregistré.", " : rien n’est enregistré."),
+        "banner_link": ("Installez Synaptane pour l’essayer pour de vrai.", "Installez Synaptane."),
         "legal": ("/fr/legal/", "Mentions légales"),
         "flash": "Démo en lecture seule : cette action n’est pas disponible ici.",
         "other": ("en", "English", "English version"),
@@ -156,6 +160,7 @@ ICONS = {
     "sun": '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     "moon": '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
     "monitor": '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+    "arrow-left": '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
 }
 
 
@@ -509,12 +514,15 @@ class Rewriter:
         if ref.path == "/unavailable":
             twin = f"{twin_prefix}{UNAVAILABLE}/"
         legal_href, legal_label = t["legal"]
+        # The way back to the demo's page on the site comes first.
         return (
             f'<div class="demo-banner" role="region" aria-label="{t["banner_label"]}" '
             f'data-flash="{t["flash"]}">'
+            f'<a class="demo-banner-back" href="{t["about"]}">{svg("arrow-left")}'
+            f'{wide_narrow(*t["back"])}</a>'
             f'<p class="demo-banner-text"><strong>{t["banner_title"]}</strong>'
-            f'<span class="demo-banner-long">{t["banner_text"]}</span> '
-            f'<a href="{t["install"]}">{t["banner_link"]}</a></p>'
+            f'{wide_narrow(*t["banner_text"])} '
+            f'<a href="{t["install"]}">{wide_narrow(*t["banner_link"])}</a></p>'
             f'<p class="demo-banner-flash" role="status" aria-live="polite"></p>'
             f'<div class="demo-banner-tools">'
             f'{self.theme_switch("demo-theme")}'
@@ -575,6 +583,17 @@ class Rewriter:
             "html.parser",
         )
         form.insert_after(note)
+
+
+def wide_narrow(wide: str, narrow: str) -> str:
+    """A banner text and its shorter version for phones (demo.css); screen readers always get
+    the full one."""
+    if wide == narrow:
+        return f"<span>{wide}</span>"
+    return (
+        f'<span class="demo-banner-wide">{wide}</span>'
+        f'<span class="demo-banner-narrow" aria-hidden="true">{narrow}</span>'
+    )
 
 
 def svg(name: str, size: int = 14) -> str:
