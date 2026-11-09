@@ -95,3 +95,21 @@ export function parseChangelog(markdown: string): ChangelogVersion[] {
 export function versionAnchor(version: string): string {
   return version === 'Unreleased' ? 'unreleased' : `v${version}`;
 }
+
+/**
+ * The sections of a version body (### Added, ### Changed…) with the number of their entries
+ * (top-level list items, the nested ones and the #### subheadings being part of them), in body
+ * order. Shown as the summary of the full notes on the releases page.
+ */
+export function sectionCounts(body: string): { heading: string; count: number }[] {
+  const counts: { heading: string; count: number }[] = [];
+  let fence = false;
+  for (const line of body.split('\n')) {
+    if (/^\s{0,3}(```|~~~)/.test(line)) fence = !fence;
+    if (fence) continue;
+    const heading = /^###\s+(.+?)\s*#*\s*$/.exec(line);
+    if (heading?.[1]) counts.push({ heading: heading[1], count: 0 });
+    else if (/^[-*+]\s/.test(line) && counts.length) counts[counts.length - 1]!.count++;
+  }
+  return counts.filter((s) => s.count > 0);
+}

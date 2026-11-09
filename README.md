@@ -44,6 +44,7 @@ src/
   styles/starlight.css  Starlight variables mapped onto the tokens
   pages/                site pages in English; pages/fr/ the same pages in French
   content/releases/     GENERATED copy of the main repository's CHANGELOG.md (release notes)
+                        + links.fr.json (French equivalents of its links)
   lib/                  changelog.ts (CHANGELOG parser)
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
@@ -130,8 +131,14 @@ and copied here by `npm run sync-docs`:
 "Coming soon" / "Next release" before its date, "Preview" only for a version with a suffix
 (`v1.0.0-rc.1`, amber dot). A version without a date and without any note (the empty
 `## [Unreleased]` kept between two versions) is left out: no section, no link in the list of
-versions. On the French page, the section headings (Added, Changed…) are
-translated; the notes stay in English.
+versions. Each version shows its introduction (the paragraph before its first `###` heading) and
+the number of entries per section; its full notes are folded (`<details>`), open for the latest
+version only, and a link to `#v1.9.0` or to one of its headings opens them. On the French page,
+the section headings (Added, Changed…) are translated; the notes stay in English, but their links
+lead to the French pages when they exist: `src/content/releases/links.fr.json`, written by
+sync-docs, maps `/docs/x/#id` to `/fr/docs/x/#french-id` and `README.md#id` (on GitHub) to
+`README.fr.md#french-id` (the French heading at the same position: the translations keep the
+outline of the original).
 
 The generated files are committed (the site builds without the main repository), start with a
 "generated" comment, and are listed in `docs-sync.json` with the source commit. Do not edit

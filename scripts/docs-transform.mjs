@@ -4,6 +4,7 @@
 // - convertCallouts: GitHub alerts (`> [!NOTE]`…) -> Starlight asides (`:::note`…);
 // - frenchTypography: French typography outside code (apostrophes, non-breaking spaces);
 // - pageDescription: the description of a page (its first real paragraph, at most 155 characters);
+// - translatedAnchor: the id, in a translation, of a heading of the original page;
 // - isFence, updateFence, mapOutsideInlineCode, stripInline: helpers shared with sync-docs.mjs.
 //
 // No dependency: Node >= 22.
@@ -273,4 +274,20 @@ function shorten(text, { max }) {
   if (cut >= max / 2) return text.slice(0, cut);
   // Otherwise after the last whole word, without a trailing punctuation mark or space.
   return `${text.slice(0, max).replace(/\s+\S*$/, '').replace(/[\s,;:(\-–—]+$/u, '')}…`;
+}
+
+// ---------- Anchors of a translation ----------
+/**
+ * The id, in a translated page, of the heading `id` of the original page: the heading at the
+ * same position. The translations of the repository keep the outline of the original (same
+ * headings, same levels, same order) while their ids differ (#known-limitations ->
+ * #limites-connues). `original` and `translation` are the headings of each page in order, as
+ * { depth, id }. Null when the outlines differ (the position would not be reliable) or when the
+ * original has no heading `id`.
+ */
+export function translatedAnchor(original, translation, id) {
+  if (original.length !== translation.length) return null;
+  if (original.some((h, i) => h.depth !== translation[i].depth)) return null;
+  const i = original.findIndex((h) => h.id === id);
+  return i < 0 ? null : translation[i].id;
 }
