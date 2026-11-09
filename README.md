@@ -114,8 +114,10 @@ and copied here by `npm run sync-docs`:
   before `:` and inside « », a narrow one before `; ? !`), and the links to the headings whose
   id changed are updated (`scripts/docs-transform.mjs`, tested by `npm run test-sync-docs`);
 - the "English | Français" line is dropped (Starlight has its language switcher), the first
-  `# Title` becomes the front matter `title`, the first paragraph the `description`, and the
-  order of the links in `docs/index.md` the sidebar order;
+  `# Title` becomes the front matter `title`, the first real paragraph of prose the
+  `description` (paragraphs under 50 characters or ending with `:` are skipped; cut at 155
+  characters, after a sentence if possible; a `description` in the source front matter wins),
+  and the order of the links in `docs/index.md` the sidebar order;
 - links between pages become site routes (anchors kept); links to other files of the repository
   (README, CHANGELOG, code…) point to GitHub at the synced ref;
 - `CHANGELOG.md` → `src/content/releases/CHANGELOG.md`, with the same link rewriting. The
