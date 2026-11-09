@@ -33,8 +33,10 @@
 </div>
 <a class="sidebar-inbox" href="/fr/demo/app/o/acme/it/inbox/" aria-current="page">
 <span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"></path></svg></span><span class="tree-label">Inbox</span>
-<span class="sidebar-count" aria-hidden="true">6</span>
-<span class="sr-only">6 éléments en attente</span>
+<span class="sidebar-count" aria-hidden="true">3</span>
+<span class="sr-only">3 éléments en attente</span>
+<span class="sidebar-dot" title="1 laissé par le rangement" aria-hidden="true"></span>
+<span class="sr-only">dont 1 laissé par le rangement</span>
 </a>
 <nav class="space-tree" aria-label="Arborescence">
 <ul class="space-tree-list">
@@ -123,14 +125,32 @@
 <h2 class="settings-title">Activité</h2>
 <p class="muted">Tout ce qui change dans l'espace, d'après l'historique Git : pages, inbox et rangements, depuis Synaptane ou poussé depuis ailleurs.</p>
 <section class="card ai-share section-gap-small" data-test="ai-share">
-<p><strong>0 % écrit par l'IA</strong> <span class="muted">· 6 modifications de pages sur les 30 derniers jours</span></p>
-<p class="muted ai-share-detail">poussé avec Git 6</p>
+<p><strong>14 % écrit par l'IA</strong> <span class="muted">· 7 modifications de pages sur les 30 derniers jours</span></p>
+<p class="muted ai-share-detail"><span class="badge badge-ai">IA</span> rangement 1 · poussé avec Git 6</p>
 </section>
 <nav class="segmented section-gap-small" aria-label="Filtrer l’activité">
 <a class="segmented-option" href="/fr/demo/app/o/acme/it/activity/">Tout</a><a class="segmented-option" href="/fr/demo/app/o/acme/it/activity/@kind-page/">Pages</a><a class="segmented-option" href="/fr/demo/app/o/acme/it/activity/@kind-inbox/">Inbox</a><a class="segmented-option" href="/fr/demo/app/o/acme/it/activity/@kind-tidy/">Rangements</a><a class="segmented-option" href="/fr/demo/app/o/acme/it/activity/@kind-ai/" aria-current="page">Écrit par l'IA</a><a class="segmented-option" href="/fr/demo/app/o/acme/it/activity/@kind-external/">Poussé hors de Synaptane</a>
 </nav>
 <ol class="activity section-gap-small">
-<li class="empty">Aucune activité de ce type.</li>
+<li class="activity-item activity-inbox">
+<div class="activity-head">
+<span class="badge badge-quiet">Note</span>
+<span class="badge badge-ai" title="Écrit par une IA">IA</span>
+<strong>Hugo Bernard</strong> <span class="muted">via un assistant MCP</span>
+<span class="muted"><time datetime="2026-11-09T10:12:31Z" data-local="full">2026-11-09 10:12</time></span>
+</div>
+<p class="activity-subject" title="Inbox: Disk alert threshold lowered to 80 %">Note déposée : Disk alert threshold lowered to 80 %</p>
+</li>
+<li class="activity-item activity-tidy">
+<div class="activity-head">
+<span class="badge badge-quiet">Rangement</span>
+<span class="badge badge-ai" title="Écrit par une IA">IA</span>
+<strong>Synaptane tidy-up</strong>
+<span class="muted"><time datetime="2026-11-09T01:01:35Z" data-local="full">2026-11-09 01:01</time></span>
+</div>
+<p class="activity-subject" title="Tidy-up: 5 item(s) filed, 1 left"><a href="/fr/demo/app/o/acme/it/tidy/">Passage de rangement</a></p>
+<ul class="activity-pages"><li><a href="/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/2026-10-no-friday-deployments.md/">decisions/2026-10-no-friday-deployments.md</a></li><li><a href="/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/README.md/">decisions/README.md</a></li><li><a href="/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/infra/storage.md/">infra/storage.md</a></li><li><a href="/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/switch-inventory.csv/">network/switch-inventory.csv</a></li><li><a href="/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/topology.md/">network/topology.md</a></li><li><a href="/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/procedures/deployment.md/">procedures/deployment.md</a></li><li><a href="/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/team/meetings.md/">team/meetings.md</a></li></ul>
+</li>
 </ol>
 </main>
 </div>

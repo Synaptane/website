@@ -45,6 +45,9 @@ form[data-demo-off] [disabled] { cursor: not-allowed; }
 .demo-search-note .demo-search-queries { display: flex; flex-wrap: wrap; gap: 6px; }
 .demo-search-note .demo-search-queries a { text-decoration: none; }
 .demo-search-miss { border-color: var(--warn-ink); background: var(--warn-bg); color: var(--ink); }
+/* The reason of a note left by the tidy-up wraps in the inbox list (Synaptane 1.15 keeps it on
+   one line, wider than the list). */
+.demo-static .inbox-list li > .muted { white-space: normal; }
 .demo-unavailable { max-width: 720px; }
 .demo-unavailable p { margin: 0 0 16px; }
 .demo-unavailable .actions { display: flex; flex-wrap: wrap; gap: 8px; }

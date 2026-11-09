@@ -47,21 +47,38 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
    targets in the restore procedure, GitLab backups, VPN troubleshooting, and a page
    verification), dated relative to the build day. `synaptane demo` then creates the `demo`
    account, the `acme` organization and the `acme/it` space, syncs and indexes. A routine
-   (consistency check) is added, to be seen, never run. No AI provider: none is configured, and
-   AI keys of the environment are not passed on.
-2. **Crawl**: `synaptane serve` on a free port, signed in as `demo`, once per interface
+   (consistency check) is added, to be seen, never run.
+2. **Last night's tidy-up, replayed without AI** (`tidy_replay.py`, in the instance's
+   environment). The organization gets an AI setting (Anthropic, the provider's default model)
+   with a placeholder key, then the application's own scheduled run goes over the six notes of
+   the inbox. Only the model is replaced: a conversation that answers with the tool calls
+   written in `life.TIDY_RUN` (read the notes and the pages, edit `infra/storage.md` and
+   `team/meetings.md`, file the CSV next to `network/topology.md`, create a decision page,
+   leave "Old server?" with a question for its author). The rest is the application's code:
+   the tools, the end-of-run check, the single commit by "Synaptane tidy-up", the notes closed
+   or left with their reason, the log with its operations, quality measures and cost (of the
+   tokens declared for each turn). Its clock is set to last night's 02:00 (Europe/Paris); the
+   worker's follow-up (sync, index) is done by the script. Two notes are then dropped, as the
+   application writes them, between the run and the build (`life.NEW_NOTES`): they wait for
+   the next run. No provider is ever opened (the script makes sure of it), and AI keys of the
+   environment are not passed on. The plan is checked against the wiki before the run and the
+   outcome after it (5 notes filed, 1 left, no tool error): when the data set no longer fits,
+   the build stops and says why. The static demo says, on the Tidy-up page, the pages of the
+   run and the inbox, that the run was replayed and that nothing runs there.
+3. **Crawl**: `synaptane serve` on a free port, signed in as `demo`, once per interface
    language (the account's language is switched between the two passes). The crawl follows
    links from a few seeds, within an allow list (`Rules.classify`): home, organization, space,
    every wiki page and folder (and the "missing page" view of the broken link), every page
-   history, the diffs of the fictional commits and of the pages they touch, raw files (the
+   history, the diffs of the fictional commits (the tidy-up run's included) and of the pages
+   they touch, raw files (the
    PDF, image, HTML and Office files of `infra/documents/`, its `archive/`, and `team/documents/`), inbox and
-   notes (and the CSV attachment), tidying, activity (and its filters), health (and its periods),
+   notes, the tidy-up log and the pages changed by the run, activity (and its filters), health (and its periods),
    routines (list and log), purpose, the prepared searches (`QUERIES`: the last four, `kestrel`,
    `mttr`, `docking` and `netware`, find the scan by OCR, the slides, the spreadsheet and the old
    `.xls` inventory), "View source" of
    the HTML file, and "AI assistants" (the demo account has no token). Tree folders and "See also" panels, loaded by the page script,
    are frozen as HTML fragments.
-3. **Rewrite** (`Rewriter`): internal links point to the frozen files
+4. **Rewrite** (`Rewriter`): internal links point to the frozen files
    (`/o/acme/it/p/x.md` → `/demo/app/o/acme/it/p/x.md/`, `?kind=page` → `/@kind-page/`,
    `/search?q=vpn` → `/search/vpn/`); a link to anything else leads to the "Not available in
    the static demo" page (`/demo/app/unavailable/`). Static files are copied under
@@ -79,16 +96,20 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
      banner (theme switch shared with the site, link to the page in the other language);
    - "Download" links get the `download` attribute (a static file has no
      `Content-Disposition`); a document without preview (Word, PowerPoint, Excel) shows its
-     extracted text unfolded.
+     extracted text unfolded;
+   - the Tidy-up page and the pages of the run get a note: the run was replayed when the demo
+     was generated, without AI (tokens and cost are an estimate), and nothing runs in the
+     static demo; the inbox gets a shorter one, with a link to the Tidy-up tab. The run's
+     operations are shown unfolded.
 
    Files keep their bytes: the PDF opens in the browser's viewer, in the page's frame, as in
    the application. The HTML file is shown in its sandboxed frame (opaque origin); since
    GitHub Pages sends no header, it carries the policy the application gives raw files as a
    meta (`default-src 'none'; style-src 'unsafe-inline'`…): its own styles, no script, nothing
    from the network, even opened on its own.
-4. **Manifest**: `public/demo/app/MANIFEST.json` (Synaptane version and commit, date, queries,
+5. **Manifest**: `public/demo/app/MANIFEST.json` (Synaptane version and commit, date, queries,
    every page with its English and French addresses and titles).
-5. **Checks**: `check_demo.py` (standard library only, also in CI as `npm run check-demo`):
+6. **Checks**: `check_demo.py` (standard library only, also in CI as `npm run check-demo`):
    links of the demo resolve, no external resource, no inline script/style/event attribute
    (inline styles allowed in the wiki's HTML files, which must carry their policy),
    every form frozen, and no CSRF token, cookie name, Bearer token, `sk-` key, localhost or
@@ -96,7 +117,8 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
    `browse.py` (Playwright, full headless Chromium for its PDF viewer, after `npm run build`):
    every request stays on demo files or `/fonts/`, no console error, no active control, a
    forced submission changes nothing, the theme switch, the PDF viewer, the rendered HTML file,
-   the extracted text of the slides, a click-through path, and screenshots in `screenshots/demo/` (`--preview` also
+   the extracted text of the slides, a click-through path (and one from the tidy-up log to a
+   diff of the run), and screenshots in `screenshots/demo/` (`--preview` also
    refreshes the two images of the `/demo/` page in `src/assets/demo/`).
 
 The instance is always torn down (server stopped, database dropped, folder deleted), even after
@@ -109,7 +131,8 @@ an error.
 | `build.sh` | entry point: the application's environment, then `build_demo.py` |
 | `build_demo.py` | crawl rules, URL mapping, rewriting, output, manifest |
 | `instance.py` | throwaway instance: database, data folder, seed, `serve`, sign-in, cleanup |
-| `life.py` | the fictional commits |
+| `life.py` | the fictional commits, the model's side of the tidy-up run, the notes dropped since |
+| `tidy_replay.py` | the tidy-up run replayed through the application's code, without AI |
 | `demo.js`, `demo.css` | copied to `/demo/app/static/`: banner, frozen forms, search, theme |
 | `check_demo.py` | checks of the output (no dependency) |
 | `browse.py` | headless browser checks and screenshots |

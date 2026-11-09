@@ -30,6 +30,7 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from bs4.formatter import HTMLFormatter
 
 import check_demo
+import life
 from instance import ORG, SPACE, Instance, log
 
 HERE = Path(__file__).resolve().parent
@@ -62,6 +63,8 @@ SEEDS = [
     *[f"/search?q={q}" for q in QUERIES],
 ]
 
+RUN_PAGES = re.compile(rf"{SPACE_BASE}/-/tidy/[0-9a-f-]{{36}}/pages")
+
 LANGS = {
     "en": {
         "prefix": "/demo/app",
@@ -86,6 +89,19 @@ LANGS = {
         ),
         "unavailable_back": "Back to the demo",
         "unavailable_install": "Install Synaptane",
+        # The replayed tidy-up run (tidy_replay.py): said where it shows.
+        "replay_title": "Static demo.",
+        "replay_text": (
+            "This run was replayed when the demo was generated: Synaptane's own tidy-up code, on "
+            "this wiki, with the model's answers written in advance. No AI was called; the tokens "
+            "and the cost are an estimate. Nothing runs in the static demo."
+        ),
+        "replay_more": "About the demo",
+        "inbox_text": (
+            "Last night's tidy-up filed {filed} notes into the wiki and left {left} here, with its "
+            "reason: see the <a href=\"{href}\">Tidy-up</a> tab. Nothing runs in the static demo: "
+            "the notes dropped since stay in the inbox."
+        ),
     },
     "fr": {
         "prefix": "/fr/demo/app",
@@ -110,6 +126,19 @@ LANGS = {
         ),
         "unavailable_back": "Retour à la démo",
         "unavailable_install": "Installer Synaptane",
+        "replay_title": "Démo figée.",
+        "replay_text": (
+            "Ce passage a été rejoué à la génération de la démo : le vrai code de rangement de "
+            "Synaptane, sur ce wiki, avec les réponses du modèle écrites à l’avance. Aucune IA n’a "
+            "été appelée ; les jetons et le coût sont une estimation. Rien ne s’exécute dans la "
+            "démo figée."
+        ),
+        "replay_more": "À propos de la démo",
+        "inbox_text": (
+            "Le rangement de la nuit dernière a rangé {filed} notes dans le wiki et en a laissé "
+            "{left} ici, avec sa raison : voir l’onglet <a href=\"{href}\">Rangement</a>. Rien ne "
+            "s’exécute dans la démo figée : les notes déposées depuis restent dans l’inbox."
+        ),
     },
 }
 
@@ -191,6 +220,8 @@ class Rules:
         if re.fullmatch(r"inbox/[^/]+/files/.+", rest):
             return Ref("file", path)
         if rest in ("tidy", "-/routines", "-/vocation"):
+            return Ref("page", path) if not q else None
+        if RUN_PAGES.fullmatch(path):  # pages changed by the replayed tidy-up run
             return Ref("page", path) if not q else None
         if re.fullmatch(r"-/routines/[0-9a-f-]{36}", rest):
             return Ref("page", path)
@@ -382,6 +413,7 @@ class Rewriter:
             self.add_frame(soup, ref)
             if ref.path == "/search":
                 self.add_search_note(soup, ref)
+            self.add_replay_note(soup, ref)
         compact(soup)
         return serialize(soup).replace(self.base, PUBLIC_URL)
 
@@ -491,6 +523,38 @@ class Rewriter:
             f'title="{other_title}">{other_label}</a>'
             f"</div></div>"
         )
+
+    def add_replay_note(self, soup: BeautifulSoup, ref: Ref) -> None:
+        """Says, where the tidy-up run shows (its log, its pages, the inbox), that it was
+        replayed without AI and that nothing runs in the static demo."""
+        t = self.t
+        replay = (
+            f'<strong>{t["replay_title"]}</strong> {t["replay_text"]} '
+            f'<a href="{t["about"]}">{t["replay_more"]}</a>'
+        )
+        if ref.path == f"{SPACE_BASE}/tidy":  # above the log, whose operations are unfolded
+            text, anchor = replay, soup.select_one("main [data-tidy-journal]")
+            for details in soup.select("main details.tidy-ops"):
+                details["open"] = ""
+        elif RUN_PAGES.fullmatch(ref.path):  # under the title
+            text, anchor = replay, soup.select_one("main h2.settings-title")
+        elif ref.path == f"{SPACE_BASE}/inbox":  # under the introduction
+            href = self.target(f"{SPACE_BASE}/tidy")
+            text = f'<strong>{t["replay_title"]}</strong> ' + t["inbox_text"].format(
+                filed=life.TIDY_FILED, left=life.TIDY_LEFT, href=href
+            )
+            anchor = soup.select_one("main .grid-2 > section > p.muted")
+        else:
+            return
+        if anchor is None:
+            raise RuntimeError(f"no place for the replay note in {ref.url}")
+        note = BeautifulSoup(
+            f'<div class="notice demo-replay-note" role="note"><p>{text}</p></div>', "html.parser"
+        )
+        if anchor.name == "div":
+            anchor.insert_before(note)
+        else:
+            anchor.insert_after(note)
 
     def query_links(self) -> str:
         return " ".join(

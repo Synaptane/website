@@ -33,8 +33,10 @@
 </div>
 <a class="sidebar-inbox" href="/demo/app/o/acme/it/inbox/">
 <span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"></path></svg></span><span class="tree-label">Inbox</span>
-<span class="sidebar-count" aria-hidden="true">6</span>
-<span class="sr-only">6 items waiting</span>
+<span class="sidebar-count" aria-hidden="true">3</span>
+<span class="sr-only">3 items waiting</span>
+<span class="sidebar-dot" title="1 left by the tidy-up" aria-hidden="true"></span>
+<span class="sr-only">1 of them left by the tidy-up</span>
 </a>
 <nav class="space-tree" aria-label="File tree">
 <ul class="space-tree-list">
@@ -129,12 +131,11 @@
 <h2 class="settings-title">Routines</h2>
 <div class="routines">
 <p class="muted routines-intro">AI agents that review the wiki at regular intervals. They only write to their outputs: a report page, the inbox (then handled by the tidy-up), an email or a webhook. Every run counts toward the month's AI budget.</p>
-<div class="notice notice-warning"><p>No AI provider is configured for the organization: routines cannot run. <a href="/demo/app/unavailable/">Configure AI</a></p></div>
 <div class="stack routine-list">
 <article class="card routine-card">
 <div class="routine-head">
 <div class="routine-heading">
-<h3><a href="/demo/app/o/acme/it/-/routines/d9e38912-4f08-45a1-a598-8e5923d5896b/">Consistency check</a></h3>
+<h3><a href="/demo/app/o/acme/it/-/routines/6c16133e-0489-4c04-a382-e21189f5e8c1/">Consistency check</a></h3>
 <p class="muted routine-meta">
 <span>Every Monday at 06:00 (Europe/Paris)</span>
 <span>The whole space</span>
@@ -148,8 +149,9 @@
 </ul>
 <p class="routine-state"><span class="status">Never run</span><span class="muted">Next run: <time datetime="2026-11-16T06:00:00+01:00" data-local="full">2026-11-16 06:00 UTC</time></span></p>
 <div class="actions">
-<a class="button button-small" href="/demo/app/o/acme/it/-/routines/d9e38912-4f08-45a1-a598-8e5923d5896b/">Log</a>
+<a class="button button-small" href="/demo/app/o/acme/it/-/routines/6c16133e-0489-4c04-a382-e21189f5e8c1/">Log</a>
 <a class="button button-small" href="/demo/app/unavailable/">Edit</a>
+<form data-confirm="Run the routine now? The run uses tokens counted in the month's budget." data-demo-off=""><button class="button button-small" type="submit" disabled="" aria-disabled="true">Run now</button></form>
 <form data-demo-off=""><button class="button button-small button-quiet" type="submit" disabled="" aria-disabled="true">Deactivate</button></form>
 </div>
 </article>

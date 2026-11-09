@@ -67,11 +67,18 @@
       "title_fr": "Routines · IT team · Synaptane"
     },
     {
-      "source": "/o/acme/it/-/routines/d9e38912-4f08-45a1-a598-8e5923d5896b",
-      "en": "/demo/app/o/acme/it/-/routines/d9e38912-4f08-45a1-a598-8e5923d5896b/",
+      "source": "/o/acme/it/-/routines/6c16133e-0489-4c04-a382-e21189f5e8c1",
+      "en": "/demo/app/o/acme/it/-/routines/6c16133e-0489-4c04-a382-e21189f5e8c1/",
       "title_en": "Routines · IT team · Synaptane",
-      "fr": "/fr/demo/app/o/acme/it/-/routines/d9e38912-4f08-45a1-a598-8e5923d5896b/",
+      "fr": "/fr/demo/app/o/acme/it/-/routines/6c16133e-0489-4c04-a382-e21189f5e8c1/",
       "title_fr": "Routines · IT team · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/-/tidy/2c165b01-bbcd-4793-90c1-b3e496b2266e/pages",
+      "en": "/demo/app/o/acme/it/-/tidy/2c165b01-bbcd-4793-90c1-b3e496b2266e/pages/",
+      "title_en": "Pages of a tidy-up run · IT team · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/-/tidy/2c165b01-bbcd-4793-90c1-b3e496b2266e/pages/",
+      "title_fr": "Pages d'un rangement · IT team · Synaptane"
     },
     {
       "source": "/o/acme/it/-/vocation",
@@ -179,6 +186,55 @@
       "title_fr": "vpn.md · Synaptane"
     },
     {
+      "source": "/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/2026-10-no-friday-deployments.md",
+      "en": "/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/2026-10-no-friday-deployments.md/",
+      "title_en": "2026-10-no-friday-deployments.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/2026-10-no-friday-deployments.md/",
+      "title_fr": "2026-10-no-friday-deployments.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/README.md",
+      "en": "/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/README.md/",
+      "title_en": "README.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/decisions/README.md/",
+      "title_fr": "README.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/infra/storage.md",
+      "en": "/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/infra/storage.md/",
+      "title_en": "storage.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/infra/storage.md/",
+      "title_fr": "storage.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/switch-inventory.csv",
+      "en": "/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/switch-inventory.csv/",
+      "title_en": "switch-inventory.csv · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/switch-inventory.csv/",
+      "title_fr": "switch-inventory.csv · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/topology.md",
+      "en": "/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/topology.md/",
+      "title_en": "topology.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/network/topology.md/",
+      "title_fr": "topology.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/procedures/deployment.md",
+      "en": "/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/procedures/deployment.md/",
+      "title_en": "deployment.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/procedures/deployment.md/",
+      "title_fr": "deployment.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/team/meetings.md",
+      "en": "/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/team/meetings.md/",
+      "title_en": "meetings.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/diff/5c1048769d4410543850c58455ac6a96ef699223/team/meetings.md/",
+      "title_fr": "meetings.md · Synaptane"
+    },
+    {
       "source": "/o/acme/it/diff/7da2e33ebd76ee6255c9fc02c54d3f5df0f2cd91/procedures/restore.md",
       "en": "/demo/app/o/acme/it/diff/7da2e33ebd76ee6255c9fc02c54d3f5df0f2cd91/procedures/restore.md/",
       "title_en": "restore.md · Synaptane",
@@ -275,6 +331,13 @@
       "title_en": "2026-02-remote-work.md · Synaptane",
       "fr": "/fr/demo/app/o/acme/it/history/decisions/2026-02-remote-work.md/",
       "title_fr": "2026-02-remote-work.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/history/decisions/2026-10-no-friday-deployments.md",
+      "en": "/demo/app/o/acme/it/history/decisions/2026-10-no-friday-deployments.md/",
+      "title_en": "2026-10-no-friday-deployments.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/history/decisions/2026-10-no-friday-deployments.md/",
+      "title_fr": "2026-10-no-friday-deployments.md · Synaptane"
     },
     {
       "source": "/o/acme/it/history/decisions/README.md",
@@ -422,6 +485,13 @@
       "title_en": "firewall.md · Synaptane",
       "fr": "/fr/demo/app/o/acme/it/history/network/firewall.md/",
       "title_fr": "firewall.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/history/network/switch-inventory.csv",
+      "en": "/demo/app/o/acme/it/history/network/switch-inventory.csv/",
+      "title_en": "switch-inventory.csv · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/history/network/switch-inventory.csv/",
+      "title_fr": "switch-inventory.csv · Synaptane"
     },
     {
       "source": "/o/acme/it/history/network/topology.md",
@@ -634,27 +704,6 @@
       "title_fr": "Inbox · IT team · Synaptane"
     },
     {
-      "source": "/o/acme/it/inbox/2026-10-06T08-14-02Z-note-nas-capacity-raised-to-16-tb-3f9a.md",
-      "en": "/demo/app/o/acme/it/inbox/2026-10-06T08-14-02Z-note-nas-capacity-raised-to-16-tb-3f9a.md/",
-      "title_en": "Inbox · IT team · Synaptane",
-      "fr": "/fr/demo/app/o/acme/it/inbox/2026-10-06T08-14-02Z-note-nas-capacity-raised-to-16-tb-3f9a.md/",
-      "title_fr": "Inbox · IT team · Synaptane"
-    },
-    {
-      "source": "/o/acme/it/inbox/2026-10-06T14-40-37Z-note-vm-backups-7c21.md",
-      "en": "/demo/app/o/acme/it/inbox/2026-10-06T14-40-37Z-note-vm-backups-7c21.md/",
-      "title_en": "Inbox · IT team · Synaptane",
-      "fr": "/fr/demo/app/o/acme/it/inbox/2026-10-06T14-40-37Z-note-vm-backups-7c21.md/",
-      "title_fr": "Inbox · IT team · Synaptane"
-    },
-    {
-      "source": "/o/acme/it/inbox/2026-10-07T09-02-55Z-note-team-meeting-moves-to-tuesday-a410.md",
-      "en": "/demo/app/o/acme/it/inbox/2026-10-07T09-02-55Z-note-team-meeting-moves-to-tuesday-a410.md/",
-      "title_en": "Inbox · IT team · Synaptane",
-      "fr": "/fr/demo/app/o/acme/it/inbox/2026-10-07T09-02-55Z-note-team-meeting-moves-to-tuesday-a410.md/",
-      "title_fr": "Inbox · IT team · Synaptane"
-    },
-    {
       "source": "/o/acme/it/inbox/2026-10-07T16-21-09Z-note-old-server-5d0e.md",
       "en": "/demo/app/o/acme/it/inbox/2026-10-07T16-21-09Z-note-old-server-5d0e.md/",
       "title_en": "Inbox · IT team · Synaptane",
@@ -662,17 +711,17 @@
       "title_fr": "Inbox · IT team · Synaptane"
     },
     {
-      "source": "/o/acme/it/inbox/2026-10-08T10-05-48Z-note-switch-inventory-b82c.md",
-      "en": "/demo/app/o/acme/it/inbox/2026-10-08T10-05-48Z-note-switch-inventory-b82c.md/",
+      "source": "/o/acme/it/inbox/2026-11-09T10-12-31Z-note-disk-alert-threshold-lowered-to-80-5fe6.md",
+      "en": "/demo/app/o/acme/it/inbox/2026-11-09T10-12-31Z-note-disk-alert-threshold-lowered-to-80-5fe6.md/",
       "title_en": "Inbox · IT team · Synaptane",
-      "fr": "/fr/demo/app/o/acme/it/inbox/2026-10-08T10-05-48Z-note-switch-inventory-b82c.md/",
+      "fr": "/fr/demo/app/o/acme/it/inbox/2026-11-09T10-12-31Z-note-disk-alert-threshold-lowered-to-80-5fe6.md/",
       "title_fr": "Inbox · IT team · Synaptane"
     },
     {
-      "source": "/o/acme/it/inbox/2026-10-08T15-47-30Z-note-no-production-deployments-on-friday-afternoons-e61b.md",
-      "en": "/demo/app/o/acme/it/inbox/2026-10-08T15-47-30Z-note-no-production-deployments-on-friday-afternoons-e61b.md/",
+      "source": "/o/acme/it/inbox/2026-11-09T14-23-40Z-note-guest-wi-fi-password-rotated-0ed4.md",
+      "en": "/demo/app/o/acme/it/inbox/2026-11-09T14-23-40Z-note-guest-wi-fi-password-rotated-0ed4.md/",
       "title_en": "Inbox · IT team · Synaptane",
-      "fr": "/fr/demo/app/o/acme/it/inbox/2026-10-08T15-47-30Z-note-no-production-deployments-on-friday-afternoons-e61b.md/",
+      "fr": "/fr/demo/app/o/acme/it/inbox/2026-11-09T14-23-40Z-note-guest-wi-fi-password-rotated-0ed4.md/",
       "title_fr": "Inbox · IT team · Synaptane"
     },
     {
@@ -744,6 +793,13 @@
       "title_en": "2026-02-remote-work.md · Synaptane",
       "fr": "/fr/demo/app/o/acme/it/p/decisions/2026-02-remote-work.md/",
       "title_fr": "2026-02-remote-work.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/p/decisions/2026-10-no-friday-deployments.md",
+      "en": "/demo/app/o/acme/it/p/decisions/2026-10-no-friday-deployments.md/",
+      "title_en": "2026-10-no-friday-deployments.md · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/p/decisions/2026-10-no-friday-deployments.md/",
+      "title_fr": "2026-10-no-friday-deployments.md · Synaptane"
     },
     {
       "source": "/o/acme/it/p/decisions/README.md",
@@ -926,6 +982,13 @@
       "title_en": "firewall.md · Synaptane",
       "fr": "/fr/demo/app/o/acme/it/p/network/firewall.md/",
       "title_fr": "firewall.md · Synaptane"
+    },
+    {
+      "source": "/o/acme/it/p/network/switch-inventory.csv",
+      "en": "/demo/app/o/acme/it/p/network/switch-inventory.csv/",
+      "title_en": "switch-inventory.csv · Synaptane",
+      "fr": "/fr/demo/app/o/acme/it/p/network/switch-inventory.csv/",
+      "title_fr": "switch-inventory.csv · Synaptane"
     },
     {
       "source": "/o/acme/it/p/network/topology.md",

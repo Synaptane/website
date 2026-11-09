@@ -2,10 +2,12 @@
 
 Dedicated database (created, then dropped), temporary data folder, `file://` repositories
 allowed, `synaptane init`, `db upgrade`, `synaptane demo`, a few fictional commits (life.py),
-then `synaptane serve` on a free port. `close()` stops the server, drops the database and
+last night's tidy-up run replayed without AI (tidy_replay.py), then `synaptane serve` on a free
+port. `close()` stops the server, drops the database and
 deletes the folder, whatever happened before.
 """
 
+import json
 import os
 import secrets
 import shutil
@@ -70,6 +72,7 @@ class Instance:
         )
         self.life_shas: list[str] = []
         self.life_paths: set[str] = set()
+        self.tidy_run = ""  # id of the replayed tidy-up run
 
     # ---- processes ---------------------------------------------------------------------------
     def env(self) -> dict[str, str]:
@@ -144,6 +147,23 @@ class Instance:
         self.seed()
         self.add_life()
         self.run("demo", "--source", str(self.dataset))
+        self.replay_tidy()
+
+    def replay_tidy(self) -> None:
+        """Last night's tidy-up run and the notes dropped since (tidy_replay.py), in the
+        instance's own environment: never the caller's AI configuration."""
+        done = subprocess.run(
+            [sys.executable, str(Path(__file__).with_name("tidy_replay.py"))],
+            env=self.env(), cwd=self.dir, capture_output=True, text=True, timeout=600,
+        )
+        last = done.stdout.strip().rsplit("\n", 1)[-1]
+        if done.returncode != 0 or not last.startswith("TIDY_REPLAY "):
+            raise RuntimeError(f"tidy-up replay failed:\n{done.stdout}\n{done.stderr}")
+        result = json.loads(last.removeprefix("TIDY_REPLAY "))
+        self.tidy_run = result["run"]
+        self.life_shas += result["commits"]
+        log(f"tidy-up run replayed (commit {result['commits'][0][:10]}), "
+            f"{len(result['commits']) - 1} notes dropped since")
 
     def git(self, cwd: Path, *args: str, env: dict[str, str] | None = None) -> str:
         base = {
