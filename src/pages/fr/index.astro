@@ -229,7 +229,7 @@ const rows: Row[] = [
     titleMuted="Vos assistants IA l’alimentent, elle se range chaque nuit."
     lead="Un wiki auto-hébergé pour vos pages et vos fichiers, PDF et scans compris. Vos assistants y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et enregistre le tout dans Git."
     points={['Libre (Apache 2.0)', 'Auto-hébergé avec Docker', 'Fonctionne sans fournisseur d’IA']}
-    screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, un tableau récapitulatif des sauvegardes, un badge « vérifiée », les pages qui y renvoient et les pages proches"
+    screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, la page Backups avec son badge « vérifiée », les pages qui y renvoient et des pages proches qu’elle ne cite pas encore"
     caption="Une page du wiki de démonstration d’Acme, une équipe informatique fictive."
   >
     <Fragment slot="actions">
@@ -324,20 +324,14 @@ const rows: Row[] = [
     tone="alt"
     eyebrow="Captures d’écran"
     title="Dans l’application"
-    intro="Captures prises sur le jeu de démonstration, interface en anglais. Acme et ses membres sont fictifs."
+    intro="Captures prises sur le jeu de démonstration. Acme et ses membres sont fictifs."
   >
     <Gallery
       openLabel="(image en taille réelle)"
       items={[
-        { shot: 'search', title: 'Recherche Ctrl+K', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'La palette de recherche Ctrl+K, avec des résultats venant de plusieurs pages' },
-        { shot: 'pdf', title: 'Lecteur PDF :', text: 'un contrat s’ouvre dans sa page, et son texte est indexé.', alt: 'Un contrat de support en PDF affiché dans le lecteur intégré, à côté de l’arborescence de l’espace' },
-        { shot: 'office', title: 'Documents Office :', text: 'un lien de téléchargement, et le texte extrait qui sert à la recherche.', alt: 'Un fichier PowerPoint dans le wiki : un lien de téléchargement et le texte extrait de ses diapositives' },
-        { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF, au-dessus du texte reconnu par OCR' },
-        { shot: 'inbox', title: 'Inbox :', text: 'les notes et les modifications directes qui attendent le rangement nocturne.', alt: 'L’inbox d’un espace : les notes en attente, et le formulaire de dépôt' },
-        { shot: 'history', title: 'Historique :', text: 'chaque modification est un commit Git, avec son diff.', alt: 'Le diff d’une modification de page dans l’historique' },
-        { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace, avec les liens cassés et les pages à revoir' },
-        { shot: 'assistants', title: 'Brancher un assistant', text: 'par MCP, et voir ses appels arriver.', alt: 'La page pour brancher un assistant IA par MCP' },
-        { shot: 'routines', title: 'Routines :', text: 'des agents planifiés, comme un contrôle de cohérence hebdomadaire.', alt: 'La liste des routines d’agent planifiées d’un espace' },
+        { shot: 'search', title: 'Recherche', text: 'dans tous vos espaces, par mots ou par le sens.', alt: 'Les résultats de la recherche « backup » : les pages trouvées, avec leur espace, leur chemin, le badge « vérifiée » et des extraits' },
+        { shot: 'ocr', title: 'Scans :', text: 'un bon de livraison scanné, et son texte lu par OCR.', alt: 'Un bon de livraison scanné en PDF dans le lecteur intégré, au-dessus du texte reconnu par OCR' },
+        { shot: 'health', title: 'Santé du wiki :', text: 'liens cassés, pages orphelines, pages à revoir.', alt: 'L’onglet Santé d’un espace : les pages examinées, un lien cassé et sa page, aucune page orpheline' },
       ]}
     />
   </Section>

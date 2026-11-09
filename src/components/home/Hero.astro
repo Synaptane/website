@@ -2,11 +2,12 @@
 /**
  * Top of the home page: status line, two-part headline, one-sentence lead, actions (slot
  * "actions"), an optional line of short reassurances under them, then the product screenshot
- * (light and dark), framed like a window.
+ * (light and dark, in the page's language; on phones, the same page taken on a phone), framed
+ * like a window.
  */
 import Screenshot from '../Screenshot.astro';
-import wikiLight from '../../assets/app/wiki-light.png';
-import wikiDark from '../../assets/app/wiki-dark.png';
+import { getLang } from '../../i18n';
+import { shot } from '../../lib/screenshots';
 import { SITE } from '../../site';
 import { isPrerelease, releaseStatus } from '../../lib/release';
 
@@ -32,6 +33,9 @@ const { status, statusHref, title, titleMuted, lead, points = [], screenshotAlt,
 // the version is still to come.
 const release = await releaseStatus();
 const tone = isPrerelease(release) ? 'preview' : release.date ? 'stable' : 'upcoming';
+const lang = getLang(Astro.currentLocale);
+const wiki = shot('wiki', lang);
+const wikiPhone = shot('wiki', lang, 'mobile');
 ---
 
 <section class="hero">
@@ -55,15 +59,14 @@ const tone = isPrerelease(release) ? 'preview' : release.date ? 'stable' : 'upco
   </div>
   <div class="container hero-shot">
     <Screenshot
-      light={wikiLight}
-      dark={wikiDark}
+      light={wiki.light}
+      dark={wiki.dark}
+      mobile={wikiPhone}
       alt={screenshotAlt}
       eager
       sizes="(min-width: 1184px) 1120px, calc(100vw - 32px)"
       zoom="home"
       zoomCaption={caption}
-      full="/docs/assets/screenshot-wiki-light.png"
-      fullDark="/docs/assets/screenshot-wiki-dark.png"
     />
     <p class="shot-caption">{caption}</p>
   </div>

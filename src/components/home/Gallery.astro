@@ -1,40 +1,18 @@
 ---
 /**
- * Screenshots of the application (demo data set, light theme), with a caption each. Images are
- * optimized by Astro; each one links to the full-size original, opened in the Lightbox viewer.
- * Two sources:
- * - most files in src/assets/app/ are copies of docs/assets/screenshot-*.png of the main
- *   repository (also synced into public/docs/assets/): copy them again when they change;
- * - pdf, office and ocr are taken on the static demo by `scripts/build-demo/browse.py
- *   --gallery`, which also writes their originals to public/images/app/.
+ * Screenshots of the application (demo data set), with a caption each, in the page's language
+ * and the site's theme. Each frame shows the useful part of a screen, large enough to read; a
+ * click opens the whole window in the Lightbox viewer. Three columns from 800 px; below, one row
+ * that scrolls sideways (one screenshot at a time, the next one peeking out).
+ *
+ * The images are taken on the static demo by `scripts/build-demo/browse.py --gallery`
+ * (src/assets/app/, see src/lib/screenshots.ts): add a screen there to show it here.
  */
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-import search from '../../assets/app/search.png';
-import inbox from '../../assets/app/inbox.png';
-import health from '../../assets/app/health.png';
-import history from '../../assets/app/history.png';
-import assistants from '../../assets/app/assistants.png';
-import routines from '../../assets/app/routines.png';
-import pdf from '../../assets/app/pdf.png';
-import office from '../../assets/app/office.png';
-import ocr from '../../assets/app/ocr.png';
+import { getLang } from '../../i18n';
+import { shot } from '../../lib/screenshots';
+import Screenshot from '../Screenshot.astro';
 
-const docs = (name: string) => `/docs/assets/screenshot-${name}.png`;
-const demo = (name: string) => `/images/app/screenshot-${name}.png`;
-/** Each screenshot: the image Astro optimizes, and the full-size original the viewer opens. */
-const shots = {
-  search: { image: search, full: docs('search') },
-  inbox: { image: inbox, full: docs('inbox') },
-  health: { image: health, full: docs('health') },
-  history: { image: history, full: docs('history') },
-  assistants: { image: assistants, full: docs('assistants') },
-  routines: { image: routines, full: docs('routines') },
-  pdf: { image: pdf, full: demo('pdf') },
-  office: { image: office, full: demo('office') },
-  ocr: { image: ocr, full: demo('ocr') },
-} satisfies Record<string, { image: ImageMetadata; full: string }>;
-export type ShotName = keyof typeof shots;
+export type ShotName = 'search' | 'ocr' | 'health';
 
 interface Props {
   items: { shot: ShotName; title: string; text: string; alt: string }[];
@@ -45,34 +23,35 @@ interface Props {
 }
 
 const { items, openLabel, group = 'home' } = Astro.props;
+const lang = getLang(Astro.currentLocale);
 ---
 
 <ul class="gallery">
   {
-    items.map((item) => (
-      <li>
-        <figure>
-          <a
-            class="frame"
-            href={shots[item.shot].full}
-            data-lightbox={group}
-            data-caption={`${item.title} ${item.text}`}
+    items.map((item) => {
+      const crop = shot(item.shot, lang, 'crop');
+      const window = shot(item.shot, lang);
+      return (
+        <li>
+          <Screenshot
+            class="gallery-shot"
+            light={crop.light}
+            dark={crop.dark}
+            full={window.light}
+            fullDark={window.dark}
+            alt={item.alt}
+            sizes="(min-width: 1184px) 358px, (min-width: 800px) calc(33vw - 28px), min(82vw, 420px)"
+            zoom={group}
+            zoomCaption={`${item.title} ${item.text}`}
+            zoomLabel={openLabel}
           >
-            <Image
-              src={shots[item.shot].image}
-              alt={item.alt}
-              widths={[560, 800, 1120]}
-              sizes="(min-width: 1000px) 360px, (min-width: 640px) 50vw, 100vw"
-              loading="lazy"
-            />
-            <span class="sr-only">{openLabel}</span>
-          </a>
-          <figcaption>
-            <strong>{item.title}</strong> {item.text}
-          </figcaption>
-        </figure>
-      </li>
-    ))
+            <Fragment slot="caption">
+              <strong>{item.title}</strong> {item.text}
+            </Fragment>
+          </Screenshot>
+        </li>
+      );
+    })
   }
 </ul>
 
@@ -83,29 +62,34 @@ const { items, openLabel, group = 'home' } = Astro.props;
     padding: 0;
     display: grid;
     gap: var(--space-6) var(--space-5);
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  @media (min-width: 640px) {
-    .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Phones and small tablets: one row, scrolled sideways, edge to edge. */
+  @media (max-width: 799px) {
+    .gallery {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: min(82%, 420px);
+      gap: var(--space-4);
+      margin-inline: calc(-1 * var(--gutter));
+      padding: 4px var(--gutter) var(--space-4);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: thin;
+    }
+    li { scroll-snap-align: start; }
   }
-  @media (min-width: 1000px) {
-    .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  }
-  figure { margin: 0; min-width: 0; }
-  .frame {
-    display: block;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: var(--surface);
+  li { min-width: 0; }
+  .gallery :global(.gallery-shot .frame) {
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 10px 28px -14px rgb(0 0 0 / 0.18);
-    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .frame:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 16px 36px -14px rgb(0 0 0 / 0.24); }
-  .frame :global(img) { display: block; width: 100%; height: auto; }
-  figcaption { margin-top: var(--space-3); font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
-  figcaption strong { color: var(--ink); font-weight: 600; }
-  @media (prefers-reduced-motion: reduce) {
-    .frame, .frame:hover { transition: none; transform: none; }
+  .gallery :global(.gallery-shot figcaption) {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    text-align: left;
   }
+  .gallery :global(.gallery-shot figcaption strong) { color: var(--ink); font-weight: 600; }
 </style>

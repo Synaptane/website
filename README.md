@@ -44,7 +44,8 @@ src/
   styles/starlight.css  Starlight variables mapped onto the tokens
   pages/                site pages in English; pages/fr/ the same pages in French
   content/releases/     GENERATED copy of the main repository's CHANGELOG.md (release notes)
-  lib/                  changelog.ts (CHANGELOG parser)
+  lib/                  changelog.ts (CHANGELOG parser), screenshots.ts (screenshots of the app
+                        in src/assets/app/, by name, language and theme)
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
 public/                 served as is: CNAME, favicon, og.png, robots.txt, fonts/ (OFL), images/,
@@ -173,8 +174,9 @@ uv run --no-project --with playwright python scripts/build-demo/browse.py   # he
 
 How it works, what is frozen and what is disabled: [scripts/build-demo/README.md](scripts/build-demo/README.md).
 The presentation pages are `src/pages/demo/index.astro` and `src/pages/fr/demo/index.astro`
-(they read the version, date and queries from the manifest; their screenshot comes from
-`browse.py --preview`).
+(they read the version, date and queries from the manifest). The screenshots of the application
+on the site (home page, `/demo/` page) are taken on the static demo by `browse.py --gallery`, in
+both languages and both themes: see the generator's README.
 
 ## Deployment
 

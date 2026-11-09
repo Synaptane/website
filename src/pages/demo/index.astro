@@ -13,8 +13,10 @@ import Section from '../../components/Section.astro';
 import manifest from '../../../public/demo/app/MANIFEST.json';
 // The manifest holds the Python version (1.0.0rc1); show it as the tag is written (v1.0.0-rc.1).
 const version = `v${manifest.synaptane.version.replace(/(\d)(a|b|rc)(\d+)$/, '$1-$2.$3')}`;
-import demoLight from '../../assets/demo/demo-light.png';
-import demoDark from '../../assets/demo/demo-dark.png';
+import { shot } from '../../lib/screenshots';
+
+const preview = shot('demo', 'en');
+const previewPhone = shot('demo', 'en', 'mobile');
 
 const app = '/demo/app';
 const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString('en-GB', {
@@ -34,9 +36,11 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
 
   <div class="container">
     <Screenshot
-      light={demoLight}
-      dark={demoDark}
+      light={preview.light}
+      dark={preview.dark}
+      mobile={previewPhone}
       eager
+      sizes="(min-width: 1184px) 1120px, calc(100vw - 32px)"
       zoom="demo"
       alt="The static demo: a wiki page of Acme's IT team, with the space tree, a verified badge and a table of recovery targets"
     />
