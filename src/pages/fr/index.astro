@@ -27,21 +27,21 @@ const features: Feature[] = [
   {
     icon: 'git',
     title: 'Git fait foi',
-    text: 'Chaque espace est un dépôt Git, chez GitHub, GitLab, Gitea ou ailleurs. Son dossier content/ contient des pages Markdown et vos fichiers d’origine, lisibles, cherchables et clonables sans Synaptane. Chaque modification est un commit.',
+    text: 'Chaque espace est un dépôt Git, chez GitHub, GitLab, Gitea ou ailleurs. Son dossier content/ contient des pages Markdown et vos fichiers d’origine, que vous pouvez lire, parcourir avec grep et cloner sans Synaptane. Chaque modification est un commit.',
     href: '/fr/docs/admin/git/',
     linkLabel: 'Dépôts Git',
   },
   {
     icon: 'plug',
     title: 'Pensé pour les assistants IA',
-    text: 'Un serveur MCP de 29 outils et 3 prompts, en OAuth 2.1 ou par jeton personnel, avec des vues dans la conversation (MCP Apps) pour relire, ranger et annuler sans la quitter. Testé avec Claude.ai, Claude Desktop, Claude Code et ChatGPT. Une connexion peut être limitée à la lecture, à l’inbox ou à certains espaces.',
+    text: 'Un serveur MCP en OAuth 2.1 ou par jeton personnel, testé avec Claude.ai, Claude Desktop, Claude Code et ChatGPT. Relire, ranger et annuler sans quitter la conversation. Une connexion peut être limitée à la lecture, à l’inbox ou à certains espaces.',
     href: '/fr/docs/guide/mcp/',
     linkLabel: 'Brancher un assistant',
   },
   {
     icon: 'inbox',
     title: 'Inbox et rangement nocturne',
-    text: 'Les notes des assistants, de l’interface web, de l’API ou d’un e-mail transféré attendent dans une inbox. Chaque nuit, un agent IA les range, complète les pages existantes, répare les liens et commite. Suppressions plafonnées, budget mensuel facultatif (20 € suggérés), passage annulable en un clic.',
+    text: 'Les notes des assistants, de l’interface web, de l’API ou d’un e-mail à l’adresse de l’espace (expéditeurs authentifiés) attendent dans une inbox. Chaque nuit, un agent IA les range, complète les pages, répare les liens et commite. Suppressions plafonnées ; passage annulable en un clic.',
     href: '/fr/docs/concepts/#rangement',
     linkLabel: 'Le rangement en détail',
   },
@@ -76,9 +76,9 @@ const features: Feature[] = [
   {
     icon: 'users',
     title: 'Fait pour les équipes',
-    text: 'Organisations, espaces et rôles, invitations par e-mail, connexion SSO par OIDC, GitHub, GitLab ou Google. Une API REST, avec son schéma OpenAPI (facultatif), et des webhooks signés.',
-    href: '/fr/docs/admin/sso/',
-    linkLabel: 'Connexion SSO',
+    text: 'Groupes et rôles, un rôle par défaut pour tous les membres, et des espaces restreints pour les RH ou la direction. Invitations par e-mail, connexion SSO (OIDC, GitHub, GitLab, Google), double authentification et un journal d’audit de qui a changé quoi.',
+    href: '/fr/docs/concepts/#rôles-et-droits',
+    linkLabel: 'Rôles et droits',
   },
 ];
 
@@ -196,7 +196,7 @@ const rows: Row[] = [
   {
     label: 'Équipes et connexion SSO',
     cells: [
-      { level: 'yes', text: 'Organisations et rôles ; OIDC, GitHub, GitLab, Google' },
+      { level: 'yes', text: 'Groupes, journal d’audit, 2FA ; OIDC, GitHub, GitLab, Google' },
       { level: 'yes', text: 'SSO SAML sur les offres Business et Enterprise' },
       { level: 'yes', text: 'SSO avec Atlassian Guard' },
       { level: 'yes', text: 'Connexion par Google, Slack, Microsoft ou OIDC' },
@@ -220,14 +220,15 @@ const rows: Row[] = [
 
 <Base
   title="La mémoire de votre équipe, dans Git"
-  description="Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers, tous cherchables. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes."
+  description="Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : vos pages Markdown et tous vos fichiers, faciles à retrouver. Vos assistants IA y cherchent et y déposent par MCP ; chaque nuit, un agent IA range leurs notes."
 >
   <Hero
     status={releaseLabel(release, 'fr')}
     statusHref="/fr/releases/"
     title="La mémoire de votre équipe, dans Git."
-    titleMuted="Vos assistants IA l’alimentent, une IA la range chaque nuit."
-    lead="Synaptane est un wiki que vous hébergez : le Markdown d’abord, et tous vos fichiers, PDF et scans compris, tous cherchables. Vos assistants IA y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et commite le résultat dans Git."
+    titleMuted="Vos assistants IA l’alimentent, elle se range chaque nuit."
+    lead="Un wiki auto-hébergé pour vos pages et vos fichiers, PDF et scans compris. Vos assistants y cherchent et y déposent ce qu’ils apprennent, par MCP ; chaque nuit, un agent IA range leurs notes dans les bonnes pages et enregistre le tout dans Git."
+    points={['Libre (Apache 2.0)', 'Auto-hébergé avec Docker', 'Fonctionne sans fournisseur d’IA']}
     screenshotAlt="Une page du wiki Synaptane : l’arborescence de l’espace, un tableau récapitulatif des sauvegardes, un badge « vérifiée », les pages qui y renvoient et les pages proches"
     caption="Une page du wiki de démonstration d’Acme, une équipe informatique fictive."
   >
@@ -262,23 +263,22 @@ const rows: Row[] = [
     id="files"
     tone="alt"
     eyebrow="Fichiers"
-    title="Tous vos fichiers, tous cherchables"
+    title="Tout se retrouve, même dans vos scans"
     intro="Le Markdown est le cœur du wiki, mais un espace accueille n’importe quel fichier, versionné dans Git comme une page. Synaptane affiche chacun au mieux et lit son texte, pour que vous et vos assistants le retrouviez."
   >
     <FileFormats items={formats} labels={{ wiki: 'Dans le wiki', search: 'Recherche', assistants: 'Assistants IA' }}>
       <div class="home-files-foot">
-        <h3 class="home-files-title">Trois façons d’ajouter un fichier</h3>
+        <h3 class="home-files-title">Quatre façons d’ajouter un fichier</h3>
         <ul class="home-files-ways">
-          <li><HomeIcon name="upload" size={18} /><span><strong>L’interface web</strong>Ajoutez un fichier dans n’importe quel dossier, jusqu’à 25 Mo.</span></li>
-          <li><HomeIcon name="inbox" size={18} /><span><strong>Vos assistants</strong>Les pièces jointes d’une note déposée par MCP ou par l’API, rangées par le rangement nocturne.</span></li>
+          <li><HomeIcon name="upload" size={18} /><span><strong>L’interface web</strong>Ajoutez un fichier dans n’importe quel dossier (25 Mo au plus), ou importez un zip.</span></li>
+          <li><HomeIcon name="inbox" size={18} /><span><strong>Vos assistants</strong>Les pièces jointes d’une note déposée par MCP ou par l’API.</span></li>
+          <li><HomeIcon name="mail" size={18} /><span><strong>Un e-mail</strong>Envoyé ou transféré à l’adresse de l’espace par un <a href="/fr/docs/admin/email-capture/">expéditeur authentifié</a>, pièces jointes comprises.</span></li>
           <li><HomeIcon name="git" size={18} /><span><strong>Un git push</strong>Un fichier du dossier content/ est un fichier du wiki.</span></li>
         </ul>
         <p class="home-small">
-          Le texte devient cherchable quelques secondes à quelques minutes après l’arrivée du fichier.
-          Sur les espaces où la recherche par le sens est activée, elle porte sur tout ce texte, pages
-          et documents. Les anciens formats .doc, .ppt et .xls sont lus aussi, zones de texte,
-          tableaux et notes du présentateur d’un .ppt compris ; un fichier protégé par un mot de
-          passe n’a pas de texte.
+          Le texte est indexé quelques secondes à quelques minutes après l’arrivée du fichier. Les
+          anciens formats .doc, .ppt et .xls sont lus aussi ; un fichier protégé par un mot de passe
+          n’a pas de texte.
         </p>
         <p class="home-files-links">
           <a href="/fr/docs/guide/wiki/#fichiers-autres-que-markdown">Fichiers autres que Markdown<span aria-hidden="true"> →</span></a>
@@ -388,9 +388,9 @@ const rows: Row[] = [
       />
       <ul class="home-arch-list">
         <li><strong>Une application FastAPI</strong> sert les trois interfaces : MCP pour les assistants, l’interface web et l’API REST.</li>
-        <li><strong>Un worker</strong> s’occupe du rangement nocturne, des routines, de la synchronisation Git, de l’indexation (avec l’extraction du texte et l’OCR) et des webhooks.</li>
         <li><strong>PostgreSQL</strong> conserve les comptes, les droits, les paramètres et l’index sémantique (pgvector). Le reste se reconstruit à partir des dépôts.</li>
-        <li><strong>Le fournisseur d’IA est facultatif :</strong> seuls le rangement, les routines et la recherche par le sens en ont besoin.</li>
+        <li><strong>Un worker</strong> s’occupe du rangement nocturne, des routines, de la synchronisation Git, de l’indexation (avec l’extraction du texte et l’OCR) et des webhooks.</li>
+        <li><strong>Sauvegarde et surveillance :</strong> une <a href="/fr/docs/admin/backup/">sauvegarde vérifiée chaque nuit</a>, sans rien configurer ; chiffrée hors site en une commande ; une page Santé, des alertes, <code>/metrics</code>.</li>
       </ul>
   </Section>
 
@@ -443,7 +443,7 @@ const rows: Row[] = [
   <section class="container home-cta-band" aria-labelledby="cta-title">
     <div class="home-cta">
       <h2 id="cta-title">Donnez à vos assistants une mémoire qui appartient à votre équipe.</h2>
-      <p>Vos pages et vos documents, cherchables, dans un dépôt Git qui reste le vôtre. Lancez Synaptane sur votre machine en quelques minutes, ou essayez d’abord la démo dans votre navigateur.</p>
+      <p>Vos pages et vos documents, faciles à retrouver, dans un dépôt Git qui reste le vôtre. Lancez Synaptane sur votre machine en quelques minutes, ou essayez d’abord la démo dans votre navigateur.</p>
       <div class="home-links">
         <Button href="#get-started" variant="primary" size="lg" icon="arrow-right">Essayer en local</Button>
         <Button href="/fr/demo/" size="lg">Voir la démo</Button>
