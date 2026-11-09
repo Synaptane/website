@@ -159,7 +159,12 @@ h1#_top {
   border: 0;
   border-radius: 5px;
   background: var(--bg-2);
+  /* A piece of code cut at the end of a line keeps its rounded background on both lines. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
+/* No word left alone on the last line of a paragraph (browsers without it ignore it). */
+.sl-markdown-content :is(p, li, dd, blockquote) { text-wrap: pretty; }
 .sl-markdown-content strong { color: var(--ink); }
 .sl-markdown-content blockquote:not(:where(.not-content *)) {
   border-inline-start: 2px solid var(--border);
@@ -216,6 +221,97 @@ h1#_top {
 }
 .sl-markdown-content img { border-radius: var(--radius); }
 
+/* ---------- Links to GitHub: they leave the docs ----------
+   A small arrow after the link, and for screen readers « (opens GitHub) » / « (ouvre GitHub) »
+   (a11y.externalLink of src/i18n), as the alternative text of the arrow. In the Markdown content
+   and in the help line at the bottom of the page (EditLink.astro). */
+.sl-markdown-content a[href^='https://github.com/']:not(:where(.not-content *))::after,
+.docs-help a[href^='https://github.com/']::after {
+  content: '' / ' (opens GitHub)';
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-inline-start: 0.2em;
+  vertical-align: -0.02em;
+  background-color: currentColor;
+  -webkit-mask: var(--external-icon) no-repeat center / contain;
+  mask: var(--external-icon) no-repeat center / contain;
+}
+:lang(fr) :is(.sl-markdown-content, .docs-help) a[href^='https://github.com/']::after { content: '' / ' (ouvre GitHub)'; }
+:root {
+  /* The « external » icon of src/components/Icon.astro. */
+  --external-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9'/%3E%3Cpath d='M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E");
+}
+
+/* ---------- Asides: the notes of the site pages ----------
+   A thin border all around and the large radius (as .home-note), in the colour of their kind
+   (note, tip, caution, danger), which also tints their background, title and icon. */
+.sl-markdown-content .starlight-aside {
+  border: 1px solid color-mix(in srgb, var(--sl-color-asides-border) 35%, transparent);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+}
+
+/* ---------- Code blocks: those of the site pages (CodeBlock.astro) ----------
+   Expressive Code's colours and sizes are set in astro.config.mjs; here, the layout. A terminal
+   gets the site's title bar: « Terminal » on the left (the frame keeps Expressive Code's
+   « Terminal window » for screen readers), 36px high, and the copy button on its right end. The
+   button is always shown, with its label, as on the site pages; in a terminal it no longer covers
+   the end of the first line on a touch screen, and elsewhere the code keeps room for it. */
+.expressive-code .frame.is-terminal .header {
+  justify-content: flex-start;
+  box-sizing: border-box;
+  min-height: 37px; /* 36px + the top border */
+  padding: 0 96px 0 14px;
+  font: 500 12.5px/1.2 var(--font-body);
+  letter-spacing: normal;
+}
+.expressive-code .frame.is-terminal .header .title:empty::before { content: 'Terminal' / ''; }
+.expressive-code .frame:not(.is-terminal, .has-title) pre { padding-inline-end: 84px; }
+.expressive-code .frame .copy {
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+}
+.expressive-code .frame .copy button {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  height: 26px;
+  padding: 0 8px 0 27px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font: 500 12.5px/1 var(--font-body);
+  /* Expressive Code shows it only on hover (with a mouse): always here. */
+  opacity: 1 !important;
+}
+.expressive-code .frame .copy button:hover { color: var(--ink); }
+.expressive-code .frame .copy button > div { display: none; }
+.expressive-code .frame .copy button::before {
+  content: 'Copy' / '';
+  position: static;
+  border: 0;
+  opacity: 1;
+}
+:lang(fr) .expressive-code .frame .copy button::before { content: 'Copier' / ''; }
+.expressive-code .frame .copy button::after {
+  inset: 50% auto auto 8px;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0;
+  background-color: currentColor;
+  -webkit-mask-image: var(--copy-icon);
+  mask-image: var(--copy-icon);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.expressive-code .frame .copy .feedback { border-radius: 6px; }
+:root {
+  /* The « copy » icon of src/components/Icon.astro. */
+  --copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='12' height='12' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+}
+
 /* Table of contents. */
 starlight-toc a[aria-current='true'],
 starlight-toc a[aria-current='true']:hover { color: var(--accent); font-weight: 500; }
@@ -227,18 +323,17 @@ starlight-toc a[aria-current='true']:hover { color: var(--accent); font-weight: 
 /* Focus ring: the app's. */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* Mobile menu button: the app's bordered button instead of a filled circle. */
-:root { --sl-menu-button-size: 2.25rem; }
-.sl-menu-button,
-:root[data-theme] .sl-menu-button {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: none;
+/* Mobile menu button: the site header's « Menu » button (MobileMenuToggle.astro), 36px high. The
+   header keeps room for its width at its right end (Starlight reserves a square button). */
+:root {
+  --sl-menu-button-size: 2.25rem;
+  --sl-menu-button-width: 5.75rem;
 }
-.sl-menu-button:has(~ :popover-open),
-:root[data-theme] .sl-menu-button:has(~ :popover-open) { background: var(--hover); }
+@media (max-width: 49.99rem) {
+  [data-has-sidebar] header.header {
+    padding-inline-end: calc(8px + var(--sl-nav-pad-x) + var(--sl-menu-button-width));
+  }
+}
 
 /* Social icons (GitHub) in ink, not in the accent color. */
 .social-icons a { color: var(--ink-2); }

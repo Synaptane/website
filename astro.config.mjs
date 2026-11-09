@@ -28,7 +28,9 @@ export default defineConfig({
       logo: {
         light: './src/assets/brand/logo.svg',
         dark: './src/assets/brand/logo-dark.svg',
-        alt: 'Synaptane',
+        // Empty: the link is named by the site title, which Starlight keeps in a screen-reader
+        // only span (replacesTitle); an alt text too would read « Synaptane Synaptane ».
+        alt: '',
         replacesTitle: true,
       },
       favicon: '/favicon.svg',
@@ -44,6 +46,7 @@ export default defineConfig({
         ThemeSelect: './src/components/starlight/ThemeSelect.astro',
         LanguageSelect: './src/components/starlight/LanguageSelect.astro',
         MobileMenuFooter: './src/components/starlight/MobileMenuFooter.astro',
+        MobileMenuToggle: './src/components/starlight/MobileMenuToggle.astro',
         EditLink: './src/components/starlight/EditLink.astro',
         Footer: './src/components/starlight/Footer.astro',
         Head: './src/components/starlight/Head.astro',
@@ -51,6 +54,10 @@ export default defineConfig({
       },
       // The bilingual 404 page is src/pages/404.astro (GitHub Pages serves one 404.html).
       disable404Route: true,
+      // Code blocks of the docs drawn like those of the site pages (src/components/CodeBlock.astro):
+      // same size, padding and background, a "Terminal" title bar without the window dots, and
+      // a copy button always shown in that bar (layout of the bar and of the button:
+      // starlight.css, "Code blocks").
       expressiveCode: {
         themes: ['github-dark', 'github-light'],
         styleOverrides: {
@@ -58,17 +65,26 @@ export default defineConfig({
           borderColor: 'var(--border)',
           codeFontFamily: 'var(--font-mono)',
           uiFontFamily: 'var(--font-body)',
-          codeFontSize: '13px',
+          codeFontSize: '13.5px',
+          codeLineHeight: '1.6',
+          codePaddingBlock: '14px',
+          codePaddingInline: '16px',
           codeBackground: 'var(--bg-2)',
           frames: {
             editorBackground: 'var(--bg-2)',
             terminalBackground: 'var(--bg-2)',
-            editorTabBarBackground: 'var(--bg)',
-            terminalTitlebarBackground: 'var(--bg)',
+            editorTabBarBackground: 'var(--bg-2)',
+            terminalTitlebarBackground: 'var(--bg-2)',
+            terminalTitlebarForeground: 'var(--ink-3)',
+            terminalTitlebarDotsOpacity: '0',
             editorActiveTabBackground: 'var(--bg-2)',
             terminalTitlebarBorderBottomColor: 'var(--border)',
             editorTabBarBorderBottomColor: 'var(--border)',
             frameBoxShadowCssValue: 'none',
+            inlineButtonForeground: 'var(--ink-2)',
+            inlineButtonBackground: 'var(--hover)',
+            inlineButtonBorder: 'var(--border)',
+            inlineButtonBorderOpacity: '1',
           },
         },
       },

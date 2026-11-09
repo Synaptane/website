@@ -19,6 +19,7 @@ export const fr: Dictionary = {
     menu: 'Menu',
     externalLink: '(ouvre GitHub)',
     table: 'Tableau\u00a0: {columns}',
+    siteNav: 'Site',
   },
   nav: {
     docs: 'Documentation',
@@ -76,6 +77,7 @@ export const fr: Dictionary = {
     copied: 'Copié',
     copyLabel: 'Copier le code dans le presse-papiers',
     copiedStatus: 'Code copié dans le presse-papiers',
+    region: 'Code\u00a0: {language}',
   },
   screenshot: {
     light: 'thème clair',
@@ -87,5 +89,12 @@ export const fr: Dictionary = {
     text: "Cette page n’existe pas, ou elle a été déplacée.",
     home: "Retour à l’accueil",
     docs: 'Lire la documentation',
+  },
+  docsHelp: {
+    stuck: 'Une question, un blocage\u202f?',
+    ask: 'Posez votre question dans les Discussions GitHub',
+    languages: '(en français ou en anglais)',
+    or: 'ou',
+    bug: 'signalez un bug',
   },
 };

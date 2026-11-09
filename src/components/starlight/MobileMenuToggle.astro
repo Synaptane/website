@@ -1,0 +1,50 @@
+---
+/**
+ * Starlight override of the button that opens the docs menu on narrow screens: the site header's
+ * menu button (SiteHeader.astro), the same icons and the visible label « Menu », instead of a
+ * lone icon. Starlight's own behaviour is kept: the button opens the sidebar popover
+ * (popovertarget), and its icons follow the popover's state. The header keeps room for its
+ * width: starlight.css, --sl-menu-button-width.
+ */
+import Icon from '../Icon.astro';
+---
+
+<button popovertarget="starlight__sidebar" class="sl-menu-button sl-flex md:sl-hidden print:hidden">
+  <Icon name="menu" size={18} class="open-menu" />
+  <Icon name="x" size={18} class="close-menu" />
+  <span>{Astro.locals.t('menuButton.accessibleLabel')}</span>
+</button>
+
+<style>
+  button {
+    position: fixed;
+    top: calc((var(--sl-nav-height) - var(--sl-menu-button-size)) / 2);
+    inset-inline-end: var(--sl-nav-pad-x);
+    z-index: var(--sl-z-index-navbar);
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: var(--sl-menu-button-width);
+    height: var(--sl-menu-button-size);
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    font: 500 14px/1 var(--font-body);
+    cursor: pointer;
+  }
+  @media (hover: hover) {
+    button:hover { background: var(--hover); }
+  }
+  button:has(~ :popover-open) .open-menu,
+  button:not(:has(~ :popover-open)) .close-menu { display: none; }
+</style>
+
+<style is:global>
+  /* As Starlight's own button: the page under the open menu does not scroll. */
+  body:has(#starlight__sidebar:popover-open) { overflow: hidden; }
+  @media (min-width: 50rem) {
+    body:has(#starlight__sidebar:popover-open) { overflow: auto; }
+  }
+</style>

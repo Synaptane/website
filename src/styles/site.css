@@ -57,7 +57,36 @@ code, kbd, pre, samp { font-family: var(--font-mono); }
   border-radius: 5px;
   /* --hover stands out from --bg and --surface in both themes (--bg-2 is nearly --bg in Slate). */
   background: var(--hover);
+  /* A short piece of code (« synaptane doctor ») goes to the next line whole, in its frame,
+     rather than being cut; one longer than the line wraps inside its frame, at its spaces, or
+     between two characters as a last resort (`anywhere`, which also keeps a long path from
+     widening a grid or flex column). */
+  display: inline-block;
+  max-width: 100%;
   overflow-wrap: anywhere;
+  vertical-align: baseline;
+}
+/* No word left alone on the last line of a paragraph (browsers without it ignore it). */
+:is(p, li, dd, figcaption, blockquote, .lead) { text-wrap: pretty; }
+
+/* Links to GitHub in the text of the pages: they leave the site. A small arrow after the link,
+   and for screen readers « (opens GitHub) » / « (ouvre GitHub) » (a11y.externalLink of
+   src/i18n), as the alternative text of the arrow. Not on buttons and link cards, which have
+   their own icon or arrow. */
+main :is(p, li) a[href^='https://github.com/']:not(.button, :has(svg, [aria-hidden='true']))::after {
+  content: '' / ' (opens GitHub)';
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-inline-start: 0.2em;
+  vertical-align: -0.02em;
+  background-color: currentColor;
+  /* The « external » icon of src/components/Icon.astro. */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9'/%3E%3Cpath d='M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9'/%3E%3Cpath d='M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+:lang(fr) main :is(p, li) a[href^='https://github.com/']:not(.button, :has(svg, [aria-hidden='true']))::after {
+  content: '' / ' (ouvre GitHub)';
 }
 h1, h2, h3, h4 {
   font-family: var(--font-display);

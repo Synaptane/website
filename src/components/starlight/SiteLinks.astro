@@ -2,7 +2,8 @@
 /**
  * The site's main navigation in the docs (Starlight header, its drop-down and the mobile menu):
  * the same links as SiteHeader.astro, in the same order and style, "Docs" marked as the
- * current section.
+ * current section. Named « Site » (a11y.siteNav), not « Main »: the docs sidebar is already the
+ * « Main » navigation of these pages, and two landmarks with one name cannot be told apart.
  */
 import { getLang, localizePath, useTranslations } from '../../i18n';
 import { mainNav } from '../../site';
@@ -15,7 +16,7 @@ const lang = getLang(Astro.locals.starlightRoute.lang);
 const t = useTranslations(lang);
 ---
 
-<nav class:list={['site-links', Astro.props.class]} aria-label={t.a11y.mainNav}>
+<nav class:list={['site-links', Astro.props.class]} aria-label={t.a11y.siteNav}>
   <ul>
     {
       mainNav.map((i) => (
