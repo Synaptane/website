@@ -4,8 +4,12 @@
  * (src/pages/roadmap.astro and its French twin); this component only lays it out.
  *
  *   <Roadmap lang="en" groups={[{ id: 'security', title: 'Account security', items: [
- *     { status: 'next', title: 'Two-factor authentication', text: 'TOTP codes…' },
+ *     { status: 'next', title: 'Two-factor authentication', text: 'TOTP codes…',
+ *       link: 'https://github.com/synaptane/synaptane/discussions/42' },
  *   ] }]} />
+ *
+ * The legend only lists the statuses that at least one item uses, and an empty group is not
+ * shown: the page never promises a category it does not fill.
  */
 import type { Lang } from '../../i18n';
 
@@ -15,6 +19,8 @@ export interface RoadmapItem {
   title: string;
   /** One or two sentences; simple inline HTML allowed (<code>, <a>). */
   text: string;
+  /** Optional: the GitHub discussion or issue where this item is discussed. */
+  link?: string;
 }
 export interface RoadmapGroup {
   id: string;
@@ -26,7 +32,7 @@ export interface RoadmapGroup {
 interface Props {
   lang: Lang;
   groups: RoadmapGroup[];
-  /** What each status means, shown above the groups. */
+  /** What each status means, shown above the groups (only for the statuses in use). */
   legend: Record<RoadmapStatus, string>;
 }
 
@@ -36,13 +42,21 @@ const statusLabels: Record<Lang, Record<RoadmapStatus, string>> = {
   en: { next: 'Next', later: 'Later', exploring: 'Exploring' },
   fr: { next: 'Prochainement', later: 'Plus tard', exploring: 'À l’étude' },
 };
+const linkLabels: Record<Lang, string> = {
+  en: 'Discuss on GitHub',
+  fr: 'En discuter sur GitHub',
+};
 const labels = statusLabels[lang];
 const order: RoadmapStatus[] = ['next', 'later', 'exploring'];
+const shownGroups = groups.filter((group) => group.items.length > 0);
+const usedStatuses = order.filter((status) =>
+  shownGroups.some((group) => group.items.some((item) => item.status === status)),
+);
 ---
 
-<dl class="legend">
+<dl class="legend" style={`--legend-columns: ${usedStatuses.length}`}>
   {
-    order.map((status) => (
+    usedStatuses.map((status) => (
       <div>
         <dt><span class:list={['status', `status-${status}`]}>{labels[status]}</span></dt>
         <dd>{legend[status]}</dd>
@@ -53,7 +67,7 @@ const order: RoadmapStatus[] = ['next', 'later', 'exploring'];
 
 <div class="roadmap">
   {
-    groups.map((group) => (
+    shownGroups.map((group) => (
       <section class="group" id={group.id} aria-labelledby={`${group.id}-title`}>
         <div class="group-head">
           <h2 id={`${group.id}-title`}>{group.title}</h2>
@@ -68,6 +82,11 @@ const order: RoadmapStatus[] = ['next', 'later', 'exploring'];
                 <div>
                   <h3>{item.title}</h3>
                   <p set:html={item.text} />
+                  {item.link && (
+                    <a class="item-link" href={item.link}>
+                      {linkLabels[lang]} <span aria-hidden="true">→</span>
+                    </a>
+                  )}
                 </div>
               </li>
             ))}
@@ -85,7 +104,7 @@ const order: RoadmapStatus[] = ['next', 'later', 'exploring'];
     margin: 0 0 var(--space-7);
   }
   @media (min-width: 720px) {
-    .legend { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+    .legend { grid-template-columns: repeat(var(--legend-columns, 3), minmax(0, 1fr)); gap: var(--space-5); }
   }
   .legend div { display: grid; gap: var(--space-2); align-content: start; }
   .legend dt { margin: 0; }
@@ -122,6 +141,7 @@ const order: RoadmapStatus[] = ['next', 'later', 'exploring'];
   }
   h3 { font-size: 16.5px; letter-spacing: -0.01em; margin: 2px 0 var(--space-1); }
   .item p { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .item-link { display: inline-block; margin-top: var(--space-2); font-size: 14.5px; font-weight: 500; }
   .status {
     justify-self: start;
     display: inline-flex;
