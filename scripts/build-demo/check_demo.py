@@ -78,6 +78,8 @@ class Page(HTMLParser):
             if not search and ("action" in a or "method" in a):
                 self.problems.append("frozen form keeps an action or method")
             self.forms.append({"search": search})
+        if "data-preview" in a:
+            self.problems.append("live preview left on (data-preview)")
         if tag in ("input", "button", "select", "textarea", "fieldset"):
             kind = a.get("type", "submit" if tag == "button" else "text").lower()
             frozen = "disabled" in a and a.get("aria-disabled") == "true"

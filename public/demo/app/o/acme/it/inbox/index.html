@@ -151,7 +151,25 @@
 <h2>Drop information</h2>
 
 <div class="field"><label for="title">Title</label><input id="title" name="title" maxlength="120" value="" disabled="" aria-disabled="true"></div>
-<div class="field"><label for="body">Content (Markdown)</label><textarea id="body" name="body" rows="8" disabled="" aria-disabled="true"></textarea></div>
+<div class="field editor-field" data-preview-params="{}" data-preview-fields="title" data-preview-name="" data-preview-space="" data-preview-max="262144" data-preview-empty="(empty text)" data-preview-failed="The preview could not be loaded: try again." data-preview-too-long="This text is too long to preview." data-preview-expired="Your session has expired: sign in again in another tab, your text is kept.">
+<div class="editor-head">
+<label for="body">Content (Markdown)</label>
+<div class="segmented segmented-labels editor-modes" role="group" aria-label="Editor view" data-test="editor-modes" hidden="">
+<button type="button" data-preview-mode="write" aria-pressed="true" aria-controls="body" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"></path><path d="m13.5 6.5 4 4"></path></svg>Write</button>
+<button type="button" data-preview-mode="preview" aria-pressed="false" aria-controls="body-preview" data-test="editor-preview" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Preview</button>
+</div>
+</div>
+<div class="editor-panes">
+<textarea id="body" name="body" rows="8" spellcheck="true" disabled="" aria-disabled="true"></textarea>
+<div id="body-preview" class="editor-preview" data-preview-pane="" hidden="">
+<div class="editor-preview-scroll" tabindex="0" role="region" aria-labelledby="body-preview-label">
+<p class="section-label editor-preview-label" id="body-preview-label">Preview — not saved yet</p>
+<p class="editor-preview-status" data-preview-status="" role="status" aria-live="polite"></p>
+<div class="doc-body"><div class="markdown hl" data-preview-output=""></div></div>
+</div>
+</div>
+</div>
+</div>
 <div class="field"><label for="hint">Where to file it? (optional, a hint for the agent)</label><input id="hint" name="hint" maxlength="500" placeholder="servers/" value="" disabled="" aria-disabled="true"></div>
 <div class="field"><label for="origin">Origin (optional: link, meeting, conversation…)</label><input id="origin" name="origin" maxlength="2000" placeholder="https://…" value="" disabled="" aria-disabled="true"></div>
 <div class="field"><label for="files">Attachments (up to 10, 25 MB each)</label><span class="file-picker" data-remove="Remove {name}" data-one="1 file" data-many="{n} files"><ul class="file-picked" data-file-list="" hidden=""></ul><span class="file-picker-row"><input class="file-input" id="files" type="file" name="files" multiple="" disabled="" aria-disabled="true"><label class="button button-small" for="files">Add files</label><span class="muted" data-file-names="" data-empty="No file chosen"></span></span></span></div>
