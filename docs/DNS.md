@@ -54,3 +54,29 @@ dig www.synaptane.com +noall +answer CNAME
 dig _github-pages-challenge-synaptane.synaptane.com +noall +answer TXT
 curl -sI https://www.synaptane.com | grep -i location   # -> https://synaptane.com/
 ```
+
+## HTTP headers and cache: the limits of GitHub Pages
+
+GitHub Pages sets the HTTP headers itself and lets no one add or change them (checked on
+2026-11-09 with `curl -sI https://synaptane.com/`):
+
+- **Cache: 10 minutes for everything.** Every file is served with `Cache-Control: max-age=600`
+  and an ETag, including those whose name holds a hash (`/_astro/*`, which never change under the
+  same name) and the fonts (`/fonts/*`). After 10 minutes, a returning visitor's browser asks
+  again for each of them and gets a `304 Not Modified` (a round trip, no download). A year
+  (`Cache-Control: public, max-age=31536000, immutable` on `/_astro/*` and `/fonts/*`) would take
+  another host, or a proxy in front of GitHub Pages that can set headers. Nothing to do in the code.
+- **Security headers: none.** No `Strict-Transport-Security`, `Content-Security-Policy`,
+  `X-Content-Type-Options` or `Referrer-Policy`. What HTML can carry is set at build time by
+  `scripts/csp.mjs`, in a `<meta>` of every page: a Content-Security-Policy (the site's own files
+  only; inline scripts allowed by their hash; styles with `'unsafe-inline'`) and
+  `referrer: strict-origin-when-cross-origin`. A `<meta>` cannot carry the rest:
+  - **HSTS**: `http://` is redirected to `https://` (301, *Enforce HTTPS*), but a first visit in
+    `http://` is not protected before that redirect, and the domain cannot join the browsers'
+    HSTS preload list without the header;
+  - `X-Content-Type-Options: nosniff`;
+  - `frame-ancestors` (no framing by other sites; the site has no account and no form, so the
+    risk is low) and CSP violation reports.
+
+  These would need a proxy in front of GitHub Pages (Cloudflare, for instance): a hosting
+  decision, not a change in this repository.

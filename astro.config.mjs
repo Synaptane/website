@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import csp from './scripts/csp.mjs';
 
 const GITHUB = 'https://github.com/synaptane/synaptane';
 
@@ -18,8 +19,12 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Synaptane',
+      // « Concepts · Synaptane », as the site pages (src/layouts/Base.astro). The docs pages whose
+      // title already names Synaptane are not suffixed again: src/route-data.ts.
+      titleDelimiter: '·',
+      routeMiddleware: './src/route-data.ts',
       description:
-        'Synaptane is a self-hosted team second brain stored in Git: a Markdown wiki, full-text and semantic search, an MCP server for AI assistants, and nightly tidy-up by an AI agent.',
+        'Self-hosted team second brain stored in Git: a Markdown wiki, full-text and semantic search, an MCP server for AI assistants, and a nightly AI tidy-up.',
       defaultLocale: 'root',
       locales: {
         root: { label: 'English', lang: 'en' },
@@ -122,5 +127,8 @@ export default defineConfig({
         },
       ],
     }),
+    // Content-Security-Policy and referrer policy in a <meta> of every page (GitHub Pages sends
+    // no custom header): scripts/csp.mjs.
+    csp(),
   ],
 });
