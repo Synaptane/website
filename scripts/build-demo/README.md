@@ -27,9 +27,14 @@ npm run build && npm run check-links && npm run check-demo
 uv run --no-project --with playwright python scripts/build-demo/browse.py   # headless check
 ```
 
-`browse.py --gallery` (with `--with pillow --with imagequant`) also retakes the three home page
-screenshots of files other than Markdown (PDF viewer, Office document, scan and its OCR text)
-in `src/assets/app/` and `public/images/app/`.
+`browse.py --gallery` (with `--with pillow --with imagequant`, about 4 minutes) also retakes the
+site's screenshots of the application in `src/assets/app/` (list `GALLERY` of `browse.py`): the
+home page hero and gallery, and the `/demo/` page, in English and French, light and dark,
+without the demo's banner and notes. For each screen: `<name>-<lang>-<theme>.png`, the whole
+window (2000×1250, opened by the viewer), and `…-crop.png`, its useful part, readable in a
+gallery frame, or `…-mobile.png`, the same page on a phone (390 px wide, shown under 640 px).
+256-color PNG; Astro serves them in WebP. `src/lib/screenshots.ts` picks them by name and
+language; a page loads only those of its language and theme.
 
 Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databases, default
 `postgresql://synaptane:synaptane@127.0.0.1:5433/postgres`), `--db-name` (default
@@ -120,8 +125,8 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
    every request stays on demo files or `/fonts/`, no console error, no active control, a
    forced submission changes nothing, the theme switch, the PDF viewer, the rendered HTML file,
    the extracted text of the slides, a click-through path (and one from the tidy-up log to a
-   diff of the run), the link back to the site and the two-line banner at 360 px, and screenshots in `screenshots/demo/` (`--preview` also
-   refreshes the two images of the `/demo/` page in `src/assets/demo/`).
+   diff of the run), the link back to the site and the two-line banner at 360 px, and screenshots in `screenshots/demo/` (`--gallery` also
+   refreshes the site's screenshots in `src/assets/app/`, see above).
 
 The instance is always torn down (server stopped, database dropped, folder deleted), even after
 an error.

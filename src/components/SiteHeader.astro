@@ -4,6 +4,8 @@
  * action, "Try it", towards the "Get started" section of the home page. Below 960px (the width
  * the French bar needs on one line) the navigation folds into a <details> menu (no JavaScript);
  * the call to action stays in the bar, next to the menu button.
+ * The bar spans the whole width, from the page gutters, like the docs header
+ * (starlight/Header.astro): the logo and the links stay in place from a site page to the docs.
  */
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo.svg';
@@ -86,7 +88,9 @@ const items = mainNav.map((item) => ({
     backdrop-filter: saturate(1.4) blur(8px);
     border-bottom: 1px solid var(--border);
   }
+  /* The whole width (not the 1120px of the page content), as in the docs. */
   .bar {
+    max-width: none;
     display: flex;
     align-items: center;
     gap: var(--space-5);

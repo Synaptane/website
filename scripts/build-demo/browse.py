@@ -8,9 +8,8 @@
 - files other than Markdown: the PDF opens in the browser's viewer, the HTML file is rendered
   in its sandboxed frame, the extracted text of an Office document is shown;
 - screenshots of a few pages (light/dark, EN/FR, mobile) in screenshots/demo/ (ignored by Git);
-  with --preview, also the two images of the /demo/ page (src/assets/demo/, committed); with
-  --gallery, the home page screenshots taken on the demo (src/assets/app/ and
-  public/images/app/, committed; needs Pillow).
+  with --gallery, also the site's screenshots taken on the demo (home page and /demo/ page, in
+  src/assets/app/, committed; needs Pillow).
 
 Chromium runs in its full headless mode (channel "chromium"): the lighter headless shell has no
 PDF viewer. The viewer's own requests (chrome-extension://, chrome://) are not the demo's.
@@ -22,6 +21,7 @@ PDF viewer. The viewer's own requests (chrome-extension://, chrome://) are not t
 import argparse
 import functools
 import http.server
+import os
 import sys
 import threading
 from pathlib import Path
@@ -93,26 +93,43 @@ SHOTS = [
     ("en-servers-mobile", "/demo/app/o/acme/it/p/infra/servers.md/", "light", 390, 844),
 ]
 
-# Screenshots of the home page gallery (--gallery): the real interface, without the demo banner.
-# (name, url, script run before the shot)
-SCAN_AND_TEXT = """() => {
-  document.querySelector('.doc-body > details').open = true;
-  document.querySelector('.doc-frame').style.height = '450px';
-}"""
-GALLERY = [
-    ("pdf", PDF, None),
-    ("office", SLIDES, None),
-    # The scanned delivery note and, below a shorter frame, the text read by OCR.
-    ("ocr", DOCS + "2026-09-delivery-note.pdf/", SCAN_AND_TEXT),
-]
-GALLERY_SIZE = (2000, 1250)
-WITHOUT_DEMO = """() => {
-  document.querySelector('.demo-banner')?.remove();
-  document.querySelector('.demo-search-note')?.remove();
-  document.body.classList.remove('demo-static');
-}"""
+# Screenshots of the site (--gallery): the real interface, without the demo banner, in both
+# languages and both themes. Each one: the whole window (the hero, the viewer), and either a
+# crop on its useful part (the home page gallery: the text stays readable in a small frame) or
+# the same page on a phone (the hero, the /demo/ page).
+SPACE = "/demo/app/o/acme/it"
 
-PREVIEW = "/demo/app/o/acme/it/p/procedures/restore.md/"
+
+def scan_and_text(tab: Page) -> None:
+    """The scanned delivery note in a shorter frame, without the viewer's page thumbnails (its
+    ≡ button), and below it the text read by OCR."""
+    tab.evaluate("""() => {
+      document.querySelector('.doc-body > details').open = true;
+      document.querySelector('.doc-frame').style.height = '300px';
+    }""")
+    tab.wait_for_timeout(1500)  # the PDF viewer renders after the load
+    tab.mouse.click(321, 89)
+    tab.mouse.click(1439, 899)  # the focus leaves the viewer
+
+
+# (name, url, window (width, height), prepare (a function of the tab) or None, crop (x, y, width)
+# in CSS pixels of the window, its height being width × 3 / 4, or None; phone window or None)
+GALLERY = [
+    ("wiki", SPACE + "/p/infra/backups.md/", (1440, 900), None, None, (390, 520)),
+    ("demo", SPACE + "/p/procedures/restore.md/", (1200, 750), None, None, (390, 520)),
+    ("search", "/demo/app/search/backup/", (1440, 900), None, (330, 84, 600), None),
+    ("ocr", DOCS + "2026-09-delivery-note.pdf/", (1440, 900), scan_and_text, (300, 60, 600), None),
+    ("health", SPACE + "/health/", (1440, 900), None, (330, 240, 600), None),
+]
+GALLERY_SIZE = (2000, 1250)  # the whole window, 16:10
+CROP_MAX_WIDTH = 1600
+# The demo's own additions go (banner, notes about the static demo; its CSS fixes stay), and the
+# frozen controls look as they do in the application.
+WITHOUT_DEMO = """() => {
+  document.querySelectorAll('.demo-banner, .demo-search-note, .demo-replay-note').forEach(e => e.remove());
+  document.documentElement.style.setProperty('--demo-banner', '0px');
+  document.querySelectorAll('[disabled]').forEach(e => { e.disabled = false; e.removeAttribute('aria-disabled'); });
+}"""
 
 ACTIVE_CONTROLS = """() => [...document.querySelectorAll('form[data-demo-off]')]
   .flatMap(f => [...f.elements])
@@ -136,9 +153,8 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dist", type=Path, default=SITE / "dist")
     parser.add_argument("--shots", type=Path, default=SITE / "screenshots" / "demo")
-    parser.add_argument("--preview", action="store_true", help="also update src/assets/demo/*.png")
     parser.add_argument("--gallery", action="store_true",
-                        help="also update the home page screenshots (src/assets/app/, public/images/app/)")
+                        help="also update the site's screenshots (src/assets/app/; needs Pillow)")
     args = parser.parse_args()
     server, origin = serve(args.dist.resolve())
     problems: list[str] = []
@@ -270,16 +286,6 @@ def main() -> int:
             tab.goto(origin + url, wait_until="networkidle")
             tab.screenshot(path=str(args.shots / f"{name}.png"))
             shot.close()
-        if args.preview:
-            target = SITE / "src" / "assets" / "demo"
-            target.mkdir(parents=True, exist_ok=True)
-            for theme in ("light", "dark"):
-                shot = browser.new_context(viewport={"width": 1200, "height": 750},
-                                           color_scheme=theme, device_scale_factor=2)
-                tab = shot.new_page()
-                tab.goto(origin + PREVIEW, wait_until="networkidle")
-                tab.screenshot(path=str(target / f"demo-{theme}.png"))
-                shot.close()
         if args.gallery:
             gallery(browser, origin)
         browser.close()
@@ -301,10 +307,12 @@ def main() -> int:
 
 
 def gallery(browser, origin: str) -> None:
-    """Home page screenshots: 1440×900 at scale 2, reduced to 2000×1250, 256-color PNG
-    (libimagequant through the `imagequant` package if present, as pngquant does). The
-    thumbnail (src/assets/app/, optimized by Astro) and the full-size original opened by the
-    viewer (public/images/app/) are the same file."""
+    """The site's screenshots, in src/assets/app/ (optimized by Astro), for each language and
+    theme: `<name>-<lang>-<theme>.png`, the window at scale 2 reduced to 2000×1250 (the hero,
+    the viewer); `…-crop.png`, its useful part at scale 2, at most 1600 pixels wide (the
+    gallery, 4:3); `…-mobile.png`, the page on a phone at scale 2. 256-color PNG (libimagequant
+    through the `imagequant` package if present, as pngquant does). GALLERY_ONLY="search ocr"
+    in the environment retakes only these."""
     from PIL import Image
 
     try:
@@ -312,31 +320,54 @@ def gallery(browser, origin: str) -> None:
     except ImportError:
         imagequant = None
 
-    assets, full = SITE / "src" / "assets" / "app", SITE / "public" / "images" / "app"
-    full.mkdir(parents=True, exist_ok=True)
-    for name, url, prepare in GALLERY:
-        shot = browser.new_context(viewport={"width": 1440, "height": 900},
-                                   color_scheme="light", device_scale_factor=2)
+    def save(image, target: Path) -> None:
+        image = image.convert("RGB")
+        if imagequant:
+            image = imagequant.quantize_pil_image(image.convert("RGBA"), dithering_level=1.0, max_colors=256)
+        else:
+            image = image.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.FLOYDSTEINBERG)
+        image.save(target, optimize=True)
+        print(f"gallery: {target.name}, {target.stat().st_size // 1024} KiB")
+
+    def take(url: str, window: tuple[int, int], theme: str, prepare, raw: Path) -> None:
+        shot = browser.new_context(viewport={"width": window[0], "height": window[1]},
+                                   color_scheme=theme, device_scale_factor=2)
         tab = shot.new_page()
         tab.goto(origin + url, wait_until="networkidle")
         tab.evaluate(WITHOUT_DEMO)
         if prepare:
-            tab.evaluate(prepare)
+            prepare(tab)
         tab.wait_for_timeout(2000)  # the PDF viewer renders after the load
-        raw = full / f"screenshot-{name}.raw.png"
         tab.screenshot(path=str(raw))
         shot.close()
-        with Image.open(raw) as image:
-            small = image.convert("RGB").resize(GALLERY_SIZE, Image.Resampling.LANCZOS)
-        if imagequant:
-            quantized = imagequant.quantize_pil_image(small.convert("RGBA"), dithering_level=1.0, max_colors=256)
-        else:
-            quantized = small.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.FLOYDSTEINBERG)
-        target = full / f"screenshot-{name}.png"
-        quantized.save(target, optimize=True)
-        raw.unlink()
-        (assets / f"{name}.png").write_bytes(target.read_bytes())
-        print(f"gallery: {name}.png, {target.stat().st_size // 1024} KiB")
+
+    assets = SITE / "src" / "assets" / "app"
+    assets.mkdir(parents=True, exist_ok=True)
+    raw = assets / "screenshot.raw.png"
+    only = os.environ.get("GALLERY_ONLY", "").split()
+    for name, url, window, prepare, crop, phone in GALLERY:
+        if only and name not in only:
+            continue
+        for lang in ("en", "fr"):
+            page = url if lang == "en" else "/fr" + url
+            for theme in ("light", "dark"):
+                base = f"{name}-{lang}-{theme}"
+                take(page, window, theme, prepare, raw)
+                with Image.open(raw) as image:
+                    image = image.convert("RGB")
+                    save(image.resize(GALLERY_SIZE, Image.Resampling.LANCZOS), assets / f"{base}.png")
+                    if crop:
+                        x, y, width = crop
+                        part = image.crop((2 * x, 2 * y, 2 * (x + width), 2 * (y + width * 3 // 4)))
+                        if part.width > CROP_MAX_WIDTH:
+                            part = part.resize((CROP_MAX_WIDTH, part.height * CROP_MAX_WIDTH // part.width),
+                                               Image.Resampling.LANCZOS)
+                        save(part, assets / f"{base}-crop.png")
+                if phone:
+                    take(page, phone, theme, prepare, raw)
+                    with Image.open(raw) as image:
+                        save(image, assets / f"{base}-mobile.png")
+    raw.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

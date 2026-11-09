@@ -82,8 +82,23 @@
 .sidebar-content .large { font-size: 0.8125rem; font-weight: 600; color: var(--ink-3); letter-spacing: 0.01em; }
 .sidebar-content summary .large { color: var(--ink-3); }
 
-/* Site title: the logo at the height of the app's. */
-.site-title img { height: 1.75rem; }
+/* Header: the same bar as on the site pages (SiteHeader.astro, site.css), so that nothing moves
+   between a site page and a docs page: 60px plus its border, side margins of 16px then 32px
+   from 720px (the site's --gutter), the same translucent background and a 26px logo. The site
+   header spans the whole width too, from the same margins. */
+:root {
+  --sl-nav-height: 61px;
+  --sl-nav-pad-x: 16px;
+}
+@media (min-width: 720px) {
+  :root { --sl-nav-pad-x: 32px; }
+}
+header.header {
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(8px);
+  backdrop-filter: saturate(1.4) blur(8px);
+}
+.site-title img { height: 26px; }
 
 /* Search button. */
 @media (min-width: 50rem) {
@@ -163,6 +178,42 @@ h1#_top {
   color: var(--ink-3);
 }
 .sl-markdown-content tr:nth-child(2n):not(:where(.not-content *)) { background: none; }
+
+/* ---------- Tables: readable columns, sideways scroll when they do not fit ----------
+   Each table is wrapped in a focusable .table-scroll area (MarkdownContent.astro). The table
+   keeps its own width; when it is wider than the page, the area scrolls sideways and a shadow
+   on the edge says that more is hidden there. The shadows are fixed on the edges (scroll) and
+   hidden by patches of the page colour that move with the content (local), so that each one
+   disappears when its end of the table is reached. */
+.sl-markdown-content .table-scroll {
+  --table-shadow: color-mix(in srgb, var(--ink) 24%, transparent);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  background:
+    linear-gradient(to right, var(--surface) 40%, transparent) left / 40px 100% no-repeat local,
+    linear-gradient(to left, var(--surface) 40%, transparent) right / 40px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--table-shadow), transparent) left / 14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--table-shadow), transparent) right / 14px 100% no-repeat scroll,
+    var(--surface);
+}
+.sl-markdown-content .starlight-aside .table-scroll { background: none; }
+.sl-markdown-content .table-scroll > table:not(:where(.not-content *)) {
+  display: table;
+  overflow: visible;
+}
+/* No column narrower than a few words, the first one (names, often in code) a little wider.
+   Names in code break after their / and _ (MarkdownContent.astro adds the break points), or
+   anywhere as a last resort, rather than widening their column at the expense of the text. */
+.sl-markdown-content .table-scroll :is(th, td) { min-width: 5.5em; }
+.sl-markdown-content .table-scroll :is(th, td):first-child { min-width: 7.5em; }
+.sl-markdown-content .table-scroll td code { overflow-wrap: anywhere; }
+.sl-markdown-content .table-scroll :is(th, td):last-child { padding-inline-end: 0; }
+@media (max-width: 49.99rem) {
+  .sl-markdown-content .table-scroll :is(th, td) { padding-inline-end: 14px; }
+  /* Three columns or more: the table keeps a reading width and scrolls, rather than squeezing
+     its text into columns of two words. */
+  .sl-markdown-content .table-scroll > table:has(th:nth-child(3)) { min-width: 32em; }
+}
 .sl-markdown-content img { border-radius: var(--radius); }
 
 /* Table of contents. */

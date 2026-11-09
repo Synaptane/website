@@ -15,10 +15,40 @@
 @font-face{font-family:"Geist";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/Geist-latin.woff2) format("woff2")}
 @font-face{font-family:"Geist Mono";font-style:normal;font-weight:400 500;font-display:swap;src:url(/fonts/GeistMono-latin.woff2) format("woff2")}
 
+/* Fallback faces (site only, not in the application). Until a web font arrives (font-display:swap),
+   the text is drawn with a local font resized to the web font's metrics, so that it does not move
+   when the web font replaces it (layout shift, CLS). One family per kind of local font: Arial (or
+   its metric clones Liberation Sans, Arimo) and Roboto (Android) for the sans fonts, Georgia (or
+   Gelasio) and Noto Serif for Newsreader, Courier New (Liberation Mono, Cousine) for the mono
+   fonts; bold weights have their own face (titles are 600). Computed like Astro's font API
+   (Capsize): size-adjust = average width of the web font / average width of the local font
+   (Capsize's weighted Latin sample, the web fonts measured at the weight of the face: Instrument
+   Sans .458, .471 at 600; Geist .467, .489; Newsreader at opsz 18 .409, .428, italic .3795; mono
+   .600. Local fonts: Arial .4458, bold .4800; Roboto .4448, bold .4526; Georgia .4458, bold .5186,
+   italic .4546; Noto Serif .481, bold .512, italic .469; Courier New .6001), and
+   ascent/descent-override = the web font's ascent/descent (em) / size-adjust, no line gap.
+   Recompute when a font file changes. */
+@font-face{font-family:"Instrument Sans Fallback";font-weight:100 500;src:local("Arial"),local("ArialMT"),local("Liberation Sans"),local("Arimo");size-adjust:102.7365%;ascent-override:94.4163%;descent-override:24.3341%;line-gap-override:0%}
+@font-face{font-family:"Instrument Sans Fallback";font-weight:600 900;src:local("Arial Bold"),local("Arial-BoldMT"),local("Liberation Sans Bold"),local("Arimo Bold");size-adjust:98.129%;ascent-override:98.8495%;descent-override:25.4767%;line-gap-override:0%}
+@font-face{font-family:"Instrument Sans Fallback Roboto";font-weight:100 500;src:local("Roboto"),local("Roboto-Regular");size-adjust:102.962%;ascent-override:94.2095%;descent-override:24.2808%;line-gap-override:0%}
+@font-face{font-family:"Instrument Sans Fallback Roboto";font-weight:600 900;src:local("Roboto Bold"),local("Roboto-Bold");size-adjust:104.057%;ascent-override:93.2182%;descent-override:24.0253%;line-gap-override:0%}
+@font-face{font-family:"Geist Fallback";font-weight:100 500;src:local("Arial"),local("ArialMT"),local("Liberation Sans"),local("Arimo");size-adjust:104.7553%;ascent-override:95.9379%;descent-override:28.1609%;line-gap-override:0%}
+@font-face{font-family:"Geist Fallback";font-weight:600 900;src:local("Arial Bold"),local("Arial-BoldMT"),local("Liberation Sans Bold"),local("Arimo Bold");size-adjust:101.8791%;ascent-override:98.6463%;descent-override:28.9559%;line-gap-override:0%}
+@font-face{font-family:"Geist Fallback Roboto";font-weight:100 500;src:local("Roboto"),local("Roboto-Regular");size-adjust:104.9853%;ascent-override:95.7277%;descent-override:28.0992%;line-gap-override:0%}
+@font-face{font-family:"Geist Fallback Roboto";font-weight:600 900;src:local("Roboto Bold"),local("Roboto-Bold");size-adjust:108.0337%;ascent-override:93.0266%;descent-override:27.3063%;line-gap-override:0%}
+@font-face{font-family:"Newsreader Fallback";font-style:normal;font-weight:100 500;src:local("Georgia"),local("Gelasio");size-adjust:91.745%;ascent-override:80.1133%;descent-override:28.8844%;line-gap-override:0%}
+@font-face{font-family:"Newsreader Fallback";font-style:normal;font-weight:600 900;src:local("Georgia Bold"),local("Georgia-Bold"),local("Gelasio Bold");size-adjust:82.5371%;ascent-override:89.0509%;descent-override:32.1068%;line-gap-override:0%}
+@font-face{font-family:"Newsreader Fallback";font-style:italic;font-weight:100 900;src:local("Georgia Italic"),local("Georgia-Italic"),local("Gelasio Italic");size-adjust:83.4818%;ascent-override:88.0431%;descent-override:31.7434%;line-gap-override:0%}
+@font-face{font-family:"Newsreader Fallback Noto";font-style:normal;font-weight:100 500;src:local("Noto Serif"),local("Noto Serif Regular"),local("NotoSerif-Regular");size-adjust:85.0312%;ascent-override:86.4389%;descent-override:31.165%;line-gap-override:0%}
+@font-face{font-family:"Newsreader Fallback Noto";font-style:normal;font-weight:600 900;src:local("Noto Serif Bold"),local("NotoSerif-Bold");size-adjust:83.5938%;ascent-override:87.9252%;descent-override:31.7009%;line-gap-override:0%}
+@font-face{font-family:"Newsreader Fallback Noto";font-style:italic;font-weight:100 900;src:local("Noto Serif Italic"),local("NotoSerif-Italic");size-adjust:80.9168%;ascent-override:90.834%;descent-override:32.7497%;line-gap-override:0%}
+@font-face{font-family:"JetBrains Mono Fallback";src:local("Courier New"),local("CourierNewPSMT"),local("Liberation Mono"),local("Cousine");size-adjust:99.9837%;ascent-override:102.0166%;descent-override:30.0049%;line-gap-override:0%}
+@font-face{font-family:"Geist Mono Fallback";src:local("Courier New"),local("CourierNewPSMT"),local("Liberation Mono"),local("Cousine");size-adjust:99.9837%;ascent-override:100.5164%;descent-override:29.5048%;line-gap-override:0%}
+
 :root{
-  --font-body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);
-  --font-read:"Newsreader",Georgia,"Times New Roman",serif;
-  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:18px;--read-lh:1.7;
+  --font-body:"Instrument Sans","Instrument Sans Fallback","Instrument Sans Fallback Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);
+  --font-read:"Newsreader","Newsreader Fallback","Newsreader Fallback Noto",Georgia,"Times New Roman",serif;
+  --font-mono:"JetBrains Mono","JetBrains Mono Fallback",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:18px;--read-lh:1.7;
   --radius:8px;--radius-lg:12px;--display-ls:-0.025em;--display-weight:600;
   --sidebar-width:264px;--topbar-height:52px;--sheet-gap:8px;
   --bg:#F6F6F4;--bg-2:#EFEFEB;--surface:#fff;--border:#E6E6E1;
@@ -31,8 +61,8 @@
   color-scheme:light;
 }
 :root[data-theme=dark]{
-  --font-body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);--font-read:var(--font-body);
-  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:16.5px;--read-lh:1.7;
+  --font-body:"Geist","Geist Fallback","Geist Fallback Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);--font-read:var(--font-body);
+  --font-mono:"Geist Mono","Geist Mono Fallback",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:16.5px;--read-lh:1.7;
   --bg:#0E1116;--bg-2:#0B0E12;--surface:#161B22;--border:#262C36;
   --ink:#E6EAF0;--ink-2:#C9D1DC;--ink-3:#8B95A5;--hover:#1C222B;
   --accent:#B6F36A;--accent-hover:#C9F78F;--on-accent:#0E1116;--accent-soft:rgb(182 243 106 / .14);
@@ -43,8 +73,8 @@
   color-scheme:dark;
 }
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){
-  --font-body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);--font-read:var(--font-body);
-  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:16.5px;--read-lh:1.7;
+  --font-body:"Geist","Geist Fallback","Geist Fallback Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;--font-display:var(--font-body);--font-read:var(--font-body);
+  --font-mono:"Geist Mono","Geist Mono Fallback",ui-monospace,SFMono-Regular,Consolas,monospace;--read-size:16.5px;--read-lh:1.7;
   --bg:#0E1116;--bg-2:#0B0E12;--surface:#161B22;--border:#262C36;
   --ink:#E6EAF0;--ink-2:#C9D1DC;--ink-3:#8B95A5;--hover:#1C222B;
   --accent:#B6F36A;--accent-hover:#C9F78F;--on-accent:#0E1116;--accent-soft:rgb(182 243 106 / .14);

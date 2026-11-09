@@ -35,22 +35,31 @@ src/
   layouts/Base.astro    layout of every site page: SEO head, hreflang, header, footer
   components/           Button, Section, Card, CardGrid, CodeBlock (copy button), Screenshot
                         (light/dark), PageHeader, Todo, Icon, ThemeControl, LanguageSwitcher,
-                        SiteHeader, SiteFooter, Lightbox (screenshot viewer); content/
+                        SiteHeader, SiteFooter, Lightbox (screenshot viewer), FontPreload; content/
                         (ReleaseNotes, Roadmap, AuthorCard, NewsletterNote)
-  components/starlight/ Starlight overrides: Header (+ site links), ThemeSelect, LanguageSelect,
-                        MobileMenuFooter, EditLink (edits the source in synaptane/synaptane)
-  styles/tokens.css     the application's tokens and @font-face (shared by site and docs)
+  components/starlight/ Starlight overrides: Header (laid out like SiteHeader, + site links),
+                        ThemeSelect, LanguageSelect, MobileMenuFooter, EditLink (edits the
+                        source in synaptane/synaptane), MarkdownContent (wraps each table in a
+                        focusable area that scrolls sideways on narrow screens), Head (social
+                        preview, og:locale, structured data)
+  styles/tokens.css     the application's tokens and @font-face, + adjusted fallback fonts (site and docs)
   styles/site.css       base styles of the site pages
   styles/starlight.css  Starlight variables mapped onto the tokens
   pages/                site pages in English; pages/fr/ the same pages in French
   content/releases/     GENERATED copy of the main repository's CHANGELOG.md (release notes)
-  lib/                  changelog.ts (CHANGELOG parser)
+                        + links.fr.json (French equivalents of its links)
+  lib/                  changelog.ts (CHANGELOG parser), screenshots.ts (screenshots of the app
+                        in src/assets/app/, by name, language and theme), structured-data.ts
+                        (schema.org JSON-LD)
   content/docs/         GENERATED docs (Starlight): docs/ (English), fr/docs/ (French)
   content/i18n/         overrides of Starlight's interface strings
-public/                 served as is: CNAME, favicon, og.png, robots.txt, fonts/ (OFL), images/,
-                        docs/assets/ (GENERATED), demo/app/ and fr/demo/app/ (GENERATED)
+public/                 served as is: CNAME, favicon, og.png and og-fr.png (GENERATED), robots.txt,
+                        fonts/ (OFL), images/, docs/assets/ (GENERATED), demo/app/ and
+                        fr/demo/app/ (GENERATED)
 scripts/                sync-docs.mjs, check-links.mjs (Node, no dependency);
-                        build-demo/ (static demo generator, Python, see its README)
+                        build-demo/ (static demo generator, Python, see its README);
+                        og-image.py (social preview images og.png and og-fr.png, from the tokens,
+                        the logo and the demo: uv run --no-project --with playwright python scripts/og-image.py)
 docs/DNS.md             DNS records and GitHub Pages settings for synaptane.com
 ```
 
@@ -130,8 +139,14 @@ and copied here by `npm run sync-docs`:
 "Coming soon" / "Next release" before its date, "Preview" only for a version with a suffix
 (`v1.0.0-rc.1`, amber dot). A version without a date and without any note (the empty
 `## [Unreleased]` kept between two versions) is left out: no section, no link in the list of
-versions. On the French page, the section headings (Added, Changed…) are
-translated; the notes stay in English.
+versions. Each version shows its introduction (the paragraph before its first `###` heading) and
+the number of entries per section; its full notes are folded (`<details>`), open for the latest
+version only, and a link to `#v1.9.0` or to one of its headings opens them. On the French page,
+the section headings (Added, Changed…) are translated; the notes stay in English, but their links
+lead to the French pages when they exist: `src/content/releases/links.fr.json`, written by
+sync-docs, maps `/docs/x/#id` to `/fr/docs/x/#french-id` and `README.md#id` (on GitHub) to
+`README.fr.md#french-id` (the French heading at the same position: the translations keep the
+outline of the original).
 
 The generated files are committed (the site builds without the main repository), start with a
 "generated" comment, and are listed in `docs-sync.json` with the source commit. Do not edit
@@ -173,8 +188,9 @@ uv run --no-project --with playwright python scripts/build-demo/browse.py   # he
 
 How it works, what is frozen and what is disabled: [scripts/build-demo/README.md](scripts/build-demo/README.md).
 The presentation pages are `src/pages/demo/index.astro` and `src/pages/fr/demo/index.astro`
-(they read the version, date and queries from the manifest; their screenshot comes from
-`browse.py --preview`).
+(they read the version, date and queries from the manifest). The screenshots of the application
+on the site (home page, `/demo/` page) are taken on the static demo by `browse.py --gallery`, in
+both languages and both themes: see the generator's README.
 
 ## Deployment
 

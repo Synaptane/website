@@ -8,7 +8,9 @@ export const en = {
     siteName: 'Synaptane',
     defaultDescription:
       'Synaptane is a self-hosted team second brain stored in Git: Markdown first, and all your files (PDF, scans, Office, images), full-text and semantic search, an MCP server for your AI assistants, and a nightly tidy-up by an AI agent.',
-    ogImageAlt: 'Synaptane, the team second brain stored in Git',
+    ogImageAlt: 'Synaptane: “Your team’s memory, in Git.” Next to it, a wiki page of the demo.',
+    /** Open Graph image of the pages in this language (public/, made by scripts/og-image.py). */
+    ogImage: '/og.png',
     ogLocale: 'en_US',
   },
   a11y: {
@@ -18,6 +20,8 @@ export const en = {
     home: 'Synaptane home',
     menu: 'Menu',
     externalLink: '(opens GitHub)',
+    /** Name of the scrollable area around a docs table; {columns}: its column headers. */
+    table: 'Table: {columns}',
   },
   nav: {
     docs: 'Docs',
@@ -75,6 +79,7 @@ export const en = {
     copy: 'Copy',
     copied: 'Copied',
     copyLabel: 'Copy the code to the clipboard',
+    copiedStatus: 'Code copied to the clipboard',
   },
   screenshot: {
     light: 'light theme',
