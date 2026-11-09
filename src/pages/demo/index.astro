@@ -26,7 +26,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
 ---
 
 <Base title="Demo" description="Browse Synaptane in your browser: a frozen copy of a real instance, with the wiki of a fictional IT team, Acme, its pages and its files. Read-only, nothing to install.">
-  <PageHeader title="Demo" intro="Browse a real Synaptane instance in your browser, frozen in time: the wiki of Acme's IT team, a fictional company. Nothing to install, no account.">
+  <PageHeader title="Demo" intro="Browse a real Synaptane instance in your browser, frozen in time: the wiki of Acme’s IT team, a fictional company. Nothing to install, no account.">
     <div class="actions">
       <Button href={`${app}/`} variant="primary" size="lg" icon="arrow-right">Open the demo</Button>
       <Button href="/docs/admin/installation/" size="lg">Install Synaptane</Button>
@@ -41,7 +41,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       eager
       sizes="(min-width: 1184px) 1120px, calc(100vw - 32px)"
       zoom="demo"
-      alt="The static demo: a wiki page of Acme's IT team, with the space tree, a verified badge and a table of recovery targets"
+      alt="The static demo: a wiki page of Acme’s IT team, with the space tree, a verified badge and a table of recovery targets"
     />
   </div>
 
@@ -69,7 +69,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       </Card>
       <Card title="The nightly tidy-up" href={`${app}/o/acme/it/tidy/`} action="Open">
         <HomeIcon slot="icon" name="moon" size={18} />
-        <p>Last night's run: five notes of the inbox filed into the right pages, one left with a question for its author, every change in one commit with its diff.</p>
+        <p>Last night’s run: five notes of the inbox filed into the right pages, one left with a question for its author, every change in one commit with its diff.</p>
       </Card>
       <Card title="Wiki health" href={`${app}/o/acme/it/health/`} action="Open">
         <HomeIcon slot="icon" name="shield" size={18} />
@@ -96,7 +96,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       <li><strong>Search is limited</strong> to a few prepared words: {manifest.queries.map((q, i) => (
         <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
       ))}. The search palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) opens the search page instead.</li>
-      <li><strong>No AI.</strong> Nothing calls a server or an AI: the pages are plain files. The <a href={`${app}/o/acme/it/tidy/`}>tidy-up run</a> was replayed when the demo was generated, with Synaptane's own code and the model's answers written in advance; its tokens and cost are an estimate. The routines do not run, and search by meaning is off.</li>
+      <li><strong>No AI.</strong> Nothing calls a server or an AI: the pages are plain files. The <a href={`${app}/o/acme/it/tidy/`}>tidy-up run</a> was replayed when the demo was generated, with Synaptane’s own code and the model’s answers written in advance; its tokens and cost are an estimate. The routines do not run, and search by meaning is off.</li>
       <li><strong>A snapshot.</strong> Generated from Synaptane {version} on {generated}; the dates in the pages are relative to that day.</li>
     </ul>
   </Section>

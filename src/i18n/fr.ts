@@ -54,7 +54,7 @@ export const fr: Dictionary = {
     auto: 'Système',
   },
   footer: {
-    tagline: "Un second cerveau d’équipe stocké dans Git.",
+    tagline: "Un second cerveau d’équipe auto-hébergé, stocké dans Git.",
     license: 'Synaptane est un logiciel libre sous licence Apache 2.0.',
     madeBy: 'Conçu par',
     author: 'René Cotton',

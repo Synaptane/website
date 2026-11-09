@@ -58,7 +58,7 @@ export const en = {
     auto: 'System',
   },
   footer: {
-    tagline: 'A team second brain stored in Git.',
+    tagline: 'A self-hosted team second brain stored in Git.',
     license: 'Synaptane is open source under the Apache License 2.0.',
     madeBy: 'Made by',
     author: 'René Cotton',
