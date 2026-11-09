@@ -1,7 +1,8 @@
 ---
 /**
  * Top of the home page: status line, two-part headline, one-sentence lead, actions (slot
- * "actions"), then the product screenshot (light and dark), framed like a window.
+ * "actions"), an optional line of short reassurances under them, then the product screenshot
+ * (light and dark), framed like a window.
  */
 import Screenshot from '../Screenshot.astro';
 import wikiLight from '../../assets/app/wiki-light.png';
@@ -19,12 +20,14 @@ interface Props {
   /** Second part of the headline (muted). */
   titleMuted: string;
   lead: string;
+  /** Short facts under the actions (licence, hosting…), each after a small check mark. */
+  points?: string[];
   screenshotAlt: string;
   /** Text under the screenshot. */
   caption: string;
 }
 
-const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = Astro.props;
+const { status, statusHref, title, titleMuted, lead, points = [], screenshotAlt, caption } = Astro.props;
 // Colour of the dot: green for a released stable version, amber for a pre-release, grey while
 // the version is still to come.
 const release = await releaseStatus();
@@ -44,6 +47,11 @@ const tone = isPrerelease(release) ? 'preview' : release.date ? 'stable' : 'upco
     </h1>
     <p class="lead">{lead}</p>
     <div class="actions"><slot name="actions" /></div>
+    {points.length > 0 && (
+      <ul class="points">
+        {points.map((point) => <li>{point}</li>)}
+      </ul>
+    )}
   </div>
   <div class="container hero-shot">
     <Screenshot
@@ -123,6 +131,27 @@ const tone = isPrerelease(release) ? 'preview' : release.date ? 'stable' : 'upco
   .title-muted { color: var(--ink-3); }
   .lead { max-width: 60ch; margin: 0; font-size: clamp(17px, 2vw, 19.5px); line-height: 1.55; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 0; }
+  .points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+  /* A small check mark drawn in CSS: it stays in front of each fact when the line wraps. */
+  .points li::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 8px;
+    margin: 0 8px 0 2px;
+    border: solid var(--ok);
+    border-width: 0 1.5px 1.5px 0;
+    transform: translateY(-2px) rotate(45deg);
+  }
   .hero-shot { position: relative; margin-top: clamp(40px, 6vw, 64px); padding-bottom: var(--space-6); }
   .shot-caption { margin: var(--space-3) 0 0; font-size: 13.5px; color: var(--ink-3); text-align: center; }
   @media (max-width: 479px) {
