@@ -26,6 +26,8 @@ export const fr: Dictionary = {
     github: 'GitHub',
     discussions: 'Discussions',
     legal: 'Mentions légales',
+    tryIt: 'Essayer',
+    tryItTitle: 'Essayer Synaptane en local, en trois étapes',
   },
   language: {
     label: 'Langue',

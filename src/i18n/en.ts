@@ -28,6 +28,9 @@ export const en = {
     github: 'GitHub',
     discussions: 'Discussions',
     legal: 'Legal notice',
+    /** Call to action of the header: the "Get started" section of the home page. */
+    tryIt: 'Try it',
+    tryItTitle: 'Try Synaptane locally, in three steps',
   },
   language: {
     label: 'Language',
