@@ -232,7 +232,7 @@ const rows: Row[] = [
     caption="A page of the demo wiki of Acme, a fictional IT team."
   >
     <Fragment slot="actions">
-      <Button href="/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Get started</Button>
+      <Button href="#get-started" variant="primary" size="lg" icon="arrow-down">Try it locally</Button>
       <Button href="/demo/" size="lg">See the demo</Button>
       <Button href={SITE.github} size="lg" variant="quiet" iconBefore="github">GitHub</Button>
     </Fragment>
@@ -306,13 +306,14 @@ const rows: Row[] = [
           The guide covers the two proxy modes, upgrades and encrypted off-site backups.
         </p>
         <div class="home-links">
-          <Button href="/docs/admin/installation/" variant="primary" icon="arrow-right">Installation guide</Button>
+          <Button href="/docs/admin/installation/" variant="primary" icon="arrow-right">Install on a server</Button>
           <Button href="/docs/guide/mcp/">Connect an assistant</Button>
         </div>
       </div>
       <div class="home-code">
         <CodeBlock title="Terminal" lang="sh" code={installCode} />
         <p class="home-after">The tidy-up needs an AI provider; the wiki, search, the inbox and MCP work without one.</p>
+        <p class="home-after">These commands in detail, and without Docker: <a href="/docs/admin/installation/#demo-data">Demo data</a> in the installation guide.</p>
       </div>
     </div>
   </Section>
@@ -434,9 +435,10 @@ const rows: Row[] = [
   <section class="container home-cta-band" aria-labelledby="cta-title">
     <div class="home-cta">
       <h2 id="cta-title">Give your assistants a memory your team owns.</h2>
-      <p>Your pages and your documents, searchable, in a Git repository that stays yours. Start with the demo on your own machine, or read the documentation first.</p>
+      <p>Your pages and your documents, searchable, in a Git repository that stays yours. Run Synaptane on your own machine in a few minutes, or try the demo in your browser first.</p>
       <div class="home-links">
-        <Button href="/docs/admin/installation/" variant="primary" size="lg" icon="arrow-right">Get started</Button>
+        <Button href="#get-started" variant="primary" size="lg" icon="arrow-right">Try it locally</Button>
+        <Button href="/demo/" size="lg">See the demo</Button>
         <Button href={SITE.github} size="lg" iconBefore="github">GitHub</Button>
       </div>
     </div>
