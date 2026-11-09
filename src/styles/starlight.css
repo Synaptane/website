@@ -117,7 +117,7 @@ header.header {
 }
 site-search dialog { border-radius: var(--radius-lg); }
 
-/* ---------- Page title and Markdown: the app's reading style ---------- */
+/* ---------- Page title and Markdown: the reading style of the tokens ---------- */
 h1#_top {
   font-family: var(--font-display);
   font-weight: var(--display-weight);

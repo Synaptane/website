@@ -4,7 +4,9 @@
 :root {
   /* Layout of the site pages (the app's spacing scale: 4, 8, 12, 16, 24, 32, 48, 64…). */
   --page-max: 1120px;
-  --text-max: 68ch;
+  /* In em, not ch: Geist's digits are wide, so 68ch gave ~95 characters per line. 37em of
+     reading text is ~70 characters. */
+  --text-max: 37em;
   --gutter: 16px;
   --space-1: 4px;
   --space-2: 8px;
@@ -95,7 +97,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 }
 .container-narrow { max-width: calc(760px + 2 * var(--gutter)); }
 
-/* Long text (about, legal): the app's reading style (Newsreader in Paper). */
+/* Long text (about, legal): the reading font, size and line height of the tokens. */
 .prose {
   font-family: var(--font-read);
   font-size: var(--read-size);
