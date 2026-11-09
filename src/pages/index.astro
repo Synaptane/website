@@ -2,7 +2,14 @@
 // Home page (English). French twin: src/pages/fr/index.astro.
 // Facts on this page are checked against the documentation of synaptane/synaptane (README,
 // docs/concepts.md, docs/guide/mcp.md, docs/guide/wiki.md, docs/admin/*.md); the comparison table against each
-// product's public documentation and announcements, as of October 2026.
+// product's public documentation and announcements, as of October 2026. FAQ: README (Status,
+// Known limitations), docs/admin/ai.md (providers, cost and budget, what is sent) and
+// .github/workflows/ci.yml (what the public CI checks). The use cases link to real pages of the
+// demo (examples/acme-wiki). No testimonial or usage figure: do not add one without a source
+// anyone can check.
+// Order of the sections: the problem and the answer (hero, journey), what it covers (features and
+// files, screenshots, use cases), the comparison (table, architecture and license), the
+// objections (FAQ), then trying it (final band, get started).
 import Base from '../layouts/Base.astro';
 import Button from '../components/Button.astro';
 import CodeBlock from '../components/CodeBlock.astro';
@@ -22,125 +29,62 @@ import { releaseLabel, releaseStatus } from '../lib/release';
 
 const release = await releaseStatus();
 
-
+// One benefit and one proof per card; the details are behind the link. Search and files have
+// their own band (FileFormats), AI providers and costs are in the FAQ.
 const features: Feature[] = [
   {
     icon: 'git',
     title: 'Git is the source of truth',
-    text: 'Each space is a Git repository, on GitHub, GitLab, Gitea or any host. Its content/ folder holds Markdown pages and your original files, which you can read, grep and clone without Synaptane. Every change is a commit.',
+    text: 'Each space is a Git repository, on GitHub, GitLab, Gitea or any host: Markdown pages and your original files, one commit per change.',
     href: '/docs/admin/git/',
     linkLabel: 'Git repositories',
   },
   {
     icon: 'plug',
     title: 'Built for AI assistants',
-    text: 'An MCP server over OAuth 2.1 or personal tokens, tested with Claude.ai, Claude Desktop, Claude Code and ChatGPT. Review, file and undo without leaving the conversation. A connection can be read-only, limited to the inbox or to some spaces.',
+    text: 'Claude, ChatGPT and other assistants search the wiki and save notes to it over MCP. You choose what each connection may read or write.',
     href: '/docs/guide/mcp/',
     linkLabel: 'Connect an assistant',
   },
   {
     icon: 'inbox',
     title: 'Inbox and nightly tidy-up',
-    text: 'Notes from assistants, the web UI, the API or an email to the space’s address (authenticated senders) wait in an inbox. Every night an AI agent files them, updates pages, fixes links and commits. Deletions are capped; a run can be undone in one click.',
+    text: 'Assistants, the web UI, the API and emails from authenticated senders drop notes into an inbox. Every night an AI agent files them, with capped deletions and one-click undo.',
     href: '/docs/concepts/#tidy-up',
     linkLabel: 'How the tidy-up works',
   },
   {
     icon: 'clock',
     title: 'Scheduled routines',
-    text: 'Agents that run on a schedule, such as a weekly consistency check or a Friday digest. They write a report page, drop items into the inbox, send an email or call a webhook.',
+    text: 'Agents that run on a schedule, such as a weekly consistency check or a Friday digest, and report in a page, the inbox, an email or a webhook.',
     href: '/docs/admin/ai/#agent-routines-per-space',
     linkLabel: 'Routines',
   },
   {
-    icon: 'search',
-    title: 'Search that finds things',
-    text: 'Full-text search with accent folding and light stemming, across pages and the text of PDFs, Office files and images, scans included (OCR). Optional search by meaning with pgvector, and related pages on every page.',
-    href: '/docs/guide/wiki/#search',
-    linkLabel: 'Search',
-  },
-  {
     icon: 'shield',
     title: 'Knowledge you can trust',
-    text: 'Page owners, verification dates and review cycles. A health tab lists broken links, orphan pages and pages to review. Probable secrets are refused before any commit.',
+    text: 'Page owners, verification dates and a health tab for broken links and pages to review. Probable secrets are refused before any commit.',
     href: '/docs/guide/wiki/#verify-a-page',
     linkLabel: 'Verified pages',
   },
   {
-    icon: 'chip',
-    title: 'Bring your own model',
-    text: 'Anthropic, OpenAI, Mistral, Ollama or any OpenAI-compatible endpoint, with a monthly budget per organization. Without a provider, the wiki, search, the inbox and MCP still work.',
-    href: '/docs/admin/ai/',
-    linkLabel: 'AI providers',
-  },
-  {
     icon: 'users',
     title: 'Made for teams',
-    text: 'Groups and roles, a default role for every member, and restricted spaces for HR or management. Email invitations, single sign-on (OIDC, GitHub, GitLab, Google), two-factor authentication and an audit log of who changed what.',
+    text: 'Groups, roles and a default role for members, restricted spaces for HR or management, email invitations, single sign-on (OIDC, GitHub, GitLab, Google), 2FA and an audit log.',
     href: '/docs/concepts/#roles-and-permissions',
     linkLabel: 'Roles and permissions',
   },
 ];
 
+// The kinds of files a space displays and searches (README "Your files, all searchable").
 const formats: FileFormat[] = [
-  {
-    icon: 'markdown',
-    name: 'Markdown pages',
-    types: '.md',
-    badge: 'The heart of the wiki',
-    text: 'Written by your team, your assistants and the nightly tidy-up. Everything else is built around them.',
-    wiki: 'Rendered pages with links, backlinks, an outline, verification and related pages',
-    search: 'Full text',
-    assistants: 'Read and write; the tidy-up writes Markdown',
-  },
-  {
-    icon: 'file-text',
-    name: 'PDF',
-    types: '.pdf, scans included',
-    wiki: 'Built-in viewer, in the page',
-    search: 'Its text, or OCR for scanned pages',
-    assistants: 'Read the extracted text',
-  },
-  {
-    icon: 'slides',
-    name: 'Word, PowerPoint, Excel',
-    types: '.docx .pptx .xlsx .odt .odp .ods .doc .ppt .xls',
-    wiki: 'Download link, with the extracted text below',
-    search: 'Extracted text',
-    assistants: 'Read the extracted text',
-  },
-  {
-    icon: 'image',
-    name: 'Images',
-    types: 'PNG, JPEG, GIF, WebP, AVIF, BMP, SVG',
-    wiki: 'Displayed, alone or in the pages that embed them',
-    search: 'Text in the image, by OCR (not SVG or AVIF)',
-    assistants: 'Read the OCR text',
-  },
-  {
-    icon: 'code',
-    name: 'HTML pages',
-    types: '.html .htm',
-    wiki: 'Rendered in an isolated frame, source one click away',
-    search: 'Words',
-    assistants: 'Read and write',
-  },
-  {
-    icon: 'braces',
-    name: 'Text files',
-    types: 'CSV, JSON, YAML, code, logs…',
-    wiki: 'Syntax highlighting, editable like a page',
-    search: 'Words',
-    assistants: 'Read and write',
-  },
-  {
-    icon: 'archive',
-    name: 'Everything else',
-    types: 'archives, videos…',
-    wiki: 'Stored, versioned in Git, downloadable',
-    search: 'File name',
-    assistants: 'Listed',
-  },
+  { icon: 'markdown', name: 'Markdown pages' },
+  { icon: 'file-text', name: 'PDF and scans' },
+  { icon: 'slides', name: 'Word, PowerPoint, Excel' },
+  { icon: 'image', name: 'Images' },
+  { icon: 'code', name: 'HTML pages' },
+  { icon: 'braces', name: 'CSV, JSON, code' },
+  { icon: 'archive', name: 'Everything else' },
 ];
 
 const installCode = installCodeFor('en');
@@ -254,91 +198,63 @@ const rows: Row[] = [
     id="features"
     eyebrow="Features"
     title="A wiki your assistants read, feed and keep tidy"
-    intro="Markdown pages first, with all your files next to them. Everything else is built around them, and around the assistants your team already uses."
   >
     <FeatureGrid items={features} />
-  </Section>
-
-  <Section
-    id="files"
-    tone="alt"
-    eyebrow="Files"
-    title="Your files, all searchable"
-    intro="Markdown is the heart of the wiki, but a space holds any file, versioned in Git like a page. Synaptane shows each one at its best and reads its text, so that you and your assistants find it."
-  >
-    <FileFormats items={formats} labels={{ wiki: 'In the wiki', search: 'Search', assistants: 'AI assistants' }}>
-      <div class="home-files-foot">
-        <h3 class="home-files-title">Four ways in</h3>
-        <ul class="home-files-ways">
-          <li><HomeIcon name="upload" size={18} /><span><strong>The web interface</strong>Add a file to any folder (25 MB at most), or import a zip.</span></li>
-          <li><HomeIcon name="inbox" size={18} /><span><strong>Your assistants</strong>Attachments of a note dropped over MCP or the API.</span></li>
-          <li><HomeIcon name="mail" size={18} /><span><strong>An email</strong>Sent or forwarded to the space's address by an <a href="/docs/admin/email-capture/">authenticated sender</a>, attachments included.</span></li>
-          <li><HomeIcon name="git" size={18} /><span><strong>A git push</strong>A file in the content/ folder is a file in the wiki.</span></li>
-        </ul>
-        <p class="home-small">
-          Text is indexed a few seconds to a few minutes after a file arrives. The old .doc, .ppt and
-          .xls formats are read too; a file protected by a password has no text.
-        </p>
-        <p class="home-files-links">
-          <a href="/docs/guide/wiki/#files-other-than-markdown">Files other than Markdown<span aria-hidden="true"> →</span></a>
-          <a href="/demo/app/o/acme/it/p/infra/documents/">See them in the demo<span aria-hidden="true"> →</span></a>
-        </p>
-      </div>
+    <FileFormats id="files" items={formats} label="Kinds of files">
+      <h3>Your files, all searchable</h3>
+      <p>
+        Drop a PDF, a scan or a slide deck next to your pages: Synaptane shows it in the page, reads
+        its text (OCR included) and makes it searchable, by words or by meaning, for you and your
+        assistants.
+      </p>
+      <p>
+        Add files from the web interface (25 MB each, or a zip), as attachments to a note from an
+        assistant or to an email, or with a git push.
+      </p>
+      <p class="home-files-links">
+        <a href="/docs/guide/wiki/#files-other-than-markdown">Files other than Markdown<span aria-hidden="true"> →</span></a>
+        <a href="/docs/guide/wiki/#search">Search<span aria-hidden="true"> →</span></a>
+        <a href="/demo/app/o/acme/it/p/infra/documents/">See them in the demo<span aria-hidden="true"> →</span></a>
+      </p>
     </FileFormats>
-  </Section>
-
-  <Section
-    id="get-started"
-    eyebrow="Get started"
-    title="Running in three steps"
-    intro="On Linux, or WSL2 on Windows, with Docker. This starts a local instance with the demo wiki of Acme, a fictional IT team."
-  >
-    <div class="home-split">
-      <div>
-        <ol class="home-steps">
-          <li><strong>Get the release</strong>Clone the tagged release: it holds the Compose file, the nginx configuration and the server scripts.</li>
-          <li><strong>Write a minimal <code>.env</code></strong>A local address, a random database password and the image version. The last line lets the demo use a local Git repository: keep it for a throwaway instance.</li>
-          <li><strong>Start and load the demo</strong>Then open <code>http://localhost:8000/o/acme/it</code> and sign in with the password the command prints.</li>
-        </ol>
-        <p class="home-note">
-          <strong>For a real server,</strong> skip the demo line, create the first account with
-          <code>synaptane admin create</code>, serve it over HTTPS and run <code>synaptane doctor</code>.
-          The guide covers the two proxy modes, upgrades and encrypted off-site backups.
-        </p>
-        <div class="home-links">
-          <Button href="/docs/admin/installation/" variant="primary" icon="arrow-right">Install on a server</Button>
-          <Button href="/docs/guide/mcp/">Connect an assistant</Button>
-        </div>
-      </div>
-      <div class="home-code">
-        <CodeBlock title="Terminal" lang="sh" code={installCode} />
-        <p class="home-after">The tidy-up needs an AI provider; the wiki, search, the inbox and MCP work without one.</p>
-        <p class="home-after">These commands in detail, and without Docker: <a href="/docs/admin/installation/#demo-data">Demo data</a> in the installation guide.</p>
-      </div>
-    </div>
   </Section>
 
   <Section
     id="screenshots"
     tone="alt"
-    eyebrow="Screenshots"
+    eyebrow="In practice"
     title="Inside the application"
-    intro="Screenshots taken on the demo data set. Acme and its people are fictional."
+    intro="Screenshots and examples from the demo wiki of Acme, a fictional IT team: the examples open in your browser."
   >
     <Gallery
       openLabel="(full-size image)"
       items={[
         { shot: 'search', title: 'Ctrl+K search', text: 'across all your spaces, by words or by meaning.', alt: 'The Ctrl+K search palette with results from several pages' },
-        { shot: 'pdf', title: 'PDF viewer:', text: 'a contract opens in its page, and its text is indexed.', alt: 'A PDF support contract shown in the built-in viewer, next to the space tree' },
-        { shot: 'office', title: 'Office documents:', text: 'a download link, and the extracted text that search uses.', alt: 'A PowerPoint file in the wiki: a download link and the text extracted from its slides' },
         { shot: 'ocr', title: 'Scans:', text: 'a scanned delivery note, and its text read by OCR.', alt: 'A scanned PDF delivery note above the text recognized by OCR' },
-        { shot: 'inbox', title: 'Inbox:', text: 'notes and direct changes waiting for the nightly tidy-up.', alt: 'The inbox of a space: pending notes and changed pages, and the form to drop information' },
-        { shot: 'history', title: 'History:', text: 'every change is a Git commit, with its diff.', alt: 'The diff of a page change in the history' },
         { shot: 'health', title: 'Wiki health:', text: 'broken links, orphan pages, pages to review.', alt: 'The health tab of a space, listing broken links and pages to review' },
-        { shot: 'assistants', title: 'Connect an assistant', text: 'over MCP, and see its calls arrive.', alt: 'The page to connect an AI assistant over MCP' },
-        { shot: 'routines', title: 'Routines:', text: 'scheduled agents, such as a weekly consistency check.', alt: 'The list of scheduled agent routines of a space' },
       ]}
     />
+    <h3 class="home-cases-title" id="use-cases">What teams keep in it</h3>
+    <ul class="home-cases">
+      <li>
+        <HomeIcon name="terminal" size={18} />
+        <h4>Runbooks and infrastructure</h4>
+        <p>Servers, network, backups and restore procedures, next to their documents: a support contract in PDF, a scanned delivery note, a hardware inventory in Excel.</p>
+        <a href="/demo/app/o/acme/it/p/procedures/restore.md/">The restore procedure<span aria-hidden="true"> →</span></a>
+      </li>
+      <li>
+        <HomeIcon name="commit" size={18} />
+        <h4>Decisions and their reasons</h4>
+        <p>One page per decision, with its date and its reason. Months later, anyone can ask an assistant why there are no deployments on Friday afternoons, and get the page.</p>
+        <a href="/demo/app/o/acme/it/p/decisions/2026-10-no-friday-deployments.md/">A decision page<span aria-hidden="true"> →</span></a>
+      </li>
+      <li>
+        <HomeIcon name="users" size={18} />
+        <h4>Onboarding a newcomer</h4>
+        <p>The checklist, the accounts to open, the security training: what a newcomer reads on day one, and asks an assistant about on day two instead of interrupting a colleague.</p>
+        <a href="/demo/app/o/acme/it/p/team/onboarding.md/">The onboarding page<span aria-hidden="true"> →</span></a>
+      </li>
+    </ul>
   </Section>
 
   <Section
@@ -371,7 +287,7 @@ const rows: Row[] = [
   <Section
     id="architecture"
     tone="alt"
-    eyebrow="Architecture"
+    eyebrow="Architecture and open source"
     title="Simple to run, easy to leave"
     intro="One application, one worker, PostgreSQL and your Git repositories. If you stop using Synaptane, your wiki is still a folder of Markdown pages and your original files."
     class="home-arch"
@@ -391,24 +307,12 @@ const rows: Row[] = [
         <li><strong>A worker</strong> runs the nightly tidy-up, the routines, Git sync, indexing (with text extraction and OCR) and webhooks.</li>
         <li><strong>Backups and monitoring:</strong> a <a href="/docs/admin/backup/">verified backup every night</a>, nothing to set up; encrypted off-site in one command; a Health page, alerts, <code>/metrics</code>.</li>
       </ul>
-  </Section>
-
-  <Section id="open-source" eyebrow="Open source" title="Free software, honest about its stage">
-    <div class="home-oss">
-      <div>
+      <div class="home-oss" id="open-source">
         <p>
-          Synaptane is under the Apache License 2.0. The code, the documentation and this website are
-          on GitHub, and contributions are welcome: commits are signed off under the Developer
-          Certificate of Origin.
+          <strong>Free software.</strong> Synaptane is under the Apache License 2.0. The code, the
+          documentation and this website are on GitHub, and contributions are welcome: commits are
+          signed off under the Developer Certificate of Origin.
         </p>
-        <p>
-          Synaptane is <strong>stable</strong> since v1.0.0 (latest: {SITE.version}), maintained by one
-          person on a best-effort basis. Versions follow Semantic Versioning: within 1.x, the REST API,
-          the MCP tools and the configuration only change in a compatible way. Back up before each
-          upgrade.
-        </p>
-      </div>
-      <div>
         <ul class="home-link-list">
           <li>
             <a href={SITE.github}>
@@ -432,10 +336,72 @@ const rows: Row[] = [
             </a>
           </li>
         </ul>
-        <p class="home-hosted">
-          <strong>A hosted Synaptane?</strong> It is being considered. If you would use one, <a href={SITE.discussions}>tell us on GitHub Discussions</a>.
-        </p>
       </div>
+  </Section>
+
+  <Section id="faq" tone="alt" eyebrow="FAQ" title="Questions before you start">
+    <div class="home-faq">
+      <details>
+        <summary>Which AI assistants work with it?</summary>
+        <div>
+          <p>
+            Any assistant that speaks MCP. Synaptane is tested with Claude.ai, Claude Desktop, Claude
+            Code and ChatGPT: they search and read the wiki and drop notes into the inbox. In Claude
+            and ChatGPT, views let you review pages and undo a tidy-up without leaving the conversation. Claude.ai and ChatGPT need your
+            instance on a public HTTPS address; Claude Code also connects to a local one, with a
+            personal token.
+          </p>
+          <a href="/docs/guide/mcp/">Connect your AI assistant<span aria-hidden="true"> →</span></a>
+        </div>
+      </details>
+      <details>
+        <summary>Does my content go to an AI provider?</summary>
+        <div>
+          <p>
+            Only to the provider your organization chooses, and only for the AI features: the nightly
+            tidy-up and the routines send it the notes and pages they work on, semantic search sends
+            text to an embedding provider. Attachment text that probably holds a secret is not sent.
+            With a local model (Ollama), nothing leaves your server. Your assistants, for their part,
+            see what they read, under their own provider's terms.
+          </p>
+          <a href="/docs/admin/ai/">AI and tidy-up<span aria-hidden="true"> →</span></a>
+        </div>
+      </details>
+      <details>
+        <summary>What does it cost?</summary>
+        <div>
+          <p>
+            The software is free. You pay for your server and, if you use the AI features, your
+            provider: Anthropic, OpenAI, Mistral, Ollama or any OpenAI-compatible API. A monthly
+            budget per organization caps the spending (the form suggests €20 for a pay-per-use key);
+            once it is reached, runs stop until the next month.
+          </p>
+          <a href="/docs/admin/ai/#cost-and-budget">Cost and budget<span aria-hidden="true"> →</span></a>
+        </div>
+      </details>
+      <details>
+        <summary>Is it ready for a real team?</summary>
+        <div>
+          <p>
+            Synaptane is stable since v1.0.0 (latest: {SITE.version}) and follows Semantic Versioning:
+            within 1.x, the REST API, the MCP tools and the configuration only change in a compatible
+            way. It is maintained by one person, on a best-effort basis. Every change runs the tests, a
+            dependency audit and a full Docker install, upgrade, backup and restore in
+            <a href={`${SITE.github}/actions/workflows/ci.yml`}>public CI</a>. Back up before each
+            upgrade.
+          </p>
+          <a href="/releases/">Release notes<span aria-hidden="true"> →</span></a>
+        </div>
+      </details>
+      <details>
+        <summary>Is there a hosted Synaptane?</summary>
+        <div>
+          <p>
+            Not yet: it is being considered. If you would use one, tell us on GitHub Discussions.
+          </p>
+          <a href={SITE.discussions}>GitHub Discussions<span aria-hidden="true"> →</span></a>
+        </div>
+      </details>
     </div>
   </Section>
 
@@ -444,10 +410,41 @@ const rows: Row[] = [
       <h2 id="cta-title">Give your assistants a memory your team owns.</h2>
       <p>Your pages and your documents, searchable, in a Git repository that stays yours. Run Synaptane on your own machine in a few minutes, or try the demo in your browser first.</p>
       <div class="home-links">
-        <Button href="#get-started" variant="primary" size="lg" icon="arrow-right">Try it locally</Button>
+        <Button href="#get-started" variant="primary" size="lg" icon="arrow-down">Try it locally</Button>
         <Button href="/demo/" size="lg">See the demo</Button>
         <Button href={SITE.github} size="lg" iconBefore="github">GitHub</Button>
       </div>
     </div>
   </section>
+
+  <Section
+    id="get-started"
+    eyebrow="Get started"
+    title="Running in three steps"
+    intro="On Linux, or WSL2 on Windows, with Docker. This starts a local instance with the demo wiki of Acme, a fictional IT team."
+  >
+    <div class="home-split">
+      <div>
+        <ol class="home-steps">
+          <li><strong>Get the release</strong>Clone the tagged release: it holds the Compose file, the nginx configuration and the server scripts.</li>
+          <li><strong>Write a minimal <code>.env</code></strong>A local address, a random database password and the image version. The last line lets the demo use a local Git repository: keep it for a throwaway instance.</li>
+          <li><strong>Start and load the demo</strong>Then open <code>http://localhost:8000/o/acme/it</code> and sign in with the password the command prints.</li>
+        </ol>
+        <p class="home-note">
+          <strong>For a real server,</strong> skip the demo line, create the first account with
+          <code>synaptane admin create</code>, serve it over HTTPS and run <code>synaptane doctor</code>.
+          The guide covers the two proxy modes, upgrades and encrypted off-site backups.
+        </p>
+        <div class="home-links">
+          <Button href="/docs/admin/installation/" variant="primary" icon="arrow-right">Install on a server</Button>
+          <Button href="/docs/guide/mcp/">Connect an assistant</Button>
+        </div>
+      </div>
+      <div class="home-code">
+        <CodeBlock title="Terminal" lang="sh" code={installCode} />
+        <p class="home-after">The tidy-up needs an AI provider; the wiki, search, the inbox and MCP work without one.</p>
+        <p class="home-after">These commands in detail, and without Docker: <a href="/docs/admin/installation/#demo-data">Demo data</a> in the installation guide.</p>
+      </div>
+    </div>
+  </Section>
 </Base>
