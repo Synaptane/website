@@ -33,8 +33,10 @@
 </div>
 <a class="sidebar-inbox" href="/demo/app/o/acme/it/inbox/" aria-current="page">
 <span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"></path></svg></span><span class="tree-label">Inbox</span>
-<span class="sidebar-count" aria-hidden="true">6</span>
-<span class="sr-only">6 items waiting</span>
+<span class="sidebar-count" aria-hidden="true">3</span>
+<span class="sr-only">3 items waiting</span>
+<span class="sidebar-dot" title="1 left by the tidy-up" aria-hidden="true"></span>
+<span class="sr-only">1 of them left by the tidy-up</span>
 </a>
 <nav class="space-tree" aria-label="File tree">
 <ul class="space-tree-list">
@@ -123,14 +125,30 @@
 <h2 class="settings-title">Activity</h2>
 <p class="muted">Everything that changes in the space, from the Git history: pages, inbox and tidy-up, from Synaptane or pushed from elsewhere.</p>
 <section class="card ai-share section-gap-small" data-test="ai-share">
-<p><strong>0% written by AI</strong> <span class="muted">· 6 page changes over the last 30 days</span></p>
-<p class="muted ai-share-detail">pushed with Git 6</p>
+<p><strong>14% written by AI</strong> <span class="muted">· 7 page changes over the last 30 days</span></p>
+<p class="muted ai-share-detail"><span class="badge badge-ai">AI</span> tidy-up 1 · pushed with Git 6</p>
 </section>
 <nav class="segmented section-gap-small" aria-label="Filter activity">
 <a class="segmented-option" href="/demo/app/o/acme/it/activity/">All</a><a class="segmented-option" href="/demo/app/o/acme/it/activity/@kind-page/">Pages</a><a class="segmented-option" href="/demo/app/o/acme/it/activity/@kind-inbox/" aria-current="page">Inbox</a><a class="segmented-option" href="/demo/app/o/acme/it/activity/@kind-tidy/">Tidy-up runs</a><a class="segmented-option" href="/demo/app/o/acme/it/activity/@kind-ai/">Written by AI</a><a class="segmented-option" href="/demo/app/o/acme/it/activity/@kind-external/">Pushed outside Synaptane</a>
 </nav>
 <ol class="activity section-gap-small">
-<li class="empty">No activity of this kind.</li>
+<li class="activity-item activity-inbox">
+<div class="activity-head">
+<span class="badge badge-quiet">Note</span>
+<strong>Inès Petit</strong>
+<span class="muted"><time datetime="2026-11-09T14:23:40Z" data-local="full">2026-11-09 14:23</time></span>
+</div>
+<p class="activity-subject" title="Inbox: Guest Wi-Fi password rotated">Note dropped: Guest Wi-Fi password rotated</p>
+</li>
+<li class="activity-item activity-inbox">
+<div class="activity-head">
+<span class="badge badge-quiet">Note</span>
+<span class="badge badge-ai" title="Written by an AI">AI</span>
+<strong>Hugo Bernard</strong> <span class="muted">via an MCP assistant</span>
+<span class="muted"><time datetime="2026-11-09T10:12:31Z" data-local="full">2026-11-09 10:12</time></span>
+</div>
+<p class="activity-subject" title="Inbox: Disk alert threshold lowered to 80 %">Note dropped: Disk alert threshold lowered to 80 %</p>
+</li>
 </ol>
 </main>
 </div>

@@ -33,8 +33,10 @@
 </div>
 <a class="sidebar-inbox" href="/demo/app/o/acme/it/inbox/" aria-current="page">
 <span class="tree-icon"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"></path></svg></span><span class="tree-label">Inbox</span>
-<span class="sidebar-count" aria-hidden="true">6</span>
-<span class="sr-only">6 items waiting</span>
+<span class="sidebar-count" aria-hidden="true">3</span>
+<span class="sr-only">3 items waiting</span>
+<span class="sidebar-dot" title="1 left by the tidy-up" aria-hidden="true"></span>
+<span class="sr-only">1 of them left by the tidy-up</span>
 </a>
 <nav class="space-tree" aria-label="File tree">
 <ul class="space-tree-list">
@@ -128,11 +130,83 @@
 <span>Next tidy-up: tonight at 02:00</span>
 </p>
 </div>
+<div class="tidy-run-now">
+<form data-confirm="Start a run now? It uses tokens billed by the provider (about €0.11 per run lately)." data-demo-off=""><button class="button button-primary" type="submit" disabled="" aria-disabled="true">Tidy now</button></form>
 </div>
-<div class="notice notice-warning"><p>No AI provider is configured for the organization: the tidy-up cannot run.
-  <a href="/demo/app/unavailable/">Configure AI</a></p></div>
-<div class="stack tidy-journal" data-tidy-journal="" data-more="Details">
-<p class="empty">No runs yet.</p>
+</div>
+<div class="notice demo-replay-note" role="note"><p><strong>Static demo.</strong> This run was replayed when the demo was generated: Synaptane's own tidy-up code, on this wiki, with the model's answers written in advance. No AI was called; the tokens and the cost are an estimate. Nothing runs in the static demo. <a href="/demo/">About the demo</a></p></div><div class="stack tidy-journal" data-tidy-journal="" data-more="Details">
+<article class="card tidy-run" data-status="done">
+<div class="tidy-run-head">
+<div class="tidy-run-heading">
+<h3 class="tidy-run-title tidy-ok">5 items filed, 1 left in the inbox</h3>
+<p class="muted tidy-run-meta"><time datetime="2026-11-09T01:00:00+00:00" data-local="full">2026-11-09 01:00 UTC</time> · scheduled</p>
+</div>
+</div>
+<div class="tidy-run-body" id="tidy-run-2c165b01-bbcd-4793-90c1-b3e496b2266e">
+<p class="tidy-summary">6 notes reviewed: 4 integrated (NAS capacity, team meeting, switch inventory and its file, Friday deployments decision), 1 already in the wiki (VM backups), 1 left in the inbox for its author (Old server?).</p>
+<details class="tidy-quality">
+<summary><strong>Quality: 1 point to check</strong></summary>
+<ul class="muted">
+<li>Files: 2 created, 5 modified, 0 moved, 0 deleted</li>
+<li>Broken links: 0 before, 0 after</li>
+<li><strong>Items filed without a page given: 1</strong> — VM backups</li>
+<li>Text removed: 142 characters from kept pages, 0 from deleted pages</li>
+<li>Items left: 17%</li>
+<li>Per filed item: 36 634 tokens, 1.8 turns, ≈ €0.02</li>
+</ul>
+</details>
+<details class="tidy-ops" open=""><summary>Operations: 13</summary>
+<ul>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Page edited</span>
+<a href="/demo/app/o/acme/it/p/infra/storage.md/">infra/storage.md</a>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Page edited</span>
+<a href="/demo/app/o/acme/it/p/team/meetings.md/">team/meetings.md</a>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Attachment filed</span>
+<a href="/demo/app/o/acme/it/p/network/switch-inventory.csv/">network/switch-inventory.csv</a>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Page edited</span>
+<a href="/demo/app/o/acme/it/p/network/topology.md/">network/topology.md</a>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Page created</span>
+<a href="/demo/app/o/acme/it/p/decisions/2026-10-no-friday-deployments.md/">decisions/2026-10-no-friday-deployments.md</a>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Page edited</span>
+<a href="/demo/app/o/acme/it/p/decisions/README.md/">decisions/README.md</a>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Page edited</span>
+<a href="/demo/app/o/acme/it/p/procedures/deployment.md/">procedures/deployment.md</a>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Item tidied</span>
+<span class="tidy-op-name">NAS capacity raised to 16 TB</span> <span class="muted">— Capacity updated: 16 TB since 1 October 2026 (previously 8 TB).</span><span class="tidy-op-pages">Integrated into: <a href="/demo/app/o/acme/it/p/infra/storage.md/">infra/storage.md</a></span>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Item tidied</span>
+<span class="tidy-op-name">VM backups</span> <span class="muted">— Already in Backups (vzdump every night at 2 a.m.): nothing to add.</span><span class="tidy-op-pages muted">No page given by the agent.</span>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Item tidied</span>
+<span class="tidy-op-name">Team meeting moves to Tuesday</span> <span class="muted">— Meeting moved to Tuesday 10 a.m. from 13 October 2026 (previously Monday). To check: the remote-work decision and the dashboard export in Monitoring still mention a Monday meeting.</span><span class="tidy-op-pages">Integrated into: <a href="/demo/app/o/acme/it/p/team/meetings.md/">team/meetings.md</a></span>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Item left in the inbox</span>
+<span class="tidy-op-name">Old server?</span> <span class="muted">— Which server? The note does not say, and the wiki lists several (web1, web2, db1, db2, pve1, and the machines retired before 2020). A question for Malik Robert, who wrote it: the space's purpose says to leave such questions in the inbox.</span>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Item tidied</span>
+<span class="tidy-op-name">Switch inventory</span> <span class="muted">— Inventory filed next to Topology, with a Switches section that links to it.</span><span class="tidy-op-pages">Integrated into: <a href="/demo/app/o/acme/it/p/network/topology.md/">network/topology.md</a>, <a href="/demo/app/o/acme/it/p/network/switch-inventory.csv/">network/switch-inventory.csv</a></span>
+</li>
+<li class="tidy-op tidy-op-plain"><span class="tidy-op-label">Item tidied</span>
+<span class="tidy-op-name">No production deployments on Friday afternoons</span> <span class="muted">— New decision page, listed in Decisions and linked from the Deployment procedure.</span><span class="tidy-op-pages">Integrated into: <a href="/demo/app/o/acme/it/p/decisions/2026-10-no-friday-deployments.md/">decisions/2026-10-no-friday-deployments.md</a>, <a href="/demo/app/o/acme/it/p/decisions/README.md/">decisions/README.md</a>, <a href="/demo/app/o/acme/it/p/procedures/deployment.md/">procedures/deployment.md</a></span>
+</li>
+</ul>
+</details>
+<div class="tidy-run-foot">
+<span>Model: claude-sonnet-5-5 · 183 170 tokens · ≈ €0.11 · <code>5c1048769d</code></span>
+<div class="tidy-run-actions">
+<a class="button button-small" href="/demo/app/o/acme/it/-/tidy/2c165b01-bbcd-4793-90c1-b3e496b2266e/pages/" data-test="run-pages">Undo some pages…</a>
+<form data-confirm="Undo this run? Its changes are removed from the wiki and the tidied items return to the inbox." data-demo-off=""><button class="button button-small button-danger" type="submit" disabled="" aria-disabled="true">Undo this run</button></form>
+</div>
+</div>
+</div>
+</article>
 </div>
 </main>
 </div>

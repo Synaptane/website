@@ -1,6 +1,7 @@
 # Meetings
 
-The weekly team meeting takes place on **Monday at 10 a.m.**, in the Everest room.
+The weekly team meeting takes place on **Tuesday at 10 a.m.**, in the Everest room, since
+13 October 2026. Previously: Monday at 10 a.m.
 
 Incident review: the first Thursday of each month, see [incident](../procedures/incident.md).
 

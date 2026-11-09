@@ -59,8 +59,8 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       <Card title="Historique et modifications" href={`${app}/o/acme/it/history/procedures/restore.md/`}>
         <p>Chaque modification est un commit Git : qui a changé quoi, quand, et la différence.</p>
       </Card>
-      <Card title="L’inbox" href={`${app}/o/acme/it/inbox/`}>
-        <p>Six notes en attente du rangement de la nuit : un fait à ajouter, un doublon, une contradiction, une pièce jointe…</p>
+      <Card title="Le rangement de la nuit" href={`${app}/o/acme/it/tidy/`}>
+        <p>Le passage de la nuit dernière : cinq notes de l’inbox rangées dans les bonnes pages, une laissée avec une question pour son auteur, chaque modification dans un commit avec sa différence.</p>
       </Card>
       <Card title="Santé du wiki" href={`${app}/o/acme/it/health/`}>
         <p>Un lien cassé et une page à revoir ; aucune page orpheline ni vide. Ce qu’il faut corriger, trouvé sans IA.</p>
@@ -73,7 +73,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       </Card>
     </CardGrid>
     <p class="more">
-      Et aussi : l’<a href={`${app}/o/acme/it/activity/`}>activité</a> de l’espace, sa <a href={`${app}/o/acme/it/-/vocation/`}>vocation</a> et ses <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. L’interface existe en français et en
+      Et aussi : l’<a href={`${app}/o/acme/it/inbox/`}>inbox</a>, où deux nouvelles notes attendent le prochain passage, l’<a href={`${app}/o/acme/it/activity/`}>activité</a> de l’espace, sa <a href={`${app}/o/acme/it/-/vocation/`}>vocation</a> et ses <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. L’interface existe en français et en
       anglais (le lien de langue en haut de chaque page) ; le wiki lui-même est rédigé en anglais.
     </p>
   </Section>
@@ -84,7 +84,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       <li><strong>Recherche limitée</strong> à quelques mots préparés : {manifest.queries.map((q, i) => (
         <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
       ))}. La palette de recherche (<kbd>Ctrl</kbd> <kbd>K</kbd>) ouvre la page de recherche à la place.</li>
-      <li><strong>Pas d’IA.</strong> Le rangement de la nuit, les routines et la recherche par le sens demandent un fournisseur d’IA : la démo montre une instance qui n’en a pas. Rien n’appelle un serveur : les pages sont de simples fichiers.</li>
+      <li><strong>Pas d’IA.</strong> Rien n’appelle un serveur ni une IA : les pages sont de simples fichiers. Le <a href={`${app}/o/acme/it/tidy/`}>passage de rangement</a> a été rejoué à la génération de la démo, avec le vrai code de Synaptane et les réponses du modèle écrites à l’avance ; ses jetons et son coût sont une estimation. Les routines ne s’exécutent pas, et la recherche par le sens est désactivée.</li>
       <li><strong>Un instantané.</strong> Généré depuis Synaptane {version} le {generated} ; les dates des pages sont relatives à ce jour-là.</li>
     </ul>
   </Section>

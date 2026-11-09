@@ -59,8 +59,8 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       <Card title="History and changes" href={`${app}/o/acme/it/history/procedures/restore.md/`}>
         <p>Every change is a Git commit: who changed what, when, and the diff.</p>
       </Card>
-      <Card title="The inbox" href={`${app}/o/acme/it/inbox/`}>
-        <p>Six notes waiting for the nightly tidy-up: a fact to add, a duplicate, a contradiction, an attachment…</p>
+      <Card title="The nightly tidy-up" href={`${app}/o/acme/it/tidy/`}>
+        <p>Last night's run: five notes of the inbox filed into the right pages, one left with a question for its author, every change in one commit with its diff.</p>
       </Card>
       <Card title="Wiki health" href={`${app}/o/acme/it/health/`}>
         <p>A broken link and a page to review; no orphan or empty page. What to fix, found without AI.</p>
@@ -73,7 +73,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       </Card>
     </CardGrid>
     <p class="more">
-      Also: the <a href={`${app}/o/acme/it/activity/`}>activity</a> of the space, its <a href={`${app}/o/acme/it/-/vocation/`}>purpose</a> and its <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. The interface is in English and in
+      Also: the <a href={`${app}/o/acme/it/inbox/`}>inbox</a>, where two new notes wait for the next run, the <a href={`${app}/o/acme/it/activity/`}>activity</a> of the space, its <a href={`${app}/o/acme/it/-/vocation/`}>purpose</a> and its <a href={`${app}/o/acme/it/-/routines/`}>routines</a>. The interface is in English and in
       French (the language link at the top of each page); the wiki itself is written in English.
     </p>
   </Section>
@@ -84,7 +84,7 @@ const generated = new Date(`${manifest.generated}T12:00:00Z`).toLocaleDateString
       <li><strong>Search is limited</strong> to a few prepared words: {manifest.queries.map((q, i) => (
         <>{i > 0 && ', '}<a href={`${app}/search/${q}/`}>{q}</a></>
       ))}. The search palette (<kbd>Ctrl</kbd> <kbd>K</kbd>) opens the search page instead.</li>
-      <li><strong>No AI.</strong> The nightly tidy-up, the routines and search by meaning need an AI provider: the demo shows an instance without one. Nothing calls a server: the pages are plain files.</li>
+      <li><strong>No AI.</strong> Nothing calls a server or an AI: the pages are plain files. The <a href={`${app}/o/acme/it/tidy/`}>tidy-up run</a> was replayed when the demo was generated, with Synaptane's own code and the model's answers written in advance; its tokens and cost are an estimate. The routines do not run, and search by meaning is off.</li>
       <li><strong>A snapshot.</strong> Generated from Synaptane {version} on {generated}; the dates in the pages are relative to that day.</li>
     </ul>
   </Section>
