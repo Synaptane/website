@@ -73,6 +73,7 @@ export const fr: Dictionary = {
     copy: 'Copier',
     copied: 'Copié',
     copyLabel: 'Copier le code dans le presse-papiers',
+    copiedStatus: 'Code copié dans le presse-papiers',
   },
   screenshot: {
     light: 'thème clair',

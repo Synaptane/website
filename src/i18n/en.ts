@@ -77,6 +77,7 @@ export const en = {
     copy: 'Copy',
     copied: 'Copied',
     copyLabel: 'Copy the code to the clipboard',
+    copiedStatus: 'Code copied to the clipboard',
   },
   screenshot: {
     light: 'light theme',
