@@ -10,8 +10,13 @@ const groups: RoadmapGroup[] = [
   {
     id: 'ia-et-rangement',
     title: 'IA et rangement',
-    intro: 'Rendre le rangement mesurable, et comparable d’un modèle à l’autre.',
+    intro: 'Laisser chaque équipe décrire sa nuit, et rendre le rangement mesurable.',
     items: [
+      {
+        status: 'next',
+        title: 'Des routines qui tiennent leurs propres pages',
+        text: 'Depuis la 1.16, chaque routine d’un espace est un fichier de son dépôt. Ensuite : une routine qui écrit directement dans les dossiers qui lui sont confiés (un miroir, une page de synthèse), avec les garde-fous du rangement ; une mémoire gardée d’un passage à l’autre ; des routines qui passent avant ou après le rangement, et un compte rendu unique de la nuit par e-mail ou webhook. Plus tard : des routines qui lisent un service extérieur en HTTP, avec des secrets que le modèle ne voit jamais.',
+      },
       {
         status: 'later',
         title: 'Publier les résultats du banc d’évaluation',

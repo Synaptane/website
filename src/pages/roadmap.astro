@@ -10,8 +10,13 @@ const groups: RoadmapGroup[] = [
   {
     id: 'ai-and-tidy-up',
     title: 'AI and tidy-up',
-    intro: 'Make the tidy-up measurable, and comparable from one model to another.',
+    intro: 'Let each team describe its night, and make the tidy-up measurable.',
     items: [
+      {
+        status: 'next',
+        title: 'Routines that keep their own pages',
+        text: 'Since 1.16, each routine of a space is a file of its repository. Next: a routine that writes directly in the folders it is given (a mirror, a summary page), with the tidy-up’s safeguards; a memory kept from one run to the next; routines that run before or after the tidy-up, and one report of the night by email or webhook. Later: routines that read an outside service over HTTP, with secrets the model never sees.',
+      },
       {
         status: 'later',
         title: 'Publish the bench’s results',
