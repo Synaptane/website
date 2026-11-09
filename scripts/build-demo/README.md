@@ -3,7 +3,8 @@
 Builds the static demo of synaptane.com (`/demo/app/`, `/fr/demo/app/`): the **real pages of
 the Synaptane interface**, generated from the Acme demo wiki and frozen into plain HTML. Visitors
 move around as in the product (tree, links, tabs, history, search), but nothing can be changed
-and nothing calls a server. A banner on every page says so and links to the installation guide.
+and nothing calls a server. A banner on every page says so, links to the installation guide, and
+leads back to the demo's page on the site (`/demo/`, `/fr/demo/`).
 
 The output is committed (`public/demo/app/`, `public/fr/demo/app/`): the site builds without the
 application. Regenerate it after a Synaptane release, or when the interface or the demo data
@@ -93,7 +94,8 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
      instance address becomes `https://brain.acme.example` (fictional);
    - a strict `Content-Security-Policy` meta (the application's, plus `form-action 'none'`),
      `noindex`, `demo.css`, `demo.js` (before the application's `preferences.js`) and the
-     banner (theme switch shared with the site, link to the page in the other language);
+     banner (link back to the demo's page on the site, theme switch shared with the site, link
+     to the page in the other language; on phones, shorter labels keep it to two lines);
    - "Download" links get the `download` attribute (a static file has no
      `Content-Disposition`); a document without preview (Word, PowerPoint, Excel) shows its
      extracted text unfolded;
@@ -112,13 +114,13 @@ Options of `build.sh`: `--admin-url` (a PostgreSQL role allowed to create databa
 6. **Checks**: `check_demo.py` (standard library only, also in CI as `npm run check-demo`):
    links of the demo resolve, no external resource, no inline script/style/event attribute
    (inline styles allowed in the wiki's HTML files, which must carry their policy),
-   every form frozen, and no CSRF token, cookie name, Bearer token, `sk-` key, localhost or
+   a banner with its link back to `/demo/` (`/fr/demo/`) on every page, every form frozen, and no CSRF token, cookie name, Bearer token, `sk-` key, localhost or
    127.0.0.1, local path, `file://` URL, or e-mail address outside `*.example`/`*.internal`.
    `browse.py` (Playwright, full headless Chromium for its PDF viewer, after `npm run build`):
    every request stays on demo files or `/fonts/`, no console error, no active control, a
    forced submission changes nothing, the theme switch, the PDF viewer, the rendered HTML file,
    the extracted text of the slides, a click-through path (and one from the tidy-up log to a
-   diff of the run), and screenshots in `screenshots/demo/` (`--preview` also
+   diff of the run), the link back to the site and the two-line banner at 360 px, and screenshots in `screenshots/demo/` (`--preview` also
    refreshes the two images of the `/demo/` page in `src/assets/demo/`).
 
 The instance is always torn down (server stopped, database dropped, folder deleted), even after
