@@ -1,7 +1,9 @@
 ---
 /**
- * Header of the site pages: logo, main navigation, GitHub, language and theme. Below 860px the
- * navigation folds into a <details> menu (no JavaScript).
+ * Header of the site pages: logo, main navigation, GitHub, language and theme, and one call to
+ * action, "Try it", towards the "Get started" section of the home page. Below 960px (the width
+ * the French bar needs on one line) the navigation folds into a <details> menu (no JavaScript);
+ * the call to action stays in the bar, next to the menu button.
  */
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo.svg';
@@ -21,6 +23,7 @@ interface Props {
 const { lang, alternateHref } = Astro.props;
 const t = useTranslations(lang);
 const current = stripLangPrefix(Astro.url.pathname);
+const tryHref = `${localizePath('/', lang)}#get-started`;
 const items = mainNav.map((item) => ({
   label: t.nav[item.key],
   href: localizePath(item.path, lang),
@@ -49,6 +52,8 @@ const items = mainNav.map((item) => ({
       <LanguageSwitcher lang={lang} href={alternateHref} />
       <ThemeControl t={t} />
     </div>
+
+    <a class="cta" href={tryHref} title={t.nav.tryItTitle}>{t.nav.tryIt}</a>
 
     <details class="menu">
       <summary>
@@ -129,7 +134,27 @@ const items = mainNav.map((item) => ({
   }
   .icon-link:hover { background: var(--hover); color: var(--ink); }
 
-  .menu { display: none; margin-left: auto; }
+  /* The call to action: the app's primary button (ink by day, lime by night), at the height of
+     the other controls of the bar. */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .cta:hover { background: var(--primary-hover); color: var(--on-primary); text-decoration: none; }
+
+  .menu { display: none; }
   .menu summary {
     list-style: none;
     display: inline-flex;
@@ -187,8 +212,12 @@ const items = mainNav.map((item) => ({
     border-top: 1px solid var(--border);
   }
 
-  @media (max-width: 859px) {
+  @media (max-width: 959px) {
+    .bar { gap: var(--space-2); }
     .nav-desktop, .tools { display: none; }
+    .cta { margin-left: auto; height: 36px; }
     .menu { display: block; }
+    /* Touch targets of 40px in the menu (ThemeControl does it by itself below 860px only). */
+    .panel-tools :global(.theme-control button) { width: 40px; height: 40px; }
   }
 </style>
