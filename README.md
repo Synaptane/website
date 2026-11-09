@@ -124,7 +124,11 @@ and copied here by `npm run sync-docs`:
   `/releases/` renders one section per version. A version without a date shows "Unreleased" and
   links to the changelog on GitHub instead of its release page, with a "Coming soon" badge
 ("Preview coming soon" for a pre-release); the hero and the footer say the same
-(`src/lib/release.ts`). On the French page, the section headings (Added, Changed…) are
+(`src/lib/release.ts`): "Latest release" for a released stable version (green dot in the hero),
+"Coming soon" / "Next release" before its date, "Preview" only for a version with a suffix
+(`v1.0.0-rc.1`, amber dot). A version without a date and without any note (the empty
+`## [Unreleased]` kept between two versions) is left out: no section, no link in the list of
+versions. On the French page, the section headings (Added, Changed…) are
 translated; the notes stay in English.
 
 The generated files are committed (the site builds without the main repository), start with a

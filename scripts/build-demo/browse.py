@@ -3,7 +3,8 @@
 - every request made by the demo pages stays on the site and targets demo files or /fonts/;
 - no console error (CSP violation, script error);
 - no active control in a frozen form; a forced submission changes nothing;
-- navigation by clicks, from page to page (tree fragment, history, diff, inbox, search);
+- navigation by clicks, from page to page (tree fragment, history, diff, inbox, search), and
+  from the replayed tidy-up run to the pages it changed and their diff;
 - files other than Markdown: the PDF opens in the browser's viewer, the HTML file is rendered
   in its sandboxed frame, the extracted text of an Office document is shown;
 - screenshots of a few pages (light/dark, EN/FR, mobile) in screenshots/demo/ (ignored by Git);
@@ -53,6 +54,8 @@ PAGES = [
     "/fr/demo/app/",
     "/fr/demo/app/o/acme/it/p/infra/backups.md/",
     "/fr/demo/app/o/acme/it/inbox/",
+    "/fr/demo/app/o/acme/it/tidy/",
+    "/fr/demo/app/o/acme/it/activity/",
     "/fr/demo/app/search/backup/",
     PDF,
     DOCS + "2026-09-delivery-note.pdf/",
@@ -75,6 +78,10 @@ SHOTS = [
     ("en-wiki-light", "/demo/app/o/acme/it/p/procedures/restore.md/", "light", 1440, 900),
     ("en-diff-dark", "/demo/app/o/acme/it/history/procedures/restore.md/", "dark", 1440, 900),
     ("fr-inbox-light", "/fr/demo/app/o/acme/it/inbox/", "light", 1440, 900),
+    ("en-tidy-light", "/demo/app/o/acme/it/tidy/", "light", 1440, 900),
+    ("fr-tidy-dark", "/fr/demo/app/o/acme/it/tidy/", "dark", 1440, 900),
+    ("en-tidy-mobile", "/demo/app/o/acme/it/tidy/", "dark", 390, 844),
+    ("en-activity-light", "/demo/app/o/acme/it/activity/", "light", 1440, 900),
     ("fr-search-dark", "/fr/demo/app/search/backup/", "dark", 1440, 900),
     ("en-health-dark", "/demo/app/o/acme/it/health/", "dark", 1280, 800),
     ("fr-wiki-mobile", "/fr/demo/app/o/acme/it/p/procedures/restore.md/", "light", 390, 844),
@@ -222,6 +229,20 @@ def main() -> int:
         if "/unavailable/" not in steps[-1] or not steps[-2].startswith("/fr/demo/app/"):
             problems.append(f"navigation: unexpected end {steps[-2:]}")
         print("navigation:", " → ".join(steps))
+
+        # The replayed tidy-up run: its log says it was replayed, leads to the pages it changed,
+        # then to the diff of one of them.
+        visit("/demo/app/o/acme/it/tidy/")
+        if not page.locator(".demo-replay-note").count():
+            problems.append("tidy-up: no note about the replayed run")
+        tidy_steps: list[str] = []
+        for selector in ("main a[data-test=run-pages]", "main .undo-pages a[href*='/diff/']"):
+            page.locator(selector).first.click()
+            page.wait_for_load_state("networkidle")
+            tidy_steps.append(page.url.replace(origin, ""))
+        if "/-/tidy/" not in tidy_steps[0] or "/diff/" not in tidy_steps[-1]:
+            problems.append(f"tidy-up navigation: unexpected path {tidy_steps}")
+        print("tidy-up:", " → ".join(tidy_steps))
 
         # Screenshots.
         for name, url, theme, width, height in SHOTS:

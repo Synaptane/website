@@ -45,6 +45,8 @@
   font-size: 15px;
 }
 .home-note strong { color: var(--ink); }
+.home-compare-import { margin-top: var(--space-5); max-width: 80ch; }
+.home-compare-import a { white-space: nowrap; }
 .home-code :is(figure) { margin-bottom: var(--space-3); }
 .home-code .home-after { margin: 0; font-size: 14px; color: var(--ink-3); }
 .home-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
