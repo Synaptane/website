@@ -1,15 +1,23 @@
 ---
 /**
  * Starlight override of the docs header: Starlight's own header (logo, search, GitHub, theme,
- * language) plus the links back to the site pages (Demo, Roadmap, About) on wide screens.
+ * language) plus the links back to the site pages (Demo, Roadmap, About), at every width:
+ * - below 50rem, in Starlight's mobile menu (MobileMenuFooter.astro);
+ * - from 50rem to 64rem, folded into a small "Menu" drop-down (a <details>), as they do not fit
+ *   next to the search in French;
+ * - from 64rem, as links in the header.
  * The grid styles are Starlight's (components/Header.astro), kept as they are.
  */
 import Search from '@astrojs/starlight/components/Search.astro';
 import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
 import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
+import Icon from '../Icon.astro';
+import { getLang, useTranslations } from '../../i18n';
 import LanguageSelect from './LanguageSelect.astro';
 import SiteLinks from './SiteLinks.astro';
 import ThemeSelect from './ThemeSelect.astro';
+
+const t = useTranslations(getLang(Astro.locals.starlightRoute.lang));
 ---
 
 <div class="header">
@@ -21,6 +29,15 @@ import ThemeSelect from './ThemeSelect.astro';
   </div>
   <div class="sl-hidden md:sl-flex print:hidden right-group">
     <SiteLinks class="header-site-links" />
+    <details class="header-site-menu">
+      <summary>
+        <Icon name="menu" size={16} />
+        <span>{t.a11y.menu}</span>
+      </summary>
+      <div class="site-menu-panel">
+        <SiteLinks />
+      </div>
+    </details>
     <div class="sl-flex social-icons">
       <SocialIcons />
     </div>
@@ -28,6 +45,22 @@ import ThemeSelect from './ThemeSelect.astro';
     <ThemeSelect />
   </div>
 </div>
+
+<script>
+  // Close the drop-down on Escape or on a click outside it (the <details> alone stays open).
+  const menu = document.querySelector<HTMLDetailsElement>('.header-site-menu');
+  if (menu) {
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
+    });
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
 
 <style>
   .header {
@@ -53,11 +86,47 @@ import ThemeSelect from './ThemeSelect.astro';
     height: 2rem;
     border-inline-end: 1px solid var(--sl-color-gray-5);
   }
-  /* The site links need room: shown from 72rem (when the table of contents appears). */
+  /* The site links need room: in the header from 64rem, in a drop-down below. */
   .right-group :global(.header-site-links) { display: none; }
-  @media (min-width: 72rem) {
+  @media (min-width: 64rem) {
     .right-group :global(.header-site-links) { display: block; }
+    .header-site-menu { display: none; }
   }
+  @media (max-width: 63.99rem) {
+    .right-group { gap: 0.5rem; }
+  }
+  .header-site-menu { position: relative; }
+  .header-site-menu summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--radius);
+    color: var(--ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .header-site-menu summary::-webkit-details-marker { display: none; }
+  .header-site-menu summary:hover,
+  .header-site-menu[open] summary { background: var(--hover); color: var(--ink); }
+  .site-menu-panel {
+    position: absolute;
+    inset-inline-end: 0;
+    top: calc(100% + 8px);
+    z-index: 10;
+    min-width: 12rem;
+    padding: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+  .site-menu-panel :global(ul) { flex-direction: column; flex-wrap: nowrap; }
+  .site-menu-panel :global(a) { display: flex; height: 40px; font-size: 15px; }
   @media (min-width: 50rem) {
     :global(:root[data-has-sidebar]) {
       --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));

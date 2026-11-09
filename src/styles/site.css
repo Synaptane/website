@@ -115,7 +115,8 @@ hr { border: 0; border-top: 1px solid var(--border); margin: var(--space-7) 0; }
 .prose :is(th, td) { border-bottom: 1px solid var(--border); padding: 9px 24px 9px 0; text-align: left; vertical-align: top; }
 .prose th { font-weight: 500; font-size: 13px; color: var(--ink-3); }
 .prose img { border-radius: var(--radius); }
-.prose :not(pre) > code { font-size: 0.78em; }
+.prose :not(pre) > code { font-size: max(0.78em, 13px); }
+.prose :is(table, figcaption) :not(pre) > code { font-size: 0.875em; }
 /* Plain <pre> only: code blocks of Markdown content are framed by Expressive Code, as in the docs. */
 .prose pre:not(.expressive-code pre) {
   margin: 0 0 var(--space-4); font-size: 13px; line-height: 1.6; padding: 14px 16px; overflow-x: auto;

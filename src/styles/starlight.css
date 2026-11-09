@@ -95,6 +95,11 @@
   }
   site-search button[data-open-modal]:hover { border-color: var(--field-border); color: var(--ink); }
 }
+/* From 50rem to 64rem the header also holds the "Menu" of the site links (Header.astro): the
+   search button drops its "Ctrl K" hint (the shortcut still works) to leave them room. */
+@media (min-width: 50rem) and (max-width: 63.99rem) {
+  site-search button[data-open-modal] > kbd { display: none; }
+}
 site-search dialog { border-radius: var(--radius-lg); }
 
 /* ---------- Page title and Markdown: the app's reading style ---------- */
@@ -120,6 +125,9 @@ h1#_top {
   font-family: var(--font-body);
   font-size: 15px;
 }
+.sl-markdown-content :is(table, figcaption, .starlight-aside, .card, .sl-steps) :not(pre) > code:not(:where(.not-content *)) {
+  font-size: 0.875em;
+}
 .sl-markdown-content a:not(:where(.not-content *)) {
   color: var(--accent);
   text-decoration: underline;
@@ -127,8 +135,11 @@ h1#_top {
   text-decoration-thickness: 1px;
 }
 .sl-markdown-content a:not(:where(.not-content *)):hover { color: var(--accent-hover); }
+/* Inline code: a little smaller than the text around it (monospace looks larger), but never
+   below 13px, so that tool, variable and file names stay readable in the 15px tables and
+   asides. */
 .sl-markdown-content :not(pre) > code:not(:where(.not-content *)) {
-  font-size: 0.78em;
+  font-size: max(0.78em, 13px);
   padding: 2px 5px;
   border: 0;
   border-radius: 5px;
