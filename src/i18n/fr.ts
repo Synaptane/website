@@ -58,10 +58,13 @@ export const fr: Dictionary = {
     licenseShort: 'Licence Apache 2.0',
   },
   release: {
+    latest: 'Dernière version',
+    next: 'Prochaine version',
+    upcoming: 'Bientôt disponible',
     preview: 'Préversion',
-    upcoming: 'Préversion à venir',
-    released: 'Préversion : {version}, publiée le {date}.',
-    coming: 'Préversion : {version}, à venir.',
+    previewUpcoming: 'Préversion à venir',
+    released: '{label} : {version}, publiée le {date}.',
+    coming: '{label} : {version}, à venir.',
   },
   code: {
     copy: 'Copier',

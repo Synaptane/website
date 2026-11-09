@@ -60,10 +60,13 @@ export const en = {
     licenseShort: 'Apache License 2.0',
   },
   release: {
+    latest: 'Latest release',
+    next: 'Next release',
+    upcoming: 'Coming soon',
     preview: 'Preview',
-    upcoming: 'Preview coming soon',
-    released: 'Preview: {version}, released on {date}.',
-    coming: 'Preview: {version}, coming soon.',
+    previewUpcoming: 'Preview coming soon',
+    released: '{label}: {version}, released on {date}.',
+    coming: '{label}: {version}, coming soon.',
   },
   code: {
     copy: 'Copy',
