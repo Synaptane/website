@@ -5,7 +5,7 @@ export const fr: Dictionary = {
   meta: {
     siteName: 'Synaptane',
     defaultDescription:
-      "Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers (PDF, scans, Office, images), une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
+      "Synaptane est un wiki d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers (PDF, scans, Office, images), une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
     ogImageAlt: "Synaptane : « La mémoire de votre équipe, dans Git. » À côté, une page du wiki de démonstration.",
     /** Open Graph image of the pages in this language (public/, made by scripts/og-image.py). */
     ogImage: '/og-fr.png',
@@ -54,7 +54,7 @@ export const fr: Dictionary = {
     auto: 'Système',
   },
   footer: {
-    tagline: "Un second cerveau d’équipe stocké dans Git.",
+    tagline: "Un wiki d’équipe auto-hébergé, stocké dans Git.",
     license: 'Synaptane est un logiciel libre sous licence Apache 2.0.',
     madeBy: 'Conçu par',
     author: 'René Cotton',

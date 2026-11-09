@@ -7,14 +7,14 @@ import NewsletterNote from '../components/content/NewsletterNote.astro';
 import { SITE } from '../site';
 ---
 
-<Base title="About" description="René Cotton makes Synaptane. Why he built a team second brain that stays in your own Git repository.">
-  <PageHeader title="About" intro="Who makes Synaptane, and why." />
+<Base title="About" description="René Cotton builds and maintains Synaptane. Why he made a team wiki that stays in your own Git repository, and how it is built.">
+  <PageHeader title="About" intro="Who makes Synaptane, why, and how." />
   <div class="container about">
     <AuthorCard lang="en" />
     <div>
       <div class="prose">
         <p>
-          I'm René Cotton, and I make Synaptane. I built it for three reasons.
+          I’m René Cotton. I build and maintain Synaptane, and I started it for three reasons.
         </p>
         <h2>Knowledge gets lost</h2>
         <p>
@@ -35,14 +35,17 @@ import { SITE } from '../site';
           like any repository, and leave whenever you want. That is also why Synaptane is self-hosted and open source,
           under the Apache 2.0 license.
         </p>
+        <h2>How it is built</h2>
         <p>
-          I develop Synaptane with the help of AI coding assistants, and I review every change.
+          I develop Synaptane with the help of AI coding assistants, and I review every change. On every push to GitHub
+          and every pull request, the same checks run: linting, strict type checking and the test suite, against a real PostgreSQL
+          database. The tidy-up, search and the MCP tools also have an <a href="/docs/dev/eval/">evaluation bench</a>:
+          a change to the agent’s instructions, to the model or to the search ranking is measured, not guessed.
         </p>
         <h2>Get in touch</h2>
         <p>
-          There is no email address: questions, ideas and feedback go to{' '}
-          <a href={SITE.discussions}>GitHub Discussions</a>, where the answers help everyone. Bugs go to{' '}
-          <a href={`${SITE.github}/issues`}>issues</a>.
+          Questions, ideas and feedback are welcome in <a href={SITE.discussions}>GitHub Discussions</a>, where the
+          answers help everyone. Report bugs in the <a href={`${SITE.github}/issues`}>issue tracker</a>.
         </p>
         <p>
           Security vulnerabilities: report them privately, never in a public issue. See{' '}

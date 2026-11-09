@@ -7,14 +7,14 @@ import NewsletterNote from '../../components/content/NewsletterNote.astro';
 import { SITE } from '../../site';
 ---
 
-<Base title="À propos" description="René Cotton développe Synaptane. Pourquoi il a créé un second cerveau d’équipe qui reste dans votre propre dépôt Git.">
-  <PageHeader title="À propos" intro="Qui fait Synaptane, et pourquoi." />
+<Base title="À propos" description="René Cotton développe et maintient Synaptane. Pourquoi il a créé un wiki d’équipe qui reste dans votre propre dépôt Git, et comment il le développe.">
+  <PageHeader title="À propos" intro="Qui fait Synaptane, pourquoi, et comment." />
   <div class="container about">
     <AuthorCard lang="fr" />
     <div>
       <div class="prose">
         <p>
-          Je m’appelle René Cotton, et je développe Synaptane. Je l’ai créé pour trois raisons.
+          Je m’appelle René Cotton. Je développe et maintiens Synaptane, et je l’ai créé pour trois raisons.
         </p>
         <h2>Le savoir se perd</h2>
         <p>
@@ -37,17 +37,22 @@ import { SITE } from '../../site';
           Synaptane, le sauvegarder comme n’importe quel dépôt, et partir quand vous le voulez. C’est aussi pour cela
           que Synaptane s’héberge chez vous et qu’il est libre, sous licence Apache 2.0.
         </p>
+        <h2>Comment il est développé</h2>
         <p>
-          Je développe Synaptane avec l’aide d’assistants de programmation IA, et je relis chaque modification.
+          Je développe Synaptane avec l’aide d’assistants de programmation IA, et je relis chaque modification. À chaque
+          envoi sur GitHub et à chaque proposition de modification (pull request), les mêmes contrôles s’exécutent :
+          analyse statique du code, typage strict et suite de tests, sur une vraie base PostgreSQL. Le rangement, la recherche et les outils MCP ont en plus un{' '}
+          <a href="/fr/docs/dev/eval/">banc d’évaluation</a> : un changement des consignes de l’agent, du modèle ou du
+          classement de la recherche se mesure, au lieu de se deviner.
         </p>
         <h2>Me contacter</h2>
         <p>
-          Il n’y a pas d’adresse e-mail : vos questions, idées et retours sont les bienvenus dans les{' '}
-          <a href={SITE.discussions}>Discussions GitHub</a>, où les réponses profitent à tous. Les bugs vont dans les{' '}
-          <a href={`${SITE.github}/issues`}>issues</a>.
+          Vos questions, idées et retours sont les bienvenus dans les <a href={SITE.discussions}>Discussions GitHub</a>,
+          où les réponses profitent à tous. Signalez les bugs dans les{' '}
+          <a href={`${SITE.github}/issues`}>tickets GitHub (issues)</a>.
         </p>
         <p>
-          Vulnérabilités : signalez-les en privé, jamais dans une issue publique. Voir{' '}
+          Vulnérabilités : signalez-les en privé, jamais dans un ticket public. Voir{' '}
           <a href={`${SITE.github}/blob/main/SECURITY.fr.md`}>SECURITY.fr.md</a>.
         </p>
       </div>

@@ -7,7 +7,7 @@ export const en = {
   meta: {
     siteName: 'Synaptane',
     defaultDescription:
-      'Synaptane is a self-hosted team second brain stored in Git: Markdown first, and all your files (PDF, scans, Office, images), full-text and semantic search, an MCP server for your AI assistants, and a nightly tidy-up by an AI agent.',
+      'Synaptane is a self-hosted team wiki, stored in Git: Markdown first, and all your files (PDF, scans, Office, images), full-text and semantic search, an MCP server for your AI assistants, and a nightly tidy-up by an AI agent.',
     ogImageAlt: 'Synaptane: “Your team’s memory, in Git.” Next to it, a wiki page of the demo.',
     /** Open Graph image of the pages in this language (public/, made by scripts/og-image.py). */
     ogImage: '/og.png',
@@ -58,7 +58,7 @@ export const en = {
     auto: 'System',
   },
   footer: {
-    tagline: 'A team second brain stored in Git.',
+    tagline: 'A self-hosted team wiki, stored in Git.',
     license: 'Synaptane is open source under the Apache License 2.0.',
     madeBy: 'Made by',
     author: 'René Cotton',
