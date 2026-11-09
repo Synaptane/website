@@ -47,6 +47,7 @@
     "src/content/docs/fr/docs/reference/api.md",
     "src/content/docs/fr/docs/reference/cli.md",
     "src/content/docs/fr/docs/reference/repository-format.md",
-    "src/content/releases/CHANGELOG.md"
+    "src/content/releases/CHANGELOG.md",
+    "src/content/releases/links.fr.json"
   ]
 }

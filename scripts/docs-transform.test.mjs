@@ -3,7 +3,7 @@
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { convertCallouts, frenchTypography, NBSP, NNBSP, pageDescription } from './docs-transform.mjs';
+import { convertCallouts, frenchTypography, NBSP, NNBSP, pageDescription, translatedAnchor } from './docs-transform.mjs';
 
 const fr = frenchTypography;
 // Readable expectations: ° is a non-breaking space, ^ a narrow non-breaking space.
@@ -177,4 +177,19 @@ test('description: at most 155 characters, cut after a sentence or a whole word'
 test('description: without a long paragraph, the first short one, or nothing', () => {
   assert.equal(pageDescription('## A\n\nSee below.\n\n- item'), 'See below.');
   assert.equal(pageDescription('Usage:\n\n```sh\nx\n```'), '');
+});
+
+// ---------- Anchors of a translation ----------
+test('the anchor of a translation is the heading at the same position', () => {
+  const en = [{ depth: 2, id: 'status' }, { depth: 3, id: 'known-limitations' }, { depth: 2, id: 'license' }];
+  const fr = [{ depth: 2, id: 'état-du-projet' }, { depth: 3, id: 'limites-connues' }, { depth: 2, id: 'licence' }];
+  assert.equal(translatedAnchor(en, fr, 'known-limitations'), 'limites-connues');
+  assert.equal(translatedAnchor(en, fr, 'license'), 'licence');
+  assert.equal(translatedAnchor(en, fr, 'missing'), null);
+});
+
+test('no anchor when the outlines of the two pages differ', () => {
+  const en = [{ depth: 2, id: 'a' }, { depth: 3, id: 'b' }];
+  assert.equal(translatedAnchor(en, [{ depth: 2, id: 'x' }], 'b'), null);
+  assert.equal(translatedAnchor(en, [{ depth: 2, id: 'x' }, { depth: 2, id: 'y' }], 'b'), null);
 });
