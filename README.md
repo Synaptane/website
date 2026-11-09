@@ -107,6 +107,30 @@ Light (Paper) and dark (Slate) follow `prefers-color-scheme`. The switch stores 
 share it. The tokens are a copy of the application's (`src/synaptane/web/static/app.css`):
 update `src/styles/tokens.css` when they change there.
 
+The site derives from these tokens (colors, radii, spacing) but keeps one identity in both
+themes, where the application changes its fonts with the theme. The « Site identity » block at
+the end of `tokens.css` sets:
+
+- **Display and text font: Geist** (Geist Mono for code), in both themes: the hero, the titles
+  of the site pages and of the docs, the text. It is Slate's font and that of the social preview
+  images, it holds up at hero size and next to the wordmark of the logo; a single family also
+  means a single font to preload (`src/components/FontPreload.astro`) and no second sans that
+  looks almost the same.
+- **Reading font: Geist too**, at Slate's size (16.5px, line height 1.7), for the long text
+  (about, legal, docs): no switch from a serif to a sans with the theme. The docs are dense with
+  code, tables and asides, already set in the sans.
+- **Brand color: the lime of the logo's dot, `#B6F36A`**, in both themes: favicon,
+  apple-touch-icon, social images (`og.png`, `og-fr.png`, dark background), dark logo. The light
+  logo (`src/assets/brand/logo.svg`) has the same hue darkened, `#7BC91D`, to stay visible on the
+  light background.
+- **Interface color**: `--accent` of the theme, i.e. teal (`#1F6F6A`) in light for links,
+  buttons and focus, lime in dark. Lime text is not readable on a light background (1.2:1), so in
+  light lime is the brand, teal the interface.
+
+The application keeps its two themes (Paper: Instrument Sans, Newsreader; Slate: Geist); the
+screenshots and the static demo show them as they are. All the fonts stay in `public/fonts/`:
+the demo uses them.
+
 
 ## Documentation
 
