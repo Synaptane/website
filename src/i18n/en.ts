@@ -8,7 +8,9 @@ export const en = {
     siteName: 'Synaptane',
     defaultDescription:
       'Synaptane is a self-hosted team second brain stored in Git: Markdown first, and all your files (PDF, scans, Office, images), full-text and semantic search, an MCP server for your AI assistants, and a nightly tidy-up by an AI agent.',
-    ogImageAlt: 'Synaptane, the team second brain stored in Git',
+    ogImageAlt: 'Synaptane: “Your team’s memory, in Git.” Next to it, a wiki page of the demo.',
+    /** Open Graph image of the pages in this language (public/, made by scripts/og-image.py). */
+    ogImage: '/og.png',
     ogLocale: 'en_US',
   },
   a11y: {
@@ -18,6 +20,10 @@ export const en = {
     home: 'Synaptane home',
     menu: 'Menu',
     externalLink: '(opens GitHub)',
+    /** Name of the scrollable area around a docs table; {columns}: its column headers. */
+    table: 'Table: {columns}',
+    /** Name of the site's navigation in the docs header, apart from the docs' own (sidebar). */
+    siteNav: 'Site',
   },
   nav: {
     docs: 'Docs',
@@ -28,6 +34,9 @@ export const en = {
     github: 'GitHub',
     discussions: 'Discussions',
     legal: 'Legal notice',
+    /** Call to action of the header: the "Get started" section of the home page. */
+    tryIt: 'Try it',
+    tryItTitle: 'Try Synaptane locally, in three steps',
   },
   language: {
     label: 'Language',
@@ -51,7 +60,7 @@ export const en = {
     auto: 'System',
   },
   footer: {
-    tagline: 'A team second brain stored in Git.',
+    tagline: 'A self-hosted team second brain stored in Git.',
     license: 'Synaptane is open source under the Apache License 2.0.',
     madeBy: 'Made by',
     author: 'René Cotton',
@@ -60,15 +69,21 @@ export const en = {
     licenseShort: 'Apache License 2.0',
   },
   release: {
+    latest: 'Latest release',
+    next: 'Next release',
+    upcoming: 'Coming soon',
     preview: 'Preview',
-    upcoming: 'Preview coming soon',
-    released: 'Preview: {version}, released on {date}.',
-    coming: 'Preview: {version}, coming soon.',
+    previewUpcoming: 'Preview coming soon',
+    released: '{label}: {version}, released on {date}.',
+    coming: '{label}: {version}, coming soon.',
   },
   code: {
     copy: 'Copy',
     copied: 'Copied',
     copyLabel: 'Copy the code to the clipboard',
+    copiedStatus: 'Code copied to the clipboard',
+    /** Name of a docs code block that scrolls sideways; {language}: its language (yaml, ini…). */
+    region: 'Code: {language}',
   },
   screenshot: {
     light: 'light theme',
@@ -80,6 +95,14 @@ export const en = {
     text: 'This page does not exist, or it has moved.',
     home: 'Back to the home page',
     docs: 'Read the documentation',
+  },
+  /** Bottom of each docs page: where to ask when stuck (GitHub Discussions) or report a bug. */
+  docsHelp: {
+    stuck: 'Stuck?',
+    ask: 'Ask on GitHub Discussions',
+    languages: '(in English or French)',
+    or: 'or',
+    bug: 'report a bug',
   },
 };
 

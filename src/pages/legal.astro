@@ -74,14 +74,26 @@ const fontNames: Record<string, string> = {
         another domain. It has no forms and no accounts.
       </p>
       <p>
-        Your display preferences (the theme, and the state of the demo's sidebar) are stored in your browser
-        (<code>localStorage</code>) and are never sent anywhere. You can clear them by deleting this site's data in your
-        browser.
+        A few display settings are stored in your browser, and never sent anywhere:
       </p>
+      <ul>
+        <li>
+          In <code>localStorage</code>, until you delete them: the theme you chose (<code>starlight-theme</code>), shared
+          by the site, the docs and the demo; in the demo, a copy of that theme and whether its sidebar is collapsed
+          (<code>synaptane.ui.v1.demo.theme</code>, <code>synaptane.ui.v1.demo.sidebar-collapsed</code>).
+        </li>
+        <li>
+          In <code>sessionStorage</code>, until you close the tab: in the docs, which groups of the sidebar are open and
+          how far it is scrolled (<code>sl-sidebar-state</code>, written by Starlight, the framework of the docs); and
+          when you open a missing address under <code>/fr/</code>, that address (<code>synaptane-404</code>), so that the
+          French error page can put it back in the address bar; that page deletes it as soon as it has read it.
+        </li>
+      </ul>
+      <p>You can clear them by deleting this site’s data in your browser.</p>
       <p>
-        Like every site served by GitHub Pages, this site is subject to the host's logging: GitHub logs and stores the
+        Like every site served by GitHub Pages, this site is subject to the host’s logging: GitHub logs and stores the
         IP address of visitors for security purposes, whether or not they have a GitHub account. This processing is
-        GitHub's; it is described in the{' '}
+        GitHub’s; it is described in the{' '}
         <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>{' '}
         and in the <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection">GitHub Pages documentation</a>.
       </p>

@@ -8,19 +8,14 @@ import { SITE } from '../site';
 
 const groups: RoadmapGroup[] = [
   {
-    id: 'ai-and-mcp',
-    title: 'AI and MCP',
-    intro: 'Since 1.12, the costs of OpenAI, Gemini, Mistral and DeepSeek models are estimated automatically, as those of Claude. Next, results in the open.',
+    id: 'ai-and-tidy-up',
+    title: 'AI and tidy-up',
+    intro: 'Make the tidy-up measurable, and comparable from one model to another.',
     items: [
       {
         status: 'later',
         title: 'Publish the bench’s results',
-        text: 'The scenarios of the bench that measures the tidy-up are already public; publish its results too, to compare models and prompts in the open.',
-      },
-      {
-        status: 'later',
-        title: 'Subscription CLIs under a separate account',
-        text: 'Run Claude Code and Codex under their own system account, apart from the worker.',
+        text: 'The scenarios of the bench that measures the tidy-up are public, and since 1.14 it produces publishable results (repeated trials, confidence intervals, costs). What remains is to publish the first results, to compare models and prompts in the open.',
       },
     ],
   },
@@ -43,28 +38,18 @@ const groups: RoadmapGroup[] = [
     items: [
       {
         status: 'exploring',
-        title: 'Imports from Notion and Confluence',
-        text: 'An Obsidian vault or a zip of Markdown files can be imported since 1.10. Notion and Confluence exports would come next.',
-      },
-      {
-        status: 'exploring',
         title: 'Slack and Microsoft Teams',
         text: 'Search and save notes from team chat, without going through an assistant.',
-      },
-      {
-        status: 'exploring',
-        title: 'Capture by email',
-        text: 'Forward an email to a space, and it lands in the inbox.',
       },
     ],
   },
 ];
 ---
 
-<Base title="Roadmap" description="The Synaptane roadmap: what comes next, what comes later, and what is being explored.">
+<Base title="Roadmap" description="The Synaptane roadmap: what is planned, and what is being explored.">
   <PageHeader
     title="Roadmap"
-    intro="What comes next for Synaptane, and what is being explored. There are no dates: Synaptane is maintained by one person, and priorities follow what users need."
+    intro="What is planned for Synaptane, and what is being explored. There are no dates: Synaptane is maintained by one person, and priorities follow what users need."
   >
     <div class="actions">
       <Button href={SITE.discussions} variant="primary" icon="arrow-right">Propose an idea</Button>
@@ -77,7 +62,7 @@ const groups: RoadmapGroup[] = [
       groups={groups}
       legend={{
         next: 'Planned for the coming versions.',
-        later: 'Planned, after the items marked Next.',
+        later: 'Planned for a later version.',
         exploring: 'Being considered. It may change, or not happen.',
       }}
     />
@@ -85,7 +70,8 @@ const groups: RoadmapGroup[] = [
       <h2>Something missing?</h2>
       <p>
         Tell me what your team needs, or support an existing idea, in{' '}
-        <a href={SITE.discussions}>GitHub Discussions</a>. Bugs go to <a href={`${SITE.github}/issues`}>issues</a>.
+        <a href={SITE.discussions}>GitHub Discussions</a>. Report bugs in the{' '}
+        <a href={`${SITE.github}/issues`}>issue tracker</a>.
       </p>
     </aside>
   </div>

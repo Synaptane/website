@@ -4,3 +4,4 @@
 - [2025-03: GitLab CI for continuous integration](2025-03-gitlab-ci.md)
 - [2025-06: password policy](2025-06-password-policy.md)
 - [2026-02: remote work](2026-02-remote-work.md)
+- [2026-10: no production deployments on Friday afternoons](2026-10-no-friday-deployments.md)

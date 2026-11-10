@@ -2,11 +2,16 @@
 /**
  * Starlight override: the docs are copies of synaptane/synaptane's docs/ folder, so "Edit
  * page" leads to the source file there (docs/X.md, or docs/X.fr.md for French).
+ * Next to it, at the bottom of every docs page, where to go when stuck: GitHub Discussions (the
+ * project's place for questions, in English or French: .github/ISSUE_TEMPLATE/config.yml of
+ * synaptane/synaptane) and the issues for a bug.
  */
 import { Icon } from '@astrojs/starlight/components';
+import { getLang, useTranslations } from '../../i18n';
 import { SITE } from '../../site';
 
 const { entry, lang } = Astro.locals.starlightRoute;
+const t = useTranslations(getLang(lang));
 const match = /^(?:fr\/)?docs(?:\/(.*))?$/.exec(entry.id);
 const slug = match ? (match[1] ?? 'index') : undefined;
 const editUrl = slug ? `${SITE.github}/edit/main/docs/${slug}${lang === 'fr' ? '.fr' : ''}.md` : undefined;
@@ -20,6 +25,13 @@ const editUrl = slug ? `${SITE.github}/edit/main/docs/${slug}${lang === 'fr' ? '
     </a>
   )
 }
+<p class="docs-help print:hidden">
+  <Icon name="comment-alt" size="1.2em" />
+  <span>
+    {t.docsHelp.stuck} <a href={SITE.discussions}>{t.docsHelp.ask}</a> {t.docsHelp.languages}, {t.docsHelp.or}{' '}
+    <a href={`${SITE.github}/issues`}>{t.docsHelp.bug}</a>.
+  </span>
+</p>
 
 <style>
   .edit-link {
@@ -29,4 +41,15 @@ const editUrl = slug ? `${SITE.github}/edit/main/docs/${slug}${lang === 'fr' ? '
     color: var(--sl-color-gray-3);
   }
   .edit-link:hover { color: var(--sl-color-white); }
+  .docs-help {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin: 0;
+    color: var(--sl-color-gray-3);
+    text-wrap: pretty;
+  }
+  .docs-help :global(svg) { flex: none; margin-top: 0.15em; }
+  .docs-help a { color: var(--accent); text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  .docs-help a:hover { color: var(--accent-hover); }
 </style>

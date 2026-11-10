@@ -76,10 +76,24 @@ const fontNames: Record<string, string> = {
         charge aucun script ni aucune ressource depuis un autre domaine. Il n’a ni formulaire ni compte.
       </p>
       <p>
-        Vos préférences d’affichage (le thème, et l’état de la barre latérale de la démo) sont enregistrées dans votre
-        navigateur (<code>localStorage</code>) et ne sont transmises à personne. Vous pouvez les effacer en supprimant
-        les données du site dans votre navigateur.
+        Quelques réglages d’affichage sont enregistrés dans votre navigateur, et ne sont transmis à personne :
       </p>
+      <ul>
+        <li>
+          Dans le <code>localStorage</code>, jusqu’à ce que vous les effaciez : le thème choisi
+          (<code>starlight-theme</code>), commun au site, à la documentation et à la démo ; dans la démo, une copie de ce
+          thème et l’état de sa barre latérale, repliée ou non (<code>synaptane.ui.v1.demo.theme</code>,
+          <code>synaptane.ui.v1.demo.sidebar-collapsed</code>).
+        </li>
+        <li>
+          Dans le <code>sessionStorage</code>, jusqu’à la fermeture de l’onglet : dans la documentation, les groupes
+          ouverts de la barre latérale et sa position de défilement (<code>sl-sidebar-state</code>, écrit par Starlight,
+          l’outil qui génère la documentation) ; et quand vous ouvrez une adresse inexistante sous <code>/fr/</code>,
+          cette adresse (<code>synaptane-404</code>), pour que la page d’erreur en français la remette dans la barre
+          d’adresse ; cette page l’efface dès qu’elle l’a lue.
+        </li>
+      </ul>
+      <p>Vous pouvez les effacer en supprimant les données du site dans votre navigateur.</p>
       <p>
         Comme tout site servi par GitHub Pages, ce site est soumis à la journalisation de l’hébergeur : GitHub
         enregistre et conserve l’adresse IP des visiteurs à des fins de sécurité, qu’ils aient un compte GitHub ou non.

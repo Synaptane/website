@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+# Static demo: its pages carry a noindex tag (and must stay crawlable for it to be read), but the
+# folder trees and "related pages" lists it loads into them are bare HTML fragments, without a
+# head for the tag: they are not to be crawled at all.
+Disallow: /demo/app/*/-/tree/
+Disallow: /demo/app/*/-/related/
+Disallow: /fr/demo/app/*/-/tree/
+Disallow: /fr/demo/app/*/-/related/
 
 Sitemap: https://synaptane.com/sitemap-index.xml

@@ -6,7 +6,9 @@ export const fr: Dictionary = {
     siteName: 'Synaptane',
     defaultDescription:
       "Synaptane est un second cerveau d’équipe auto-hébergé, stocké dans Git : le Markdown d’abord, et tous vos fichiers (PDF, scans, Office, images), une recherche plein texte et sémantique, un serveur MCP pour vos assistants IA, et un rangement nocturne par un agent IA.",
-    ogImageAlt: "Synaptane, le second cerveau d’équipe stocké dans Git",
+    ogImageAlt: "Synaptane : « La mémoire de votre équipe, dans Git. » À côté, une page du wiki de démonstration.",
+    /** Open Graph image of the pages in this language (public/, made by scripts/og-image.py). */
+    ogImage: '/og-fr.png',
     ogLocale: 'fr_FR',
   },
   a11y: {
@@ -16,6 +18,8 @@ export const fr: Dictionary = {
     home: "Accueil de Synaptane",
     menu: 'Menu',
     externalLink: '(ouvre GitHub)',
+    table: 'Tableau\u00a0: {columns}',
+    siteNav: 'Site',
   },
   nav: {
     docs: 'Documentation',
@@ -26,6 +30,8 @@ export const fr: Dictionary = {
     github: 'GitHub',
     discussions: 'Discussions',
     legal: 'Mentions légales',
+    tryIt: 'Essayer',
+    tryItTitle: 'Essayer Synaptane en local, en trois étapes',
   },
   language: {
     label: 'Langue',
@@ -49,7 +55,7 @@ export const fr: Dictionary = {
     auto: 'Système',
   },
   footer: {
-    tagline: "Un second cerveau d’équipe stocké dans Git.",
+    tagline: "Un second cerveau d’équipe auto-hébergé, stocké dans Git.",
     license: 'Synaptane est un logiciel libre sous licence Apache 2.0.',
     madeBy: 'Conçu par',
     author: 'René Cotton',
@@ -58,15 +64,20 @@ export const fr: Dictionary = {
     licenseShort: 'Licence Apache 2.0',
   },
   release: {
+    latest: 'Dernière version',
+    next: 'Prochaine version',
+    upcoming: 'Bientôt disponible',
     preview: 'Préversion',
-    upcoming: 'Préversion à venir',
-    released: 'Préversion : {version}, publiée le {date}.',
-    coming: 'Préversion : {version}, à venir.',
+    previewUpcoming: 'Préversion à venir',
+    released: '{label} : {version}, publiée le {date}.',
+    coming: '{label} : {version}, à venir.',
   },
   code: {
     copy: 'Copier',
     copied: 'Copié',
     copyLabel: 'Copier le code dans le presse-papiers',
+    copiedStatus: 'Code copié dans le presse-papiers',
+    region: 'Code\u00a0: {language}',
   },
   screenshot: {
     light: 'thème clair',
@@ -78,5 +89,12 @@ export const fr: Dictionary = {
     text: "Cette page n’existe pas, ou elle a été déplacée.",
     home: "Retour à l’accueil",
     docs: 'Lire la documentation',
+  },
+  docsHelp: {
+    stuck: 'Une question, un blocage\u202f?',
+    ask: 'Posez votre question dans les Discussions GitHub',
+    languages: '(en français ou en anglais)',
+    or: 'ou',
+    bug: 'signalez un bug',
   },
 };

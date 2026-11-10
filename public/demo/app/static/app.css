@@ -150,6 +150,9 @@ fieldset.choice-list{display:flex;flex-direction:column}
 .choice-list>div .checkbox{margin:0}
 .choice-list .checkbox:hover,.choice-list>div:hover{background:var(--hover)}
 .choice-list>p{padding:10px 12px;color:var(--ink-3);border:1px dashed var(--border);border-radius:var(--radius)}
+/* Choix sur deux lignes : un nom, puis ce qu'il donne (groupes d'une invitation). */
+.checkbox-detail{display:flex;flex-direction:column;gap:2px;min-width:0;overflow-wrap:anywhere}
+.checkbox-detail>.muted{line-height:1.4}
 .segmented{display:inline-flex;gap:2px;padding:3px;border:0;border-radius:var(--radius);background:var(--hover)}
 .segmented button{width:28px;height:26px;border:0;border-radius:calc(var(--radius) - 2px);background:none;color:var(--ink-3);display:grid;place-items:center;padding:0}
 .segmented button:hover{color:var(--ink)}
@@ -442,6 +445,8 @@ td .inline-form input:not([type=checkbox]){min-height:30px;flex:1 1 140px}
 .import-list{list-style:none;margin:10px 0 0;padding:0;font-size:13px;overflow-wrap:anywhere}
 .import-list li{padding:3px 0}
 .import-list .checkbox{padding:0;display:inline-flex}
+.import-format{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+.import-format select{width:auto;max-width:100%}
 .upload-form{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .upload-form input[type=file]{width:auto;max-width:260px;padding:5px 8px}
 .file-title{margin-bottom:16px;font-size:24px}
@@ -481,6 +486,10 @@ td .inline-form input:not([type=checkbox]){min-height:30px;flex:1 1 140px}
 .workspace main:has(.editor-panes.split){max-width:1480px}
 .wiki-main:has(.editor-panes.split){max-width:none}
 @media(max-width:700px){.editor-preview-scroll{padding:14px 14px}}
+/* Shorter editors (purpose, prompts, a note dropped): a preview of their size; the purpose's
+column widens side by side, as the page does. */
+.vocation-form .editor-preview,.deposit-form .editor-preview{min-height:220px}
+.vocation-page:has(.editor-panes.split){max-width:none}
 .markdown{font-family:var(--font-read);font-size:var(--read-size);line-height:var(--read-lh);max-width:68ch;overflow-wrap:anywhere}
 .markdown h1{font-size:40px;letter-spacing:-0.03em;line-height:1.08;margin:0 0 24px}
 .markdown h2{font-size:21px;letter-spacing:-0.015em;margin:36px 0 10px}
@@ -692,6 +701,9 @@ details.menu[open]>summary{background:var(--hover)}
 .inbox-filter{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px}
 .inbox-filter input[type=search]{flex:1 1 200px;width:auto;min-width:0}
 .inbox-filter select{flex:0 1 auto;width:auto}
+.inbox-capture{margin:0 0 14px;padding:14px 16px}
+.inbox-capture p{margin:0 0 8px}
+.inbox-capture p:last-child{margin:0}
 .pager{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
 .doc-body{min-width:0;container-type:inline-size}
 .markdown.title-in-bar>h1:first-child{display:none}
@@ -1014,6 +1026,9 @@ input[type=search]::-webkit-search-cancel-button:hover{background:var(--ink)}
 a.admin-row-title:hover{text-decoration:underline}
 .admin-row-meta{display:block;margin:2px 0 0;font-size:12.5px;color:var(--ink-3);overflow-wrap:anywhere}
 .admin-row-meta code{font-size:12px}
+.health-tokens{margin:6px 0 2px;padding-left:18px;font-size:13px;color:var(--ink-2)}
+.health-tokens li{margin:2px 0;overflow-wrap:anywhere}
+.health-token-expired{white-space:nowrap}
 /* Listes et tableau dans une carte sans marge intérieure : lignes pleine largeur. */
 .admin-list{list-style:none;margin:0;padding:0}
 .admin-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;border-top:1px solid var(--border)}

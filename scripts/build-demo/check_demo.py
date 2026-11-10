@@ -9,6 +9,8 @@ without the application, in CI too (`npm run check-demo`).
   inline style or event attribute (the pages carry a strict Content-Security-Policy).
 - HTML files of the wiki (under /raw/, shown in a sandboxed frame): their own styles are
   allowed, but no script, no event attribute, and a policy that forbids everything else.
+- Every page has the banner, with its link back to the demo's page on the site (/demo/,
+  /fr/demo/).
 - Read-only: every form but search is marked data-demo-off and all its controls are
   disabled; every submit button anywhere is disabled.
 - No secret or local trace: CSRF token, session cookie, Bearer token, API key (sk-…),
@@ -78,6 +80,8 @@ class Page(HTMLParser):
             if not search and ("action" in a or "method" in a):
                 self.problems.append("frozen form keeps an action or method")
             self.forms.append({"search": search})
+        if "data-preview" in a:
+            self.problems.append("live preview left on (data-preview)")
         if tag in ("input", "button", "select", "textarea", "fieldset"):
             kind = a.get("type", "submit" if tag == "button" else "text").lower()
             frozen = "disabled" in a and a.get("aria-disabled") == "true"
@@ -146,6 +150,10 @@ def check(public: Path) -> list[str]:
             problems.append(f"{rel}: no Content-Security-Policy")
         if is_page and 'class="demo-banner"' not in text:
             problems.append(f"{rel}: no demo banner")
+        # The way out of the demo: its page on the site, in the page's language.
+        about = "/fr/demo/" if rel.startswith("/fr/") else "/demo/"
+        if is_page and f'<a class="demo-banner-back" href="{about}">' not in text:
+            problems.append(f"{rel}: no link back to {about} in the banner")
         for tag, attr, value in parser.urls:
             parts = urlsplit(value)
             if parts.scheme in ("http", "https") or value.startswith("//"):

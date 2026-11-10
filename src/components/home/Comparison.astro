@@ -2,10 +2,16 @@
 /**
  * Comparison table: one row per criterion, one column per product, the first one being
  * Synaptane. Each cell has a level (yes, partial, no) shown by an icon AND a word for screen
- * readers, plus a short factual note. On narrow screens the table scrolls sideways inside its
+ * readers, plus a short factual note. On medium screens the table scrolls sideways inside its
  * frame, with the criteria column kept in view and a shadow on the right edge while there is
  * more to see (CSS only: the shadow is covered once the end of the table is reached).
+ *
+ * On phones (under 720px) six product columns cannot be read: the table shows Synaptane and one
+ * other product, side by side, with each criterion on its own line above them. Buttons above the
+ * table choose the other product (radio buttons and :has(), no script). The table keeps explicit
+ * ARIA roles, since some browsers drop the table semantics once the display of its rows changes.
  */
+import { getLang } from '../../i18n';
 export type Level = 'yes' | 'partial' | 'no';
 export interface Cell {
   level: Level;
@@ -30,47 +36,66 @@ interface Props {
 }
 
 const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
+const lang = getLang(Astro.currentLocale);
+const pickLabel = lang === 'fr' ? 'Comparer Synaptane avec' : 'Compare Synaptane with';
+// The other products, each with the position of its column in a row (1: criterion, 2: Synaptane).
+const others = columns.slice(1).map((name, i) => ({ name, col: i + 3 }));
 ---
 
-<div class="compare" role="region" aria-label={regionLabel} tabindex="0">
-  <table>
-    <caption class="sr-only">{caption}</caption>
-    <thead>
-      <tr>
-        <th scope="col" class="criterion">{criterion}</th>
-        {columns.map((c, i) => <th scope="col" class:list={{ ours: i === 0 }}>{c}</th>)}
-      </tr>
-    </thead>
-    <tbody>
+<div class="cmp">
+  <fieldset class="pick">
+    <legend>{pickLabel}</legend>
+    <div class="chips">
       {
-        rows.map((row) => (
-          <tr>
-            <th scope="row" class="criterion">
-              {row.label}
-              {row.hint && <span class="hint">{row.hint}</span>}
-            </th>
-            {row.cells.map((cell, i) => (
-              <td class:list={[`level-${cell.level}`, { ours: i === 0 }]}>
-                <span class="level" aria-hidden="true">
-                  {cell.level === 'yes' && (
-                    <svg viewBox="0 0 16 16" width="14" height="14"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                  )}
-                  {cell.level === 'partial' && (
-                    <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M8 2.5a5.5 5.5 0 0 1 0 11z" fill="currentColor" /></svg>
-                  )}
-                  {cell.level === 'no' && (
-                    <svg viewBox="0 0 16 16" width="14" height="14"><path d="M4 8h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
-                  )}
-                </span>
-                <span class="sr-only">{levels[cell.level]}: </span>
-                <span class="text">{cell.text}</span>
-              </td>
-            ))}
-          </tr>
+        others.map((o, i) => (
+          <span class="chip">
+            <input type="radio" name="compare-with" id={`compare-with-${o.col}`} data-col={o.col} checked={i === 0} />
+            <label for={`compare-with-${o.col}`}>{o.name}</label>
+          </span>
         ))
       }
-    </tbody>
-  </table>
+    </div>
+  </fieldset>
+  <div class="compare" role="region" aria-label={regionLabel} tabindex="0">
+    <table role="table">
+      <caption class="sr-only">{caption}</caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <th scope="col" role="columnheader" class="criterion">{criterion}</th>
+          {columns.map((c, i) => <th scope="col" role="columnheader" class:list={{ ours: i === 0 }}>{c}</th>)}
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        {
+          rows.map((row) => (
+            <tr role="row">
+              <th scope="row" role="rowheader" class="criterion">
+                {row.label}
+                {row.hint && <span class="hint">{row.hint}</span>}
+              </th>
+              {row.cells.map((cell, i) => (
+                <td role="cell" class:list={[`level-${cell.level}`, { ours: i === 0 }]}>
+                  <span class="level" aria-hidden="true">
+                    {cell.level === 'yes' && (
+                      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    )}
+                    {cell.level === 'partial' && (
+                      <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M8 2.5a5.5 5.5 0 0 1 0 11z" fill="currentColor" /></svg>
+                    )}
+                    {cell.level === 'no' && (
+                      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M4 8h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                    )}
+                  </span>
+                  <span class="sr-only">{levels[cell.level]}: </span>
+                  <span class="text">{cell.text}</span>
+                </td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <style>
@@ -90,7 +115,7 @@ const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
   .compare:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   table {
     width: 100%;
-    min-width: 980px;
+    min-width: 1040px;
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
@@ -114,11 +139,12 @@ const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
     white-space: nowrap;
   }
   thead .criterion { background: var(--surface); }
+  /* The criteria column gives room to Synaptane's, whose notes are the longest. */
   .criterion {
     position: sticky;
     left: 0;
     z-index: 1;
-    width: 180px;
+    width: 150px;
     background: var(--surface);
     border-right: 1px solid var(--border);
     font-weight: 600;
@@ -127,7 +153,7 @@ const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
   .hint { display: block; margin-top: 2px; font-weight: 400; font-size: 12.5px; color: var(--ink-3); }
   td { color: var(--ink-2); }
   .ours { background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
-  thead .ours { color: var(--accent); }
+  thead .ours { width: 204px; color: var(--accent); }
   td.ours { color: var(--ink); }
   td { position: relative; padding-left: 36px; }
   .level {
@@ -143,11 +169,61 @@ const { caption, criterion, columns, rows, levels, regionLabel } = Astro.props;
   .level-yes .level { color: var(--ok); background: var(--ok-bg); }
   .level-partial .level { color: var(--warn-ink); background: var(--warn-bg); }
   .level-no .level { color: var(--ink-3); background: var(--bg-2); }
+  /* The product picker, for phones only. */
+  .pick { display: none; margin: 0 0 var(--space-4); padding: 0; border: 0; min-width: 0; }
+  .pick legend { margin-bottom: var(--space-2); padding: 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+  .chip label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .chip label:hover { border-color: var(--field-border); color: var(--ink); }
+  .chip input:checked + label { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
+  .chip input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+
   @media (max-width: 719px) {
-    /* 6 product columns of about 160px: the longest words fit without being cut. */
-    table { min-width: 1100px; font-size: 13.5px; }
-    .criterion { width: 128px; padding-inline: 12px; }
-    th, td { padding-block: 12px; }
-    .hint { font-size: 12px; }
+    .pick { display: block; }
+    .compare { overflow: visible; background: var(--surface); }
+    table, thead, tbody { display: block; }
+    table { min-width: 0; font-size: 14px; }
+    /* Each row: the criterion on a line of its own, then Synaptane and the chosen product. */
+    tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    tr > * { display: none; border-bottom: 0; }
+    tr > .ours { display: block; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: 0; }
+    thead tr { border-bottom: 1px solid var(--border); }
+    thead th, thead .ours { white-space: normal; width: auto; }
+    .level { top: 11px; }
+    tbody .criterion {
+      display: block;
+      grid-column: 1 / -1;
+      position: static;
+      width: auto;
+      padding: 14px 14px 4px;
+      border-right: 0;
+      background: none;
+    }
+    .hint { display: inline; margin: 0 0 0 6px; }
+    th, td { padding-block: 10px 14px; }
+    thead th { padding-block: 12px; }
+    /* The chosen product's column (its position in the row: data-col). */
+    .cmp:has([data-col='3']:checked) tr > :nth-child(3),
+    .cmp:has([data-col='4']:checked) tr > :nth-child(4),
+    .cmp:has([data-col='5']:checked) tr > :nth-child(5),
+    .cmp:has([data-col='6']:checked) tr > :nth-child(6),
+    .cmp:has([data-col='7']:checked) tr > :nth-child(7),
+    .cmp:has([data-col='8']:checked) tr > :nth-child(8) { display: block; }
   }
 </style>

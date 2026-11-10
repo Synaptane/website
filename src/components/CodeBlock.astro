@@ -2,11 +2,17 @@
 /**
  * Code block with a copy button. Highlighted at build time (Shiki, light and dark themes
  * following the site theme); the copy button is a small inline script, hidden without
- * JavaScript.
+ * JavaScript, and its confirmation is announced to screen readers (live region).
+ *
+ * Contrast: the GitHub themes are made for a white or #24292e background, not for the site's
+ * --bg-2. At build time, comments take the site's muted ink (--ink-3) and every other token
+ * colour too faint on --bg-2 is darkened (light) or lightened (dark), keeping its hue, until it
+ * reaches 4.6:1 (WCAG AA asks 4.5:1), like Expressive Code does in the docs.
  *
  *   <CodeBlock lang="sh" title="Terminal" code={`docker compose up -d`} />
  */
 import { Code } from 'astro:components';
+import type { ComponentProps } from 'astro/types';
 import Icon from './Icon.astro';
 import { getLang, useTranslations } from '../i18n';
 
@@ -18,8 +24,52 @@ interface Props {
   title?: string;
 }
 
+type ShikiTransformer = NonNullable<ComponentProps<typeof Code>['transformers']>[number];
+
 const { code, lang = 'sh', title } = Astro.props;
 const t = useTranslations(getLang(Astro.currentLocale));
+
+/** --bg-2 of src/styles/tokens.css, light and dark: the background of the code. */
+const BACKGROUNDS = { light: '#EFEFEB', dark: '#0B0E12' } as const;
+/** The comment colour of github-light and github-dark, replaced by --ink-3 (see the styles). */
+const COMMENT = '#6A737D';
+const MIN_CONTRAST = 4.6;
+
+const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+const luminance = (hex: string) =>
+  rgb(hex)
+    .map((v) => (v / 255 <= 0.03928 ? v / 255 / 12.92 : ((v / 255 + 0.055) / 1.055) ** 2.4))
+    .reduce((sum, c, i) => sum + c * [0.2126, 0.7152, 0.0722][i]!, 0);
+const contrast = (a: string, b: string) => {
+  const [la, lb] = [luminance(a), luminance(b)];
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+};
+/** Mixes `hex` towards black (light theme) or white (dark theme) until it reads on `bg`. */
+const readable = (hex: string, bg: string, theme: 'light' | 'dark') => {
+  if (!/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+  const target = theme === 'light' ? 0 : 255;
+  let color = hex;
+  for (let step = 1; contrast(color, bg) < MIN_CONTRAST && step <= 20; step++) {
+    color = '#' + rgb(hex).map((v) => Math.round(v + (target - v) * step * 0.05).toString(16).padStart(2, '0')).join('');
+  }
+  return color;
+};
+const contrastTransformer: ShikiTransformer = {
+  name: 'site-contrast',
+  span(node) {
+    const style = String(node.properties.style ?? '');
+    const light = style.match(/--shiki-light:(#[0-9a-f]{6})/i)?.[1];
+    const dark = style.match(/--shiki-dark:(#[0-9a-f]{6})/i)?.[1];
+    if (!light || !dark) return;
+    if (light.toUpperCase() === COMMENT && dark.toUpperCase() === COMMENT) {
+      this.addClassToHast(node, 'tok-comment');
+      return;
+    }
+    node.properties.style = style
+      .replace(`--shiki-light:${light}`, `--shiki-light:${readable(light, BACKGROUNDS.light, 'light')}`)
+      .replace(`--shiki-dark:${dark}`, `--shiki-dark:${readable(dark, BACKGROUNDS.dark, 'dark')}`);
+  },
+};
 ---
 
 <figure class="code-block">
@@ -31,7 +81,8 @@ const t = useTranslations(getLang(Astro.currentLocale));
       <span class="copy-label" data-copied={t.code.copied}>{t.code.copy}</span>
     </button>
   </figcaption>
-  <Code code={code.trim()} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} defaultColor={false} />
+  <Code code={code.trim()} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} defaultColor={false} transformers={[contrastTransformer]} />
+  <span class="sr-only" role="status" data-copy-status data-message={t.code.copiedStatus}></span>
 </figure>
 
 <script is:inline>
@@ -45,10 +96,17 @@ const t = useTranslations(getLang(Astro.currentLocale));
         try {
           await navigator.clipboard.writeText(pre.innerText.replace(/\n$/, ''));
           const label = button.querySelector('.copy-label');
+          const status = button.closest('figure').querySelector('[data-copy-status]');
           const text = label.textContent;
           button.classList.add('done');
           label.textContent = label.dataset.copied;
-          setTimeout(() => { button.classList.remove('done'); label.textContent = text; }, 1600);
+          // The button's name comes from its aria-label: the live region tells screen readers.
+          if (status) status.textContent = status.dataset.message;
+          setTimeout(() => {
+            button.classList.remove('done');
+            label.textContent = text;
+            if (status) status.textContent = '';
+          }, 1600);
         } catch {}
       });
     });
@@ -116,4 +174,6 @@ const t = useTranslations(getLang(Astro.currentLocale));
   @media (prefers-color-scheme: dark) {
     :global(:root:not([data-theme='light'])) .code-block :global(.astro-code span) { color: var(--shiki-dark); }
   }
+  /* Comments in the site's muted ink: 4.6:1 (light) and 6.4:1 (dark) on --bg-2. */
+  .code-block :global(.astro-code span.tok-comment) { color: var(--ink-3) !important; }
 </style>

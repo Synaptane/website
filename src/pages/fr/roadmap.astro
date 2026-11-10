@@ -8,19 +8,14 @@ import { SITE } from '../../site';
 
 const groups: RoadmapGroup[] = [
   {
-    id: 'ia-et-mcp',
-    title: 'IA et MCP',
-    intro: 'Depuis la 1.12, le coût des modèles d’OpenAI, de Gemini, de Mistral et de DeepSeek est estimé automatiquement, comme celui de Claude. Ensuite, des résultats publiés.',
+    id: 'ia-et-rangement',
+    title: 'IA et rangement',
+    intro: 'Rendre le rangement mesurable, et comparable d’un modèle à l’autre.',
     items: [
       {
         status: 'later',
         title: 'Publier les résultats du banc d’évaluation',
-        text: 'Les scénarios du banc qui mesure le rangement sont déjà publics ; publier aussi ses résultats, pour comparer modèles et consignes au grand jour.',
-      },
-      {
-        status: 'later',
-        title: 'Les CLI des abonnements sous un compte à part',
-        text: 'Faire tourner Claude Code et Codex sous leur propre compte système, séparé du worker.',
+        text: 'Les scénarios du banc qui mesure le rangement sont publics, et depuis la 1.14 il produit des résultats publiables (essais répétés, intervalles de confiance, coûts). Reste à publier les premiers résultats, pour comparer modèles et consignes au grand jour.',
       },
     ],
   },
@@ -43,28 +38,18 @@ const groups: RoadmapGroup[] = [
     items: [
       {
         status: 'exploring',
-        title: 'Imports depuis Notion et Confluence',
-        text: "Un coffre Obsidian ou un zip de fichiers Markdown s’importe depuis la 1.10. Les exports de Notion et de Confluence viendraient ensuite.",
-      },
-      {
-        status: 'exploring',
         title: 'Slack et Microsoft Teams',
         text: "Chercher et garder des notes depuis la messagerie de l’équipe, sans passer par un assistant.",
-      },
-      {
-        status: 'exploring',
-        title: 'Capture par e-mail',
-        text: "Transférer un e-mail à un espace pour qu’il arrive dans l’inbox.",
       },
     ],
   },
 ];
 ---
 
-<Base title="Feuille de route" description="La feuille de route de Synaptane : ce qui vient prochainement, ce qui viendra plus tard, et ce qui est à l’étude.">
+<Base title="Feuille de route" description="La feuille de route de Synaptane : ce qui est prévu, et ce qui est à l’étude.">
   <PageHeader
     title="Feuille de route"
-    intro="Ce qui attend Synaptane, et les pistes à l’étude. Pas de dates : Synaptane est maintenu par une seule personne, et les priorités suivent les besoins des utilisateurs."
+    intro="Ce qui est prévu pour Synaptane, et les pistes à l’étude. Pas de dates : Synaptane est maintenu par une seule personne, et les priorités suivent les besoins des utilisateurs."
   >
     <div class="actions">
       <Button href={SITE.discussions} variant="primary" icon="arrow-right">Proposer une idée</Button>
@@ -77,7 +62,7 @@ const groups: RoadmapGroup[] = [
       groups={groups}
       legend={{
         next: 'Prévu pour les prochaines versions.',
-        later: 'Prévu, après ce qui est marqué « Prochainement ».',
+        later: 'Prévu pour une version ultérieure.',
         exploring: 'Envisagé. Peut changer, ou ne pas se faire.',
       }}
     />
@@ -85,8 +70,8 @@ const groups: RoadmapGroup[] = [
       <h2>Il vous manque quelque chose ?</h2>
       <p>
         Dites-moi ce dont votre équipe a besoin, ou soutenez une idée déjà proposée, dans les{' '}
-        <a href={SITE.discussions}>Discussions GitHub</a>. Les bugs vont dans les{' '}
-        <a href={`${SITE.github}/issues`}>issues</a>.
+        <a href={SITE.discussions}>Discussions GitHub</a>. Signalez les bugs dans les{' '}
+        <a href={`${SITE.github}/issues`}>tickets GitHub (issues)</a>.
       </p>
     </aside>
   </div>

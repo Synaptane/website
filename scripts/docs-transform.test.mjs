@@ -3,7 +3,7 @@
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { convertCallouts, frenchTypography, NBSP, NNBSP } from './docs-transform.mjs';
+import { convertCallouts, frenchTypography, NBSP, NNBSP, pageDescription, translatedAnchor } from './docs-transform.mjs';
 
 const fr = frenchTypography;
 // Readable expectations: ° is a non-breaking space, ^ a narrow non-breaking space.
@@ -121,4 +121,75 @@ test('lists, headings, emphasis and asides', () => {
 test('callouts then typography (as sync-docs does)', () => {
   const md = "> [!NOTE]\n> L'aide (`--help`) : en anglais ; voir « CLI ».";
   assert.equal(fr(convertCallouts(md)), t(':::note\nL’aide (`--help`)°: en anglais^; voir «°CLI°».\n:::'));
+});
+
+// ---------- Page description ----------
+const words = (n) => Array.from({ length: n }, () => 'word').join(' '); // 5n - 1 characters
+
+test('description: the first real paragraph, without markup', () => {
+  assert.equal(
+    pageDescription('## Heading\n\nThe **wiki** of a [space](/docs/x/) is its `content/` folder,\nin Git.\n\nNext.'),
+    'The wiki of a space is its content/ folder, in Git.',
+  );
+});
+
+test('description: introductions ending with a colon and short paragraphs are skipped', () => {
+  const backup = 'With Docker:\n\n1. **Nothing to do.** The worker makes an archive.\n\n' +
+    '   The indented rest of the item, long enough to be a description on its own.\n\n' +
+    'At any time, `synaptane backup check` says what works and the command to run.';
+  assert.equal(pageDescription(backup), 'At any time, synaptane backup check says what works and the command to run.');
+  assert.equal(
+    pageDescription(fr("Avec Docker :\n\nVoir plus bas.\n\nUne vraie phrase d'introduction, assez longue pour décrire la page.")),
+    'Une vraie phrase d’introduction, assez longue pour décrire la page.',
+  );
+});
+
+test('description: a paragraph stops at the first list item', () => {
+  assert.equal(
+    pageDescription('Each space shows the content/ folder of its repository as a wiki.\n- The tree.\n- The page.'),
+    'Each space shows the content/ folder of its repository as a wiki.',
+  );
+  assert.equal(
+    pageDescription('Two ways to install:\n- Docker;\n- source.\n\nSynaptane runs on Linux, on x86-64 or arm64. macOS is not tested.'),
+    'Synaptane runs on Linux, on x86-64 or arm64. macOS is not tested.',
+  );
+});
+
+test('description: code blocks, asides, HTML and tables are skipped', () => {
+  const md = '```sh\n\nnot a description, even after a blank line inside the code block\n```\n\n' +
+    ':::note\n\nNot a description either: the content of an aside, long enough anyway.\n:::\n\n' +
+    '<picture>\n<img src="a.png">\n</picture>\n\n| a | b |\n|---|---|\n\n' +
+    'The description is this sentence, after all the blocks above.';
+  assert.equal(pageDescription(md), 'The description is this sentence, after all the blocks above.');
+});
+
+test('description: at most 155 characters, cut after a sentence or a whole word', () => {
+  const sentence = `${words(15)}.`; // 75 characters
+  assert.equal(pageDescription(`${sentence} ${sentence} ${sentence}`), `${sentence} ${sentence}`);
+  // No end of sentence far enough: after the last whole word, without the trailing comma.
+  assert.equal(pageDescription(`Short. ${words(29)}, end ${words(10)}`), `Short. ${words(29)}…`);
+  assert.equal(pageDescription(`${'x'.repeat(147)}, longer words`), `${'x'.repeat(147)}…`);
+  const long = pageDescription(`Start ${words(60)}.`);
+  assert.ok(long.length <= 155, long);
+  assert.match(long, /^Start (word )+word…$/);
+});
+
+test('description: without a long paragraph, the first short one, or nothing', () => {
+  assert.equal(pageDescription('## A\n\nSee below.\n\n- item'), 'See below.');
+  assert.equal(pageDescription('Usage:\n\n```sh\nx\n```'), '');
+});
+
+// ---------- Anchors of a translation ----------
+test('the anchor of a translation is the heading at the same position', () => {
+  const en = [{ depth: 2, id: 'status' }, { depth: 3, id: 'known-limitations' }, { depth: 2, id: 'license' }];
+  const fr = [{ depth: 2, id: 'état-du-projet' }, { depth: 3, id: 'limites-connues' }, { depth: 2, id: 'licence' }];
+  assert.equal(translatedAnchor(en, fr, 'known-limitations'), 'limites-connues');
+  assert.equal(translatedAnchor(en, fr, 'license'), 'licence');
+  assert.equal(translatedAnchor(en, fr, 'missing'), null);
+});
+
+test('no anchor when the outlines of the two pages differ', () => {
+  const en = [{ depth: 2, id: 'a' }, { depth: 3, id: 'b' }];
+  assert.equal(translatedAnchor(en, [{ depth: 2, id: 'x' }], 'b'), null);
+  assert.equal(translatedAnchor(en, [{ depth: 2, id: 'x' }, { depth: 2, id: 'y' }], 'b'), null);
 });

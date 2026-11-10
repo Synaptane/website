@@ -1,15 +1,18 @@
 ---
 /**
  * Top of the home page: status line, two-part headline, one-sentence lead, actions (slot
- * "actions"), then the product screenshot (light and dark), framed like a window.
+ * "actions"), an optional line of short reassurances under them, then the product screenshot
+ * (light and dark, in the page's language; on phones, the same page taken on a phone), framed
+ * like a window.
  */
 import Screenshot from '../Screenshot.astro';
-import wikiLight from '../../assets/app/wiki-light.png';
-import wikiDark from '../../assets/app/wiki-dark.png';
+import { getLang } from '../../i18n';
+import { shot } from '../../lib/screenshots';
 import { SITE } from '../../site';
+import { isPrerelease, releaseStatus } from '../../lib/release';
 
 interface Props {
-  /** Small line above the headline (status, version). */
+  /** Small line above the headline (status, version): releaseLabel() of src/lib/release.ts. */
   status: string;
   /** Link of the status line. */
   statusHref: string;
@@ -18,18 +21,27 @@ interface Props {
   /** Second part of the headline (muted). */
   titleMuted: string;
   lead: string;
+  /** Short facts under the actions (licence, hosting…), each after a small check mark. */
+  points?: string[];
   screenshotAlt: string;
   /** Text under the screenshot. */
   caption: string;
 }
 
-const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = Astro.props;
+const { status, statusHref, title, titleMuted, lead, points = [], screenshotAlt, caption } = Astro.props;
+// Colour of the dot: green for a released stable version, amber for a pre-release, grey while
+// the version is still to come.
+const release = await releaseStatus();
+const tone = isPrerelease(release) ? 'preview' : release.date ? 'stable' : 'upcoming';
+const lang = getLang(Astro.currentLocale);
+const wiki = shot('wiki', lang);
+const wikiPhone = shot('wiki', lang, 'mobile');
 ---
 
 <section class="hero">
   <div class="container hero-text">
     <a class="status" href={statusHref}>
-      <span class="status-dot" aria-hidden="true"></span>
+      <span class={`status-dot status-dot-${tone}`} aria-hidden="true"></span>
       <span>{status}</span>
       <span class="status-version">{SITE.version}</span>
     </a>
@@ -39,18 +51,22 @@ const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = 
     </h1>
     <p class="lead">{lead}</p>
     <div class="actions"><slot name="actions" /></div>
+    {points.length > 0 && (
+      <ul class="points">
+        {points.map((point) => <li>{point}</li>)}
+      </ul>
+    )}
   </div>
   <div class="container hero-shot">
     <Screenshot
-      light={wikiLight}
-      dark={wikiDark}
+      light={wiki.light}
+      dark={wiki.dark}
+      mobile={wikiPhone}
       alt={screenshotAlt}
       eager
       sizes="(min-width: 1184px) 1120px, calc(100vw - 32px)"
       zoom="home"
       zoomCaption={caption}
-      full="/docs/assets/screenshot-wiki-light.png"
-      fullDark="/docs/assets/screenshot-wiki-dark.png"
     />
     <p class="shot-caption">{caption}</p>
   </div>
@@ -95,7 +111,9 @@ const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = 
     text-decoration: none;
   }
   .status:hover { color: var(--ink); border-color: var(--field-border); }
-  .status-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--warn-ink); }
+  .status-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--ink-3); }
+  .status-dot-stable { background: var(--ok); }
+  .status-dot-preview { background: var(--warn-ink); }
   .status-version {
     padding: 1px 8px;
     border-radius: 999px;
@@ -112,13 +130,40 @@ const { status, statusHref, title, titleMuted, lead, screenshotAlt, caption } = 
     line-height: 1.03;
     letter-spacing: -0.035em;
   }
+  /* Phones: a smaller floor, so that the French title stays at four or five lines at 360px and
+     the buttons stay in the first screen. */
+  @media (max-width: 599px) {
+    h1 { font-size: clamp(31px, 8.6vw, 38px); letter-spacing: -0.03em; }
+  }
   .title, .title-muted { display: block; text-wrap: balance; }
   .title-muted { color: var(--ink-3); }
   .lead { max-width: 60ch; margin: 0; font-size: clamp(17px, 2vw, 19.5px); line-height: 1.55; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 0; }
+  .points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+  /* A small check mark drawn in CSS: it stays in front of each fact when the line wraps. */
+  .points li::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 8px;
+    margin: 0 8px 0 2px;
+    border: solid var(--ok);
+    border-width: 0 1.5px 1.5px 0;
+    transform: translateY(-2px) rotate(45deg);
+  }
   .hero-shot { position: relative; margin-top: clamp(40px, 6vw, 64px); padding-bottom: var(--space-6); }
   .shot-caption { margin: var(--space-3) 0 0; font-size: 13.5px; color: var(--ink-3); text-align: center; }
+  /* Phones: the buttons are stacked at full width, like every group of buttons of the site pages. */
   @media (max-width: 479px) {
-    .actions > :global(*) { flex: 1 1 auto; }
+    .actions { flex-direction: column; align-items: stretch; }
   }
 </style>

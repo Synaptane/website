@@ -3,7 +3,9 @@
 //
 // - convertCallouts: GitHub alerts (`> [!NOTE]`…) -> Starlight asides (`:::note`…);
 // - frenchTypography: French typography outside code (apostrophes, non-breaking spaces);
-// - isFence, updateFence, mapOutsideInlineCode: helpers shared with sync-docs.mjs.
+// - pageDescription: the description of a page (its first real paragraph, at most 155 characters);
+// - translatedAnchor: the id, in a translation, of a heading of the original page;
+// - isFence, updateFence, mapOutsideInlineCode, stripInline: helpers shared with sync-docs.mjs.
 //
 // No dependency: Node >= 22.
 
@@ -200,4 +202,92 @@ function maskInlineCode(line, mask) {
     i = end + run;
   }
   return result + line.slice(i);
+}
+
+// ---------- Page description ----------
+/** Text of a Markdown inline fragment without its markup (links, images, emphasis, code). */
+export function stripInline(s) {
+  return s
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/(\*\*|__)(.+?)\1/g, '$2')
+    .replace(/(^|\W)[*_](.+?)[*_](?=\W|$)/g, '$1$2')
+    .replace(/`([^`]*)`/g, '$1')
+    .trim();
+}
+
+// A line that starts a block other than a paragraph: heading, code, aside, list item, quote,
+// table, HTML, image, thematic break, link reference definition.
+const NOT_PROSE = /^(#|```|~~~|:::|[-*+]\s|\d+[.)]\s|>|\||<|!\[|(?:-{3,}|\*{3,}|_{3,})$|\[[^\]]+\]:\s)/;
+
+/**
+ * Description of a page (`<meta name="description">`, shown in search results): its first real
+ * paragraph of prose, without markup. Skipped: code blocks, asides, lists, tables, quotes, HTML,
+ * indented lines (the rest of a list item), paragraphs shorter than `min` characters and those
+ * that end with `:`, which only introduce what follows ("With Docker:"). A paragraph stops at the
+ * first line that starts another block ("Each space is a wiki.\n- The tree…": the first line).
+ * Longer than `max` characters, the text is cut after its last sentence that fits (if that keeps
+ * at least half of `max`), otherwise after its last whole word, followed by "…".
+ * No paragraph long enough: the first short one that does not end with `:`, otherwise ''.
+ */
+export function pageDescription(markdown, { min = 50, max = 155 } = {}) {
+  let fence = null;
+  let asides = 0;
+  let paragraph = null; // lines of the paragraph being read
+  let other = false; // inside another block, until the next blank line
+  let fallback = '';
+  for (const line of [...markdown.split('\n'), '']) {
+    const wasFence = fence;
+    fence = updateFenceLenient(fence, line);
+    const trimmed = line.trim();
+    let ends = trimmed === '' || Boolean(wasFence || fence);
+    if (!ends && trimmed.startsWith(':::')) {
+      asides = trimmed === ':::' ? Math.max(0, asides - 1) : asides + 1;
+      ends = true;
+    }
+    if (!ends && paragraph && NOT_PROSE.test(trimmed)) ends = true;
+    if (ends) {
+      if (paragraph) {
+        const text = stripInline(paragraph.join(' '));
+        paragraph = null;
+        if (!text.endsWith(':')) {
+          if (text.length >= min) return shorten(text, { max });
+          fallback ||= text;
+        }
+      }
+      other = trimmed !== '';
+      continue;
+    }
+    if (asides) continue;
+    if (paragraph) paragraph.push(trimmed);
+    else if (!other && !/^\s/.test(line) && !NOT_PROSE.test(trimmed)) paragraph = [trimmed];
+    else other = true;
+  }
+  return shorten(fallback, { max });
+}
+
+function shorten(text, { max }) {
+  if (text.length <= max) return text;
+  // After the last sentence (. ! ? or … followed by a space) that fits.
+  let cut = -1;
+  for (const m of text.slice(0, max + 1).matchAll(/[.!?…](?=\s)/g)) cut = m.index + 1;
+  if (cut >= max / 2) return text.slice(0, cut);
+  // Otherwise after the last whole word, without a trailing punctuation mark or space.
+  return `${text.slice(0, max).replace(/\s+\S*$/, '').replace(/[\s,;:(\-–—]+$/u, '')}…`;
+}
+
+// ---------- Anchors of a translation ----------
+/**
+ * The id, in a translated page, of the heading `id` of the original page: the heading at the
+ * same position. The translations of the repository keep the outline of the original (same
+ * headings, same levels, same order) while their ids differ (#known-limitations ->
+ * #limites-connues). `original` and `translation` are the headings of each page in order, as
+ * { depth, id }. Null when the outlines differ (the position would not be reliable) or when the
+ * original has no heading `id`.
+ */
+export function translatedAnchor(original, translation, id) {
+  if (original.length !== translation.length) return null;
+  if (original.some((h, i) => h.depth !== translation[i].depth)) return null;
+  const i = original.findIndex((h) => h.id === id);
+  return i < 0 ? null : translation[i].id;
 }

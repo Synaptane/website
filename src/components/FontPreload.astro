@@ -1,0 +1,9 @@
+---
+/**
+ * Preloads the site's font, Geist (titles, text and long text in both themes; see « Site
+ * identity » in src/styles/tokens.css), so that it is often there for the first paint.
+ * Geist Mono is not preloaded: it has an adjusted fallback (tokens.css) and little text uses it.
+ */
+---
+
+<link rel="preload" href="/fonts/Geist-latin.woff2" as="font" type="font/woff2" crossorigin />

@@ -1,5 +1,8 @@
 ---
-/** Grid of the main features: an icon, a title, two or three sentences, an optional link. */
+/**
+ * Grid of the main features: an icon, a title, two or three sentences, an optional link.
+ * One column, then two from 760px; keep an even number of cards so that no row ends half empty.
+ */
 import HomeIcon, { type HomeIconName } from './HomeIcon.astro';
 
 export interface Feature {
@@ -50,11 +53,11 @@ const { items } = Astro.props;
     gap: 1px;
     overflow: hidden;
   }
-  @media (min-width: 640px) {
+  /* Two columns at most: the page is 1120px wide, so three or four columns would bring the
+     paragraphs down to 30-45 characters a line (and eight cards in three columns leave a hole).
+     Two columns start where a card still holds about 45 characters a line. */
+  @media (min-width: 760px) {
     .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (min-width: 1000px) {
-    .features { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
   .feature {
     display: flex;
@@ -74,7 +77,11 @@ const { items } = Astro.props;
     color: var(--accent);
   }
   h3 { font-size: 16.5px; margin: 0 0 var(--space-2); }
-  p { margin: 0 0 var(--space-3); color: var(--ink-2); font-size: 14.5px; line-height: 1.55; }
-  .more { margin-top: auto; font-size: 14px; font-weight: 500; text-decoration: none; }
+  /* Short of the two columns, a card is the full width of the page: the text stops at ~75 characters. */
+  p { max-width: 50ch; margin: 0 0 var(--space-3); color: var(--ink-2); font-size: 14.5px; line-height: 1.55; }
+  /* An action link on its own line: no underline at rest (the arrow says it is a link), underlined
+     on hover. The invisible ::before makes it a 44px touch target without moving anything. */
+  .more { position: relative; align-self: flex-start; margin-top: auto; font-size: 14px; font-weight: 500; text-decoration: none; }
+  .more::before { content: ''; position: absolute; inset: -11px -6px; }
   .more:hover { text-decoration: underline; }
 </style>

@@ -82,8 +82,23 @@
 .sidebar-content .large { font-size: 0.8125rem; font-weight: 600; color: var(--ink-3); letter-spacing: 0.01em; }
 .sidebar-content summary .large { color: var(--ink-3); }
 
-/* Site title: the logo at the height of the app's. */
-.site-title img { height: 1.75rem; }
+/* Header: the same bar as on the site pages (SiteHeader.astro, site.css), so that nothing moves
+   between a site page and a docs page: 60px plus its border, side margins of 16px then 32px
+   from 720px (the site's --gutter), the same translucent background and a 26px logo. The site
+   header spans the whole width too, from the same margins. */
+:root {
+  --sl-nav-height: 61px;
+  --sl-nav-pad-x: 16px;
+}
+@media (min-width: 720px) {
+  :root { --sl-nav-pad-x: 32px; }
+}
+header.header {
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(8px);
+  backdrop-filter: saturate(1.4) blur(8px);
+}
+.site-title img { height: 26px; }
 
 /* Search button. */
 @media (min-width: 50rem) {
@@ -95,9 +110,14 @@
   }
   site-search button[data-open-modal]:hover { border-color: var(--field-border); color: var(--ink); }
 }
+/* From 50rem to 64rem the header also holds the "Menu" of the site links (Header.astro): the
+   search button drops its "Ctrl K" hint (the shortcut still works) to leave them room. */
+@media (min-width: 50rem) and (max-width: 63.99rem) {
+  site-search button[data-open-modal] > kbd { display: none; }
+}
 site-search dialog { border-radius: var(--radius-lg); }
 
-/* ---------- Page title and Markdown: the app's reading style ---------- */
+/* ---------- Page title and Markdown: the reading style of the tokens ---------- */
 h1#_top {
   font-family: var(--font-display);
   font-weight: var(--display-weight);
@@ -120,6 +140,9 @@ h1#_top {
   font-family: var(--font-body);
   font-size: 15px;
 }
+.sl-markdown-content :is(table, figcaption, .starlight-aside, .card, .sl-steps) :not(pre) > code:not(:where(.not-content *)) {
+  font-size: 0.875em;
+}
 .sl-markdown-content a:not(:where(.not-content *)) {
   color: var(--accent);
   text-decoration: underline;
@@ -127,13 +150,21 @@ h1#_top {
   text-decoration-thickness: 1px;
 }
 .sl-markdown-content a:not(:where(.not-content *)):hover { color: var(--accent-hover); }
+/* Inline code: a little smaller than the text around it (monospace looks larger), but never
+   below 13px, so that tool, variable and file names stay readable in the 15px tables and
+   asides. */
 .sl-markdown-content :not(pre) > code:not(:where(.not-content *)) {
-  font-size: 0.78em;
+  font-size: max(0.78em, 13px);
   padding: 2px 5px;
   border: 0;
   border-radius: 5px;
   background: var(--bg-2);
+  /* A piece of code cut at the end of a line keeps its rounded background on both lines. */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
+/* No word left alone on the last line of a paragraph (browsers without it ignore it). */
+.sl-markdown-content :is(p, li, dd, blockquote) { text-wrap: pretty; }
 .sl-markdown-content strong { color: var(--ink); }
 .sl-markdown-content blockquote:not(:where(.not-content *)) {
   border-inline-start: 2px solid var(--border);
@@ -152,7 +183,134 @@ h1#_top {
   color: var(--ink-3);
 }
 .sl-markdown-content tr:nth-child(2n):not(:where(.not-content *)) { background: none; }
+
+/* ---------- Tables: readable columns, sideways scroll when they do not fit ----------
+   Each table is wrapped in a focusable .table-scroll area (MarkdownContent.astro). The table
+   keeps its own width; when it is wider than the page, the area scrolls sideways and a shadow
+   on the edge says that more is hidden there. The shadows are fixed on the edges (scroll) and
+   hidden by patches of the page colour that move with the content (local), so that each one
+   disappears when its end of the table is reached. */
+.sl-markdown-content .table-scroll {
+  --table-shadow: color-mix(in srgb, var(--ink) 24%, transparent);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  background:
+    linear-gradient(to right, var(--surface) 40%, transparent) left / 40px 100% no-repeat local,
+    linear-gradient(to left, var(--surface) 40%, transparent) right / 40px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--table-shadow), transparent) left / 14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--table-shadow), transparent) right / 14px 100% no-repeat scroll,
+    var(--surface);
+}
+.sl-markdown-content .starlight-aside .table-scroll { background: none; }
+.sl-markdown-content .table-scroll > table:not(:where(.not-content *)) {
+  display: table;
+  overflow: visible;
+}
+/* No column narrower than a few words, the first one (names, often in code) a little wider.
+   Names in code break after their / and _ (MarkdownContent.astro adds the break points), or
+   anywhere as a last resort, rather than widening their column at the expense of the text. */
+.sl-markdown-content .table-scroll :is(th, td) { min-width: 5.5em; }
+.sl-markdown-content .table-scroll :is(th, td):first-child { min-width: 7.5em; }
+.sl-markdown-content .table-scroll td code { overflow-wrap: anywhere; }
+.sl-markdown-content .table-scroll :is(th, td):last-child { padding-inline-end: 0; }
+@media (max-width: 49.99rem) {
+  .sl-markdown-content .table-scroll :is(th, td) { padding-inline-end: 14px; }
+  /* Three columns or more: the table keeps a reading width and scrolls, rather than squeezing
+     its text into columns of two words. */
+  .sl-markdown-content .table-scroll > table:has(th:nth-child(3)) { min-width: 32em; }
+}
 .sl-markdown-content img { border-radius: var(--radius); }
+
+/* ---------- Links to GitHub: they leave the docs ----------
+   A small arrow after the link, and for screen readers « (opens GitHub) » / « (ouvre GitHub) »
+   (a11y.externalLink of src/i18n), as the alternative text of the arrow. In the Markdown content
+   and in the help line at the bottom of the page (EditLink.astro). */
+.sl-markdown-content a[href^='https://github.com/']:not(:where(.not-content *))::after,
+.docs-help a[href^='https://github.com/']::after {
+  content: '' / ' (opens GitHub)';
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-inline-start: 0.2em;
+  vertical-align: -0.02em;
+  background-color: currentColor;
+  -webkit-mask: var(--external-icon) no-repeat center / contain;
+  mask: var(--external-icon) no-repeat center / contain;
+}
+:lang(fr) :is(.sl-markdown-content, .docs-help) a[href^='https://github.com/']::after { content: '' / ' (ouvre GitHub)'; }
+:root {
+  /* The « external » icon of src/components/Icon.astro. */
+  --external-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9'/%3E%3Cpath d='M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E");
+}
+
+/* ---------- Asides: the notes of the site pages ----------
+   A thin border all around and the large radius (as .home-note), in the colour of their kind
+   (note, tip, caution, danger), which also tints their background, title and icon. */
+.sl-markdown-content .starlight-aside {
+  border: 1px solid color-mix(in srgb, var(--sl-color-asides-border) 35%, transparent);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+}
+
+/* ---------- Code blocks: those of the site pages (CodeBlock.astro) ----------
+   Expressive Code's colours and sizes are set in astro.config.mjs; here, the layout. A terminal
+   gets the site's title bar: « Terminal » on the left (the frame keeps Expressive Code's
+   « Terminal window » for screen readers), 36px high, and the copy button on its right end. The
+   button is always shown, with its label, as on the site pages; in a terminal it no longer covers
+   the end of the first line on a touch screen, and elsewhere the code keeps room for it. */
+.expressive-code .frame.is-terminal .header {
+  justify-content: flex-start;
+  box-sizing: border-box;
+  min-height: 37px; /* 36px + the top border */
+  padding: 0 96px 0 14px;
+  font: 500 12.5px/1.2 var(--font-body);
+  letter-spacing: normal;
+}
+.expressive-code .frame.is-terminal .header .title:empty::before { content: 'Terminal' / ''; }
+.expressive-code .frame:not(.is-terminal, .has-title) pre { padding-inline-end: 84px; }
+.expressive-code .frame .copy {
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+}
+.expressive-code .frame .copy button {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  height: 26px;
+  padding: 0 8px 0 27px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font: 500 12.5px/1 var(--font-body);
+  /* Expressive Code shows it only on hover (with a mouse): always here. */
+  opacity: 1 !important;
+}
+.expressive-code .frame .copy button:hover { color: var(--ink); }
+.expressive-code .frame .copy button > div { display: none; }
+.expressive-code .frame .copy button::before {
+  content: 'Copy' / '';
+  position: static;
+  border: 0;
+  opacity: 1;
+}
+:lang(fr) .expressive-code .frame .copy button::before { content: 'Copier' / ''; }
+.expressive-code .frame .copy button::after {
+  inset: 50% auto auto 8px;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0;
+  background-color: currentColor;
+  -webkit-mask-image: var(--copy-icon);
+  mask-image: var(--copy-icon);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.expressive-code .frame .copy .feedback { border-radius: 6px; }
+:root {
+  /* The « copy » icon of src/components/Icon.astro. */
+  --copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='12' height='12' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+}
 
 /* Table of contents. */
 starlight-toc a[aria-current='true'],
@@ -165,18 +323,17 @@ starlight-toc a[aria-current='true']:hover { color: var(--accent); font-weight: 
 /* Focus ring: the app's. */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* Mobile menu button: the app's bordered button instead of a filled circle. */
-:root { --sl-menu-button-size: 2.25rem; }
-.sl-menu-button,
-:root[data-theme] .sl-menu-button {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: none;
+/* Mobile menu button: the site header's « Menu » button (MobileMenuToggle.astro), 36px high. The
+   header keeps room for its width at its right end (Starlight reserves a square button). */
+:root {
+  --sl-menu-button-size: 2.25rem;
+  --sl-menu-button-width: 5.75rem;
 }
-.sl-menu-button:has(~ :popover-open),
-:root[data-theme] .sl-menu-button:has(~ :popover-open) { background: var(--hover); }
+@media (max-width: 49.99rem) {
+  [data-has-sidebar] header.header {
+    padding-inline-end: calc(8px + var(--sl-nav-pad-x) + var(--sl-menu-button-width));
+  }
+}
 
 /* Social icons (GitHub) in ink, not in the accent color. */
 .social-icons a { color: var(--ink-2); }

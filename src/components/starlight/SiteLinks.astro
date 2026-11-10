@@ -1,5 +1,10 @@
 ---
-/** Links from the docs back to the site pages (Starlight header and mobile menu). */
+/**
+ * The site's main navigation in the docs (Starlight header, its drop-down and the mobile menu):
+ * the same links as SiteHeader.astro, in the same order and style, "Docs" marked as the
+ * current section. Named « Site » (a11y.siteNav), not « Main »: the docs sidebar is already the
+ * « Main » navigation of these pages, and two landmarks with one name cannot be told apart.
+ */
 import { getLang, localizePath, useTranslations } from '../../i18n';
 import { mainNav } from '../../site';
 
@@ -9,12 +14,19 @@ interface Props {
 
 const lang = getLang(Astro.locals.starlightRoute.lang);
 const t = useTranslations(lang);
-const items = mainNav.filter((i) => i.key !== 'docs');
 ---
 
-<nav class:list={['site-links', Astro.props.class]} aria-label={t.a11y.mainNav}>
+<nav class:list={['site-links', Astro.props.class]} aria-label={t.a11y.siteNav}>
   <ul>
-    {items.map((i) => <li><a href={localizePath(i.path, lang)}>{t.nav[i.key]}</a></li>)}
+    {
+      mainNav.map((i) => (
+        <li>
+          <a href={localizePath(i.path, lang)} aria-current={i.key === 'docs' ? 'page' : undefined}>
+            {t.nav[i.key]}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </nav>
 
@@ -23,7 +35,7 @@ const items = mainNav.filter((i) => i.key !== 'docs');
   a {
     display: inline-flex;
     align-items: center;
-    height: 32px;
+    height: 34px;
     padding: 0 10px;
     border-radius: var(--radius);
     color: var(--ink-2);
@@ -33,4 +45,5 @@ const items = mainNav.filter((i) => i.key !== 'docs');
     white-space: nowrap;
   }
   a:hover { background: var(--hover); color: var(--ink); }
+  a[aria-current='page'] { color: var(--ink); background: var(--surface); box-shadow: 0 0 0 1px var(--border); }
 </style>

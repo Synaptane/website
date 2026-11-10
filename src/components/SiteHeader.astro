@@ -1,7 +1,13 @@
 ---
 /**
- * Header of the site pages: logo, main navigation, GitHub, language and theme. Below 860px the
- * navigation folds into a <details> menu (no JavaScript).
+ * Header of the site pages: logo, main navigation, GitHub, language and theme, and one call to
+ * action, "Try it", towards the "Get started" section of the home page. Below 960px (the width
+ * the French bar needs on one line) the navigation folds into a <details> menu; the call to
+ * action stays in the bar, next to the menu button. The menu works without JavaScript; a small
+ * inline script closes it with Escape (focus back on its button) and when the focus leaves it,
+ * so that the keyboard never goes on under the veil.
+ * The bar spans the whole width, from the page gutters, like the docs header
+ * (starlight/Header.astro): the logo and the links stay in place from a site page to the docs.
  */
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo.svg';
@@ -21,6 +27,7 @@ interface Props {
 const { lang, alternateHref } = Astro.props;
 const t = useTranslations(lang);
 const current = stripLangPrefix(Astro.url.pathname);
+const tryHref = `${localizePath('/', lang)}#get-started`;
 const items = mainNav.map((item) => ({
   label: t.nav[item.key],
   href: localizePath(item.path, lang),
@@ -50,6 +57,8 @@ const items = mainNav.map((item) => ({
       <ThemeControl t={t} />
     </div>
 
+    <a class="cta" href={tryHref} title={t.nav.tryItTitle}>{t.nav.tryIt}</a>
+
     <details class="menu">
       <summary>
         <Icon name="menu" size={18} class="open-icon" />
@@ -72,6 +81,23 @@ const items = mainNav.map((item) => ({
   </div>
 </header>
 
+<script is:inline>
+  (() => {
+    const menu = document.querySelector('.site-header .menu');
+    if (!menu) return;
+    const summary = menu.querySelector('summary');
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        summary.focus();
+      }
+    });
+    menu.addEventListener('focusout', (e) => {
+      if (menu.open && e.relatedTarget && !menu.contains(e.relatedTarget)) menu.open = false;
+    });
+  })();
+</script>
+
 <style>
   .site-header {
     position: sticky;
@@ -81,7 +107,9 @@ const items = mainNav.map((item) => ({
     backdrop-filter: saturate(1.4) blur(8px);
     border-bottom: 1px solid var(--border);
   }
+  /* The whole width (not the 1120px of the page content), as in the docs. */
   .bar {
+    max-width: none;
     display: flex;
     align-items: center;
     gap: var(--space-5);
@@ -129,7 +157,27 @@ const items = mainNav.map((item) => ({
   }
   .icon-link:hover { background: var(--hover); color: var(--ink); }
 
-  .menu { display: none; margin-left: auto; }
+  /* The call to action: the app's primary button (ink by day, lime by night), at the height of
+     the other controls of the bar. */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .cta:hover { background: var(--primary-hover); color: var(--on-primary); text-decoration: none; }
+
+  .menu { display: none; }
   .menu summary {
     list-style: none;
     display: inline-flex;
@@ -155,7 +203,7 @@ const items = mainNav.map((item) => ({
     right: 0;
     top: var(--header-height);
     padding: var(--space-3) var(--gutter) var(--space-5);
-    background: var(--bg);
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
     box-shadow: 0 16px 32px rgb(0 0 0 / 0.12);
   }
@@ -170,6 +218,11 @@ const items = mainNav.map((item) => ({
     height: 100vh;
     background: rgb(10 12 15 / 0.32);
     cursor: default;
+  }
+  /* In Slate the page is nearly black: a denser veil, so that the menu stands out from it. */
+  :global(:root[data-theme='dark']) .menu[open] summary::before { background: rgb(0 0 0 / 0.6); }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .menu[open] summary::before { background: rgb(0 0 0 / 0.6); }
   }
   @media (prefers-reduced-motion: no-preference) {
     .menu[open] summary::before { animation: veil-in 0.2s ease-out; }
@@ -187,8 +240,14 @@ const items = mainNav.map((item) => ({
     border-top: 1px solid var(--border);
   }
 
-  @media (max-width: 859px) {
+  @media (max-width: 959px) {
+    .bar { gap: var(--space-2); }
     .nav-desktop, .tools { display: none; }
+    .cta { margin-left: auto; height: 36px; }
     .menu { display: block; }
+    /* The page under the open menu does not scroll (as in the docs). */
+    :global(html:has(.site-header .menu[open])) { overflow: hidden; }
+    /* Touch targets of 40px in the menu (ThemeControl does it by itself below 860px only). */
+    .panel-tools :global(.theme-control button) { width: 40px; height: 40px; }
   }
 </style>

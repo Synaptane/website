@@ -1,7 +1,8 @@
 ---
 /**
  * A card (the application's .card): title, text in the slot, optional icon slot and link.
- * With `href`, the whole card is clickable (the title is the link).
+ * With `href`, the whole card is clickable (the title is the link); `action` adds a short verb
+ * under the text, followed by an arrow ("Open →"), so that the card reads as a link at a glance.
  *
  *   <Card title="Stored in Git" href="/docs/concepts/">Plain Markdown in your repository.</Card>
  */
@@ -10,10 +11,13 @@ interface Props {
   href?: string;
   /** Heading level of the title (h3 by default). */
   level?: 2 | 3 | 4;
+  /** With `href`: label shown at the bottom of the card ("Open"), before an arrow. Visual only:
+   *  the title is the link that screen readers announce. */
+  action?: string;
   class?: string;
 }
 
-const { title, href, level = 3, class: className } = Astro.props;
+const { title, href, level = 3, action, class: className } = Astro.props;
 const Heading = `h${level}` as 'h2' | 'h3' | 'h4';
 ---
 
@@ -21,6 +25,7 @@ const Heading = `h${level}` as 'h2' | 'h3' | 'h4';
   {Astro.slots.has('icon') && <div class="card-icon"><slot name="icon" /></div>}
   <Heading class="card-title">{href ? <a href={href}>{title}</a> : title}</Heading>
   <div class="card-body"><slot /></div>
+  {href && action && <p class="card-action" aria-hidden="true">{action} <span>→</span></p>}
 </article>
 
 <style>
@@ -31,6 +36,8 @@ const Heading = `h${level}` as 'h2' | 'h3' | 'h4';
     border-radius: var(--radius-lg);
     padding: var(--space-5);
     min-width: 0;
+    display: flex;
+    flex-direction: column;
   }
   .card-link:hover { border-color: var(--field-border); }
   .card-icon {
@@ -51,4 +58,10 @@ const Heading = `h${level}` as 'h2' | 'h3' | 'h4';
   .card-link:has(a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
   .card-body { color: var(--ink-2); font-size: 15px; }
   .card-body :global(p:last-child) { margin-bottom: 0; }
+  /* At the bottom of the card, whatever the length of the text: the actions of a row line up. */
+  .card-action { margin: auto 0 0; padding-top: var(--space-4); color: var(--accent); font-size: 14px; font-weight: 500; }
+  .card-action span { display: inline-block; transition: transform 0.15s; }
+  .card-link:hover .card-action { text-decoration: underline; }
+  .card-link:hover .card-action span { transform: translateX(3px); }
+  @media (prefers-reduced-motion: reduce) { .card-action span { transition: none; } }
 </style>
