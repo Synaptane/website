@@ -26,8 +26,11 @@ import '../components/home/home.css';
 import { SITE } from '../site';
 import { installCode as installCodeFor } from '../lib/install';
 import { releaseLabel, releaseStatus } from '../lib/release';
+import { svgSize } from '../lib/svg-size';
 
 const release = await releaseStatus();
+// Read from the file: the diagram is synced from the product repository and its height can change.
+const architecture = svgSize('/docs/assets/architecture.svg');
 
 // One benefit and one proof per card; the details are behind the link. Search and files have
 // their own band (FileFormats), AI providers and costs are in the FAQ.
@@ -237,7 +240,6 @@ const rows: Row[] = [
   <Section
     id="screenshots"
     tone="alt"
-    eyebrow="In practice"
     title="Inside the application"
     intro="Screenshots and examples from the demo wiki of Acme, a fictional IT team: the examples open in your browser."
   >
@@ -274,7 +276,6 @@ const rows: Row[] = [
 
   <Section
     id="compare"
-    eyebrow="Comparison"
     title="How Synaptane compares"
     intro="Each of these tools is good at what it does. This table covers what Synaptane is built around: your own server, files you own, assistants, and an AI that keeps the wiki tidy."
   >
@@ -310,8 +311,8 @@ const rows: Row[] = [
       <Screenshot
         light="/docs/assets/architecture.svg"
         dark="/docs/assets/architecture-dark.svg"
-        width={1040}
-        height={452}
+        width={architecture.width}
+        height={architecture.height}
         zoom="home"
         zoomCaption="Architecture of Synaptane: the application, the worker, PostgreSQL, the Git repositories and the optional AI provider."
         alt="Architecture diagram of Synaptane, described in the list that follows."
@@ -353,7 +354,7 @@ const rows: Row[] = [
       </div>
   </Section>
 
-  <Section id="faq" tone="alt" eyebrow="FAQ" title="Questions before you start">
+  <Section id="faq" tone="alt" title="Questions before you start">
     <div class="home-faq">
       <details>
         <summary>Which AI assistants work with it?</summary>
@@ -435,7 +436,6 @@ const rows: Row[] = [
 
   <Section
     id="get-started"
-    eyebrow="Get started"
     title="Up and running in three steps"
     intro="On Linux, or WSL2 on Windows, with Docker. This starts a local instance with the demo wiki of Acme, a fictional IT team."
   >

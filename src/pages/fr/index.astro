@@ -26,8 +26,11 @@ import '../../components/home/home.css';
 import { SITE } from '../../site';
 import { installCode as installCodeFor } from '../../lib/install';
 import { releaseLabel, releaseStatus } from '../../lib/release';
+import { svgSize } from '../../lib/svg-size';
 
 const release = await releaseStatus();
+// Lue dans le fichier : le schéma vient du dépôt produit (sync-docs) et sa hauteur peut changer.
+const architecture = svgSize('/docs/assets/architecture.svg');
 
 // Un bénéfice et une preuve par carte ; le détail est derrière le lien. La recherche et les
 // fichiers ont leur bandeau (FileFormats), les fournisseurs d’IA et les coûts sont dans la FAQ.
@@ -237,7 +240,6 @@ const rows: Row[] = [
   <Section
     id="screenshots"
     tone="alt"
-    eyebrow="En pratique"
     title="Dans l’application"
     intro="Captures et exemples tirés du wiki de démonstration d’Acme, une équipe informatique fictive : les exemples s’ouvrent dans votre navigateur."
   >
@@ -274,7 +276,6 @@ const rows: Row[] = [
 
   <Section
     id="compare"
-    eyebrow="Comparatif"
     title="Synaptane face aux autres outils"
     intro="Chacun de ces outils fait bien ce qu’il fait. Ce tableau retient ce autour de quoi Synaptane est construit : votre serveur, des fichiers qui vous appartiennent, les assistants, et une IA qui tient le wiki en ordre."
   >
@@ -310,8 +311,8 @@ const rows: Row[] = [
       <Screenshot
         light="/docs/assets/architecture.svg"
         dark="/docs/assets/architecture-dark.svg"
-        width={1040}
-        height={452}
+        width={architecture.width}
+        height={architecture.height}
         zoom="home"
         zoomCaption="Architecture de Synaptane : l’application, le worker, PostgreSQL, les dépôts Git et le fournisseur d’IA facultatif."
         alt="Schéma d’architecture de Synaptane, décrit dans la liste qui suit."
@@ -353,7 +354,7 @@ const rows: Row[] = [
       </div>
   </Section>
 
-  <Section id="faq" tone="alt" eyebrow="Questions fréquentes" title="Avant de vous lancer">
+  <Section id="faq" tone="alt" title="Avant de vous lancer">
     <div class="home-faq">
       <details>
         <summary>Quels assistants IA peuvent s’en servir ?</summary>
@@ -438,7 +439,6 @@ const rows: Row[] = [
 
   <Section
     id="get-started"
-    eyebrow="Démarrer"
     title="Opérationnel en trois étapes"
     intro="Sous Linux, ou WSL2 sous Windows, avec Docker. Vous obtenez une instance locale avec le wiki de démonstration d’Acme, une équipe informatique fictive."
   >
