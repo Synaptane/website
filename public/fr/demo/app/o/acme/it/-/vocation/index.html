@@ -143,8 +143,14 @@
 <p>Des règles précises pour l'agent de rangement, prioritaires sur ses consignes par défaut. Lues par lui seul.</p>
 <code>.synaptane/prompts/tidy.md</code>
 </a>
+<a class="vocation-explain" href="#checks">
+<p class="eyebrow">Contrôles de l'équipe</p>
+<p class="vocation-explain-title">Ce que chaque page doit suivre</p>
+<p>Des règles vérifiées sans IA : dans Santé, à chaque écriture (une règle bloquante la refuse) et par l'agent de rangement, qui les reçoit.</p>
+<code>.synaptane/checks.md</code>
+</a>
 </div>
-<p class="muted vocation-git">Les deux fichiers sont versionnés dans le dépôt : ils se modifient ici ou par un push. Chaque enregistrement est un commit à votre nom.</p>
+<p class="muted vocation-git">Ces fichiers sont versionnés dans le dépôt : ils se modifient ici ou par un push. Chaque enregistrement est un commit à votre nom.</p>
 <section class="card vocation-card" id="vocation">
 <div class="section-heading">
 <h2>Vocation</h2>
@@ -287,6 +293,46 @@ Each folder has a `README.md` that lists its pages: keep it up to date.
 </div>
 </div>
 <p class="muted" id="tidy-rules-text-help">20 000 caractères au plus. Un texte vide retire le fichier du dépôt.</p>
+</div>
+<div class="actions">
+<button class="button button-primary" type="submit" name="action" value="save" disabled="" aria-disabled="true">Enregistrer</button>
+<button class="button" type="submit" name="action" value="preview" formnovalidate="" data-preview-fallback="" disabled="" aria-disabled="true">Aperçu</button>
+</div>
+</form>
+</section>
+<section class="card vocation-card" id="checks">
+<div class="section-heading">
+<h2>Contrôles de l'équipe</h2>
+<span class="badge badge-quiet">Aucune</span>
+</div>
+<p class="muted">Un titre de niveau 2 par règle, puis ses clés : pattern (expression régulière), field et expect (front matter), preset (email, phone, card, iban), paths, level (warn ou block) et message. Les données personnelles sont masquées dans les rapports. L'aperçu compte les pages actuelles qui enfreignent chaque règle.</p>
+<p><a class="button button-small" href="/fr/demo/app/unavailable/">Partir de l'exemple</a> <span class="muted">L'exemple remplace le texte de l'éditeur ; adaptez-le, puis enregistrez.</span></p>
+<form class="vocation-form" data-demo-off="">
+
+<input type="hidden" name="base_sha" value="">
+<div class="field editor-field" data-preview-params='{"kind": "checks"}' data-preview-fields="" data-preview-name="" data-preview-space="" data-preview-max="262144" data-preview-empty="(texte vide)" data-preview-failed="L'aperçu n'a pas pu être chargé : réessayez." data-preview-too-long="Ce texte est trop long pour l'aperçu." data-preview-expired="Votre session a expiré : reconnectez-vous dans un autre onglet, votre texte est conservé.">
+<div class="editor-head">
+<label for="checks-text">Texte (Markdown)</label>
+<div class="segmented segmented-labels editor-modes" role="group" aria-label="Affichage de l'éditeur" data-test="editor-modes" hidden="">
+<button type="button" data-preview-mode="write" aria-pressed="true" aria-controls="checks-text" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"></path><path d="m13.5 6.5 4 4"></path></svg>Écrire</button>
+<button type="button" data-preview-mode="preview" aria-pressed="false" aria-controls="checks-text-preview" data-test="editor-preview" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>Aperçu</button>
+<button type="button" class="editor-split-mode" data-preview-mode="split" aria-pressed="false" aria-controls="checks-text checks-text-preview" data-test="editor-split" disabled="" aria-disabled="true"><svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M12 4v16"></path></svg>Côte à côte</button>
+</div>
+</div>
+<div class="editor-panes">
+<textarea id="checks-text" name="text" class="editor vocation-editor" rows="22" spellcheck="true" placeholder="## Pas d'e-mail de personne
+- preset: email
+- level: block
+- message: Mettez un lien vers la page de la personne." aria-describedby="checks-text-help" disabled="" aria-disabled="true"></textarea>
+<div id="checks-text-preview" class="editor-preview" data-preview-pane="" hidden="">
+<div class="editor-preview-scroll" tabindex="0" role="region" aria-labelledby="checks-text-preview-label">
+<p class="section-label editor-preview-label" id="checks-text-preview-label">Aperçu — pas encore enregistré</p>
+<p class="editor-preview-status" data-preview-status="" role="status" aria-live="polite"></p>
+<div class="doc-body"><div class="markdown hl" data-preview-output=""></div></div>
+</div>
+</div>
+</div>
+<p class="muted" id="checks-text-help">20 000 caractères au plus. Un texte vide retire le fichier du dépôt.</p>
 </div>
 <div class="actions">
 <button class="button button-primary" type="submit" name="action" value="save" disabled="" aria-disabled="true">Enregistrer</button>
