@@ -14,8 +14,8 @@ const groups: RoadmapGroup[] = [
     items: [
       {
         status: 'next',
-        title: 'Routines that keep their own pages',
-        text: 'Since 1.16, each routine of a space is a file of its repository. Next: a routine that writes directly in the folders it is given (a mirror, a summary page), with the tidy-up’s safeguards; a memory kept from one run to the next; routines that run before or after the tidy-up, and one report of the night by email or webhook. Later: routines that read an outside service over HTTP, with secrets the model never sees.',
+        title: 'Routines that read outside services',
+        text: 'Since 1.17, a routine keeps its own pages in the folders it is given, remembers from one run to the next and can run during the night, before or after the tidy-up, with one report by email or Slack. Next: routines that read an outside service over HTTP (a ticket tool, an API status page), with secrets kept by Synaptane and bound to their host, that the model never sees.',
       },
       {
         status: 'later',
