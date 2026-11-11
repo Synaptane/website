@@ -6,7 +6,7 @@ export const SITE = {
   releases: 'https://github.com/synaptane/synaptane/releases',
   image: 'ghcr.io/synaptane/synaptane',
   /** Latest published version of Synaptane. */
-  version: 'v1.17.0',
+  version: 'v1.18.0',
   author: 'René Cotton',
 } as const;
 
